@@ -4,13 +4,15 @@ import { CarouselComponent } from "../../components";
 
 const Home = () => {
   return (
-    <Grid container justifyContent="center">
+    <Grid container direction="column" justifyContent="center">
       <Grid item>
         <Typography variant="h4" component="h1">
           Енергиини терапии
         </Typography>
       </Grid>
-      <CarouselComponent />
+      <Grid item>
+        <CarouselComponent />
+      </Grid>
     </Grid>
   );
 };

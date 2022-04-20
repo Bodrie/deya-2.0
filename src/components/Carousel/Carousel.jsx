@@ -1,21 +1,25 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button } from "@mui/material";
+import { Paper, Button, Typography } from "@mui/material";
 
 const CarouselComponent = (props) => {
   const items = [
     {
-      name: "Random Name #1",
+      name: "Инфо текст 1",
       description: "Probably the most random thing you have ever seen!",
     },
     {
-      name: "Random Name #2",
+      name: "Инфо текст 2",
       description: "Hello World!",
+    },
+    {
+      name: "Инфо текст 3",
+      description: "Hello World! x3",
     },
   ];
 
   return (
-    <Carousel>
+    <Carousel height={150} fullHeightHover>
       {items.map((item, i) => (
         <CarouselItem key={i} item={item} />
       ))}
@@ -26,9 +30,12 @@ const CarouselComponent = (props) => {
 const CarouselItem = (props) => {
   return (
     <Paper>
-      <h2>{props.item.name}</h2>
-      <p>{props.item.description}</p>
-
+      <Typography variant="h5" component={"h2"}>
+        {props.item.name}
+      </Typography>
+      <Typography variant="body1" component={"p"}>
+        {props.item.description}
+      </Typography>
       <Button className="CheckButton">Check it out!</Button>
     </Paper>
   );
