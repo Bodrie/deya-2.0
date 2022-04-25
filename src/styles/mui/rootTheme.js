@@ -1,6 +1,9 @@
 import { createTheme } from "@mui/material";
 
 const rootTheme = createTheme({
+  typography: {
+    fontFamily: "Mulish",
+  },
   palette: {
     primary: {
       main: "#873F91",
