@@ -5,8 +5,8 @@ import { CardComponent, CarouselComponent } from "../../components";
 const Home = () => {
   const theme = useTheme();
   return (
-    <Grid container direction="column" justifyContent="center">
-      <Grid item mt={3}>
+    <Grid container direction="column" justifyContent="center" padding={3}>
+      <Grid item>
         <Typography
           variant="h4"
           component="h1"

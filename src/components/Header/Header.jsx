@@ -132,12 +132,12 @@ const Header = () => {
             }}
           >
             {pages.map((page) => (
-              <LinkStyled to={page.href}>
+              <LinkStyled to={page.href} key={page.name}>
                 <Button
-                  key={page.name}
                   onClick={handleCloseNavMenu}
                   variant="outlined"
                   color="primary"
+                  size="large"
                 >
                   {page.name}
                 </Button>

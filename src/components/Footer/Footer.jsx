@@ -29,7 +29,7 @@ const Footer = () => {
               margin: "0 1rem 0 1rem",
             }}
           />
-          <Grid item direction="column" alignSelf="center">
+          <Grid item alignSelf="center">
             <Grid item container>
               <Typography>info@deya.bg</Typography>
               <Divider

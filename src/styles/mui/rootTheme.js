@@ -20,7 +20,10 @@ const rootTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
+          borderRadius: "25px",
+          padding: "0.3rem 1.3rem 0.3rem 1.3rem",
           "&:hover": {
+            fontWeight: "bold",
             color: "#873F91",
             backgroundColor: "#FEC01F",
             border: "1px solid #873F91",
