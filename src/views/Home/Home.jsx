@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
-import { CarouselComponent } from "../../components";
+import { CardComponent, CarouselComponent } from "../../components";
 
 const Home = () => {
   return (
@@ -12,6 +12,9 @@ const Home = () => {
       </Grid>
       <Grid item>
         <CarouselComponent />
+      </Grid>
+      <Grid item>
+        <CardComponent></CardComponent>
       </Grid>
     </Grid>
   );

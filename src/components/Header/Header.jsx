@@ -1,18 +1,25 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import {
+  AppBar,
+  MenuItem,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+} from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { LinkStyled } from "../../components";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [
+  { name: "Рейки", href: "/reiki" },
+  { name: "Тета", href: "/teta" },
+  { name: "За мен", href: "/about" },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
@@ -44,7 +51,7 @@ const Header = () => {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            LOGO
+            LOGO DESKTOP
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -77,8 +84,14 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  sx={{ textDecoration: "none !important" }}
+                >
+                  <Typography textAlign="center">
+                    <LinkStyled to={page.href}>{page.name}</LinkStyled>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -89,16 +102,20 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            LOGO
+            LOGO MOBILE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                }}
               >
-                {page}
+                <LinkStyled to={page.href}>{page.name}</LinkStyled>
               </Button>
             ))}
           </Box>
