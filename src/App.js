@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Header } from "./components";
+import { Header, Footer } from "./components";
 import { Home } from "./views";
 import "./styles/App.css";
 
@@ -11,6 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

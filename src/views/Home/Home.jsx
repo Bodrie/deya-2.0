@@ -18,7 +18,7 @@ const Home = () => {
       <Grid item mt={3}>
         <CarouselComponent />
       </Grid>
-      <Grid item mt={3}>
+      <Grid item container direction="row" mt={3}>
         <CardComponent />
       </Grid>
     </Grid>
