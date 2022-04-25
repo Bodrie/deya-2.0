@@ -11,14 +11,18 @@ import {
   Avatar,
   Button,
   Tooltip,
+  CardMedia,
+  useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
+import logo from "../../assets/images/logo/logo.png";
 
 const pages = [
   { name: "Рейки", href: "/reiki" },
   { name: "Тета", href: "/teta" },
   { name: "За мен", href: "/about" },
+  { name: "Контакти", href: "/contacts" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -41,6 +45,8 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const theme = useTheme();
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -49,12 +55,33 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              flexGrow: 0.7,
+              mr: 2,
+              mb: 1,
+              display: { xs: "none", md: "flex" },
+            }}
           >
-            LOGO DESKTOP
+            <LinkStyled to={"/home"}>
+              <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
+            </LinkStyled>
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
+          >
+            <LinkStyled to={"/home"}>
+              <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
+            </LinkStyled>
+          </Typography>
+          <Box
+            sx={{
+              display: { xs: "flex", md: "none" },
+              justifyContent: "flex-end",
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -87,40 +114,38 @@ const Header = () => {
                 <MenuItem
                   key={page.name}
                   onClick={handleCloseNavMenu}
-                  sx={{ textDecoration: "none !important" }}
+                  sx={{ width: "15vw" }}
                 >
-                  <Typography textAlign="center">
-                    <LinkStyled to={page.href}>{page.name}</LinkStyled>
-                  </Typography>
+                  <LinkStyled to={page.href}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </LinkStyled>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+          <Box
+            sx={{
+              flexGrow: 0.3,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "space-evenly",
+            }}
           >
-            LOGO MOBILE
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                }}
-              >
-                <LinkStyled to={page.href}>{page.name}</LinkStyled>
-              </Button>
+              <LinkStyled to={page.href}>
+                <Button
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  variant="outlined"
+                  color="primary"
+                >
+                  {page.name}
+                </Button>
+              </LinkStyled>
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          {/* If we add user manegmant in the future */}
+          {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -148,7 +173,7 @@ const Header = () => {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
