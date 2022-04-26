@@ -6,6 +6,9 @@ const LinkStyled = styled(NavLink)(({ theme }) => ({
   color: "inherit",
   textDecoration: "none",
   WebkitTapHighlightColor: "unset",
+  ":hover": {
+    color: "inherit",
+  },
 }));
 
 export default LinkStyled;

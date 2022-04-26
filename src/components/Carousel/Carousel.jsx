@@ -1,31 +1,47 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Typography, CardMedia } from "@mui/material";
+import { Paper, Typography, Box, useTheme } from "@mui/material";
+import { HorizontalRule } from "@mui/icons-material";
 import coruselImg1 from "../../assets/images/carousel-img/slide-1.jpg";
 import coruselImg2 from "../../assets/images/carousel-img/slide-2.jpg";
 import coruselImg3 from "../../assets/images/carousel-img/slide-3.jpg";
 
 const CarouselComponent = (props) => {
+  const theme = useTheme();
   const items = [
     {
-      name: "Инфо текст 1",
-      description: "Probably the most random thing you have ever seen!",
+      name: "Рейки",
+      description:
+        "Двуканална Система на Микао Усуи | Рейки сеанс | Рейки Обучение и Инициация",
       img: coruselImg1,
     },
     {
-      name: "Инфо текст 2",
-      description: "Hello World!",
+      name: "Тета лечение",
+      description: "Тета сесия",
       img: coruselImg2,
     },
     {
-      name: "Инфо текст 3",
-      description: "Hello World! x3",
+      name: "Масажи",
+      description: "Масажи с вулканични камани",
       img: coruselImg3,
     },
   ];
 
   return (
-    <Carousel>
+    <Carousel
+      interval={50000}
+      navButtonsAlwaysVisible
+      navButtonsProps={{ style: { opacity: 0.6 } }}
+      IndicatorIcon={
+        <HorizontalRule fontSize="large" sx={{ margin: "0 5px 0 5px" }} />
+      }
+      activeIndicatorIconButtonProps={{
+        style: { color: theme.palette.text.secondary },
+      }}
+      indicatorContainerProps={{
+        style: { position: "absolute", bottom: 10, zIndex: 5000 },
+      }}
+    >
       {items.map((item, i) => (
         <CarouselItem key={i} item={item} />
       ))}
@@ -34,28 +50,37 @@ const CarouselComponent = (props) => {
 };
 
 const CarouselItem = (props) => {
+  const theme = useTheme();
   return (
-    <Paper>
-      <CardMedia
-        image={props.item.img}
+    <Paper sx={{ backgroundColor: "black", borderRadius: "13px" }}>
+      <Paper
         sx={{
-          height: {
-            xs: "35vw",
-            sm: "30vw",
-            md: "25vw",
-            lg: "20vw",
-            xl: "15vw",
-          },
+          height: "25rem",
+          borderRadius: "13px",
+          backgroundImage: `url(${props.item.img})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.4,
         }}
-      >
-        <Typography variant="h5" component={"h2"}>
+      />
+      <Box sx={{ position: "absolute", bottom: 175, left: 100 }}>
+        <Typography
+          variant="h3"
+          component="p"
+          color={theme.palette.text.secondary}
+        >
           {props.item.name}
         </Typography>
-        <Typography variant="body1" component={"p"}>
+      </Box>
+      <Box sx={{ position: "absolute", bottom: 130, left: 103 }}>
+        <Typography
+          variant="body1"
+          component="p"
+          color={theme.palette.text.secondary}
+        >
           {props.item.description}
         </Typography>
-        <Button className="CheckButton">Check it out!</Button>
-      </CardMedia>
+      </Box>
     </Paper>
   );
 };
