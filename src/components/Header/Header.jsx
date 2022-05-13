@@ -116,7 +116,7 @@ const Header = () => {
                 <MenuItem
                   key={page.name}
                   onClick={handleCloseNavMenu}
-                  sx={{ width: "22vw" }}
+                  sx={{ width: "12rem" }}
                 >
                   <Box
                     sx={{

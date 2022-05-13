@@ -35,6 +35,19 @@ const rootTheme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          color: "white",
+          textAlign: "center",
+          cursor: "pointer",
+        },
+        notchedOutline: {
+          border: "2px solid #873F91",
+          borderRadius: "15px",
+        },
+      },
+    },
   },
 });
 
