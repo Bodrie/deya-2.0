@@ -55,32 +55,44 @@ const CarouselItem = (props) => {
     <Paper sx={{ backgroundColor: "black", borderRadius: "13px" }}>
       <Paper
         sx={{
+          position: "relative",
           height: "25rem",
           borderRadius: "13px",
           backgroundImage: `url(${props.item.img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.4,
+          display: "flex",
         }}
-      />
-      <Box sx={{ position: "absolute", bottom: 175, left: 100 }}>
-        <Typography
-          variant="h3"
-          component="p"
-          color={theme.palette.text.secondary}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
         >
-          {props.item.name}
-        </Typography>
-      </Box>
-      <Box sx={{ position: "absolute", bottom: 130, left: 103 }}>
-        <Typography
-          variant="body1"
-          component="p"
-          color={theme.palette.text.secondary}
-        >
-          {props.item.description}
-        </Typography>
-      </Box>
+          <Box sx={{}}>
+            <Typography
+              variant="h3"
+              component="p"
+              color={theme.palette.text.secondary}
+            >
+              {props.item.name}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant="body1"
+              component="p"
+              color={theme.palette.text.secondary}
+            >
+              {props.item.description}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
     </Paper>
   );
 };

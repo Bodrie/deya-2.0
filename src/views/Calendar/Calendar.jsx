@@ -30,7 +30,11 @@ const Calendar = () => {
           <TextField
             onClick={() => setOpen(!open)}
             {...params}
-            style={{ width: "17rem", caretColor: "transparent" }}
+            style={{
+              margin: "2rem 0",
+              width: "17rem",
+              caretColor: "transparent",
+            }}
             autoComplete="off"
           />
         )}

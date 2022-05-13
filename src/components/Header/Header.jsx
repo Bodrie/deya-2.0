@@ -15,7 +15,7 @@ import {
   CardMedia,
   useTheme,
 } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import logo from "../../assets/images/logo/logo.png";
 
@@ -92,7 +92,7 @@ const Header = () => {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: theme.palette.text.secondary }} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -116,11 +116,27 @@ const Header = () => {
                 <MenuItem
                   key={page.name}
                   onClick={handleCloseNavMenu}
-                  sx={{ width: "15vw" }}
+                  sx={{ width: "22vw" }}
                 >
-                  <LinkStyled to={page.href}>
-                    <Typography textAlign="center">{page.name}</Typography>
-                  </LinkStyled>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      margin: "5px 0",
+                      transition: "600ms",
+                      ":hover": {
+                        marginLeft: "15px",
+                        transition: "600ms",
+                      },
+                    }}
+                  >
+                    <ArrowForward
+                      sx={{ marginRight: "11px" }}
+                      color="primary"
+                    />
+                    <LinkStyled to={page.href}>
+                      <Typography textAlign="center">{page.name}</Typography>
+                    </LinkStyled>
+                  </Box>
                 </MenuItem>
               ))}
             </Menu>
