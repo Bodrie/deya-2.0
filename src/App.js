@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
-import { Home } from "./views";
+import { Home, Calendar } from "./views";
 import "./styles/App.css";
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
       <Footer />
     </div>

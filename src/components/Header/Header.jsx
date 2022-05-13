@@ -24,6 +24,7 @@ const pages = [
   { name: "Тета", href: "/teta" },
   { name: "За мен", href: "/about" },
   { name: "Контакти", href: "/contacts" },
+  { name: "Календар", href: "/calendar" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
