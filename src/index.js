@@ -5,7 +5,6 @@ import "./styles/index.css";
 import { ThemeProvider } from "@mui/material";
 import rootTheme from "./styles/mui/rootTheme";
 import { BrowserRouter } from "react-router-dom";
-import "normalize.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

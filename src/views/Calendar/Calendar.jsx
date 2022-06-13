@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, useTheme } from "@mui/material";
-import { bgLocale } from "moment/locale/bg";
+import bgLocale from "date-fns/locale/bg";
 import moment from "moment";
 import { database } from "../../firebase";
 import { ref, get, child } from "firebase/database";
@@ -12,7 +13,6 @@ const Calendar = () => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(null);
   const [data, setData] = useState([]);
-
   const dbRef = ref(database);
 
   useEffect(() => {
@@ -28,22 +28,60 @@ const Calendar = () => {
         console.error(error);
       });
   }, [dbRef]);
-  console.log(data.dates);
+
   const shouldDisableDate = (date) => {
     const blackoutDates = data.dates;
     return !blackoutDates.includes(moment(date).format().split("T")[0]);
   };
+
+  const shouldDisableHours = (timeValue, clockType) => {
+    const blackoutHours = data.hours;
+    if (clockType === "hours") return !blackoutHours.includes(timeValue);
+  };
+
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment} locale={bgLocale}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>
       <DateTimePicker
+        PaperProps={{
+          sx: {
+            "& .MuiCalendarPicker-root": {
+              "& div[role=cell]": {
+                "& :not(.Mui-disabled).MuiPickersDay-dayWithMargin": {
+                  color: theme.palette.text.secondary,
+                  fontSize: "18px",
+                },
+              },
+            },
+            "& .MuiClockPicker-root": {
+              "& div[role=listbox]": {
+                "& :not(.Mui-disabled)": {
+                  fontSize: "18px",
+                  color: theme.palette.primary.main,
+                  border: `${theme.palette.text.secondary} solid 2px`,
+                  boxSizing: "border-box",
+                },
+                "& .Mui-selected": {
+                  fontSize: "18px",
+                  color: theme.palette.text.secondary,
+                  border: "none",
+                },
+                "& .Mui-disabled": {
+                  color: "lightgray",
+                },
+              },
+            },
+          },
+        }}
         key={"teta"}
         open={open}
         value={date}
         shouldDisableDate={shouldDisableDate}
+        shouldDisableTime={shouldDisableHours}
         onChange={(newDate) => {
-          setDate(newDate);
+          setDate(moment(newDate).set({ minutes: 0 }));
         }}
         onAccept={() => setOpen(false)}
+        onError={(er, val) => console.log(er, val)}
         renderInput={(params) => (
           <TextField
             onClick={() => setOpen(!open)}
@@ -62,9 +100,8 @@ const Calendar = () => {
         )}
         ampm={false}
         ampmInClock={false}
-        inputFormat={"dddd - DD.M.yyyy - Час: HH:mm"}
-        views={["day", "hours", "minutes"]}
-        minutesStep={5}
+        inputFormat={"EEEE - d.M.yyyy - Час: HH:mm"}
+        views={["day", "hours"]}
         disableOpenPicker
         disableMaskedInput
         disablePast
