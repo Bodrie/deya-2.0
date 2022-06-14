@@ -26,12 +26,10 @@ const rootTheme = createTheme({
             fontWeight: "bold",
             color: "#873F91",
             backgroundColor: "#FEC01F",
-            border: "1px solid #873F91",
           },
         },
         outlinedPrimary: {
           color: "#FEC01F",
-          border: "1px solid #FEC01F",
         },
       },
     },

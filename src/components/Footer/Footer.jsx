@@ -15,7 +15,7 @@ import logo from "../../assets/images/logo/logo.png";
 const Footer = () => {
   const theme = useTheme();
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Grid container justifyContent="center" wrap="nowrap" mt={2} mb={2}>
           <Grid item>
