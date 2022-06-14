@@ -47,7 +47,7 @@ const Calendar = () => {
             disabled={isError || !date || appointmentSaved}
             onClick={handleAppointmentSave}
           >
-            Запази час
+            <Typography typography={"body1"}>Запази час</Typography>
           </Button>
         </Grid>
       </Grid>

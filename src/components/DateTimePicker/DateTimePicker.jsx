@@ -13,7 +13,6 @@ const DateTimePicker = ({ dateValue, setDateValue, setIsError, disabled }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const dbRef = ref(database);
-
   useEffect(() => {
     get(child(dbRef, `data/calendar`))
       .then((snapshot) => {
@@ -27,14 +26,21 @@ const DateTimePicker = ({ dateValue, setDateValue, setIsError, disabled }) => {
         console.error(error);
       });
   }, [dbRef]);
-
   const shouldDisableDate = (date) => {
-    const blackoutDates = data.dates;
+    const blackoutDates = data.dates.map((el) => el.date);
     return !blackoutDates.includes(moment(date).format().split("T")[0]);
   };
 
   const shouldDisableHours = (timeValue, clockType) => {
-    const blackoutHours = data.hours;
+    const selectedDate = moment(dateValue).format("yyyy-MM-D");
+    const blackoutHours = data.dates
+      .map((el) => {
+        if (el.date === selectedDate) {
+          return el.hours;
+        }
+      })
+      .flat()
+      .filter(Boolean);
     if (clockType === "hours") return !blackoutHours.includes(timeValue);
   };
 
