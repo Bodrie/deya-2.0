@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDateTimePicker } from "@mui/x-date-pickers/DesktopDateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, useTheme } from "@mui/material";
 import bgLocale from "date-fns/locale/bg";
@@ -41,7 +41,7 @@ const Calendar = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>
-      <DateTimePicker
+      <DesktopDateTimePicker
         PaperProps={{
           sx: {
             "& .MuiCalendarPicker-root": {
@@ -89,6 +89,7 @@ const Calendar = () => {
             inputProps={{
               ...params.inputProps,
               placeholder: "Кликнете за да изберете дата и час",
+              readOnly: true,
             }}
             style={{
               margin: "2rem 0",
