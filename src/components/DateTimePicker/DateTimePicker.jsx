@@ -17,7 +17,10 @@ const DateTimePicker = ({
   const [open, setOpen] = useState(false);
 
   const shouldDisableDate = (date) => {
-    const blackoutDates = data.map((el) => el.date);
+    const blackoutDates = data.map((el) => {
+      if (el.hours.length <= 0) return null;
+      return el.date;
+    });
     return !blackoutDates.includes(moment(date).format().split("T")[0]);
   };
 
