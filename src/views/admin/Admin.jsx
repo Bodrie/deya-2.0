@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { db } from "../../firebase";
-import {
-  doc,
-  setDoc,
-} from "firebase/firestore";
-import { Grid, Typography } from "@mui/material";
+import { doc, setDoc } from "firebase/firestore";
+import { Grid, Snackbar, Typography } from "@mui/material";
 
 const Admin = () => {
+  const [snackOpen, setSnakOpen] = useState(false);
   const handleForm = (e) => {
     e.preventDefault();
     const date = e.target.date.value;
@@ -18,13 +16,30 @@ const Admin = () => {
       setDoc(doc(db, "data", date), {
         date: date,
         hours: hours,
+      }).then(() => {
+        e.target.date.value = "";
+        e.target.hours.value = "";
+        setSnakOpen(true);
       });
     } else {
-        alert("Wrong date / hour format")
+      alert("Wrong date / hour format");
     }
   };
+  if (snackOpen) setTimeout(() => setSnakOpen(false), 5000);
   return (
     <Grid container>
+      <Snackbar
+        color="success"
+        open={snackOpen}
+        message={"Часовете са запазени успешно"}
+        sx={{
+          "& .MuiSnackbarContent-root": {
+            backgroundColor: "green",
+            fontSize: "18px",
+            justifyContent: "center",
+          },
+        }}
+      />
       <Grid item container justifyContent="center" xs={12}>
         <form action="submit" onSubmit={handleForm}>
           <Grid item>
