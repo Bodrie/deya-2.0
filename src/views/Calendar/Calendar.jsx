@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box, useTheme } from "@mui/material";
 import { DateTimePicker } from "../../components";
+import { db } from "../../firebase";
+import { getDocs, collection } from "firebase/firestore";
 import moment from "moment";
 
 const Calendar = () => {
@@ -8,6 +10,19 @@ const Calendar = () => {
   const [date, setDate] = useState(null);
   const [isError, setIsError] = useState(false);
   const [appointmentSaved, setAppointmentSaved] = useState();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    getDocs(collection(db, "data"))
+      .then((snapshot) => {
+        let colData = [];
+        snapshot.docs.forEach((doc) => {
+          colData.push({ ...doc.data(), id: doc.id });
+        });
+        setData(colData);
+      })
+      .catch((error) => console.log(error.message));
+  }, []);
 
   const handleAppointmentSave = () => {
     setAppointmentSaved(true);
@@ -35,6 +50,7 @@ const Calendar = () => {
       >
         <Grid item ml={2} mr={2}>
           <DateTimePicker
+            data={data}
             dateValue={date}
             setDateValue={setDate}
             setIsError={setIsError}
@@ -51,23 +67,25 @@ const Calendar = () => {
           </Button>
         </Grid>
       </Grid>
-      {appointmentSaved && (
-        <Grid item xs={10}>
-          <Box
-            sx={{
-              border: `${theme.palette.primary.main} solid 2px`,
-              borderRadius: "15px",
-            }}
-          >
-            <Typography component={"p"} typography={"body1"} color="white">
-              Имате запазен час за:
-            </Typography>
-            <Typography component={"p"} typography={"body1"} color="white">
-              {moment(date).locale("bg").format("dddd - D.MM.yyyy - HH:mmч.")}
-            </Typography>
-          </Box>
-        </Grid>
-      )}
+      <>
+        {appointmentSaved && (
+          <Grid item xs={10}>
+            <Box
+              sx={{
+                border: `${theme.palette.primary.main} solid 2px`,
+                borderRadius: "15px",
+              }}
+            >
+              <Typography component={"p"} typography={"body1"} color="white">
+                Имате запазен час за:
+              </Typography>
+              <Typography component={"p"} typography={"body1"} color="white">
+                {moment(date).locale("bg").format("dddd - D.MM.yyyy - HH:mmч.")}
+              </Typography>
+            </Box>
+          </Grid>
+        )}
+      </>
     </Grid>
   );
 };

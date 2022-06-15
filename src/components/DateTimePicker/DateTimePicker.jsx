@@ -1,47 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers/DesktopDateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, useTheme } from "@mui/material";
 import bgLocale from "date-fns/locale/bg";
 import moment from "moment";
-import { database } from "../../firebase";
-import { ref, get, child } from "firebase/database";
 
-const DateTimePicker = ({ dateValue, setDateValue, setIsError, disabled }) => {
+const DateTimePicker = ({
+  data,
+  dateValue,
+  setDateValue,
+  setIsError,
+  disabled,
+}) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
-  const dbRef = ref(database);
-  useEffect(() => {
-    get(child(dbRef, `data/calendar`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setData(snapshot.val());
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [dbRef]);
+
   const shouldDisableDate = (date) => {
-    const blackoutDates = data.dates.map((el) => el.date);
+    const blackoutDates = data.map((el) => el.date);
     return !blackoutDates.includes(moment(date).format().split("T")[0]);
   };
 
   const shouldDisableHours = (timeValue, clockType) => {
-    const selectedDate = moment(dateValue).format("yyyy-MM-D");
-    const blackoutHours = data.dates
+    const selectedDate = moment(dateValue).format("yyyy-MM-DD");
+    const blackoutHours = data
       .map((el) => {
         if (el.date === selectedDate) {
           return el.hours;
         }
+        return null;
       })
       .flat()
       .filter(Boolean);
-    if (clockType === "hours") return !blackoutHours.includes(timeValue);
+    if (clockType === "hours")
+      return !Object.values(blackoutHours).includes(timeValue);
   };
 
   return (
@@ -111,7 +103,6 @@ const DateTimePicker = ({ dateValue, setDateValue, setIsError, disabled }) => {
         disableOpenPicker
         disableMaskedInput
         disablePast
-        showToolbar
         disabled={disabled}
       />
     </LocalizationProvider>
