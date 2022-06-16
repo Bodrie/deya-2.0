@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box, useTheme } from "@mui/material";
 import { DateTimePicker } from "../../components";
-import { db } from "../../firebase";
-import {
-  getDocs,
-  collection,
-  doc,
-  updateDoc,
-  arrayRemove,
-} from "firebase/firestore";
+import { db, getCalendarData } from "../../firebase";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import moment from "moment";
 
 const Calendar = () => {
@@ -19,24 +13,20 @@ const Calendar = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    getDocs(collection(db, "data"))
-      .then((snapshot) => {
-        let colData = [];
-        snapshot.docs.forEach((doc) => {
-          colData.push({ ...doc.data() });
-        });
-        setData(colData);
-      })
-      .catch((error) => console.log(error.message));
+    getCalendarData()
+      .then((res) => setData(res))
+      .catch((err) => console.log(err.message));
   }, []);
 
-  const handleAppointmentSave = async () => {
+  const handleAppointmentSave = () => {
     const dateId = moment(date).format("yyyy-MM-DD");
     const hourToRemove = Number(moment(date).format("HH"));
     const docRef = doc(db, "data", dateId);
-    await updateDoc(docRef, {
+    updateDoc(docRef, {
       hours: arrayRemove(hourToRemove),
-    }).then(setAppointmentSaved(true));
+    })
+      .then(setAppointmentSaved(true))
+      .catch((err) => console.log(err.message));
   };
   return (
     <Grid container justifyContent="center">

@@ -5,6 +5,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, useTheme } from "@mui/material";
 import bgLocale from "date-fns/locale/bg";
 import moment from "moment";
+import {
+  showOnlyAvailableDates,
+  showOnlyAvailableHours,
+} from "./dateTimePickerUtils";
 
 const DateTimePicker = ({
   data,
@@ -15,29 +19,6 @@ const DateTimePicker = ({
 }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-
-  const shouldDisableDate = (date) => {
-    const blackoutDates = data.map((el) => {
-      if (el.hours.length <= 0) return null;
-      return el.date;
-    });
-    return !blackoutDates.includes(moment(date).format().split("T")[0]);
-  };
-
-  const shouldDisableHours = (timeValue, clockType) => {
-    const selectedDate = moment(dateValue).format("yyyy-MM-DD");
-    const blackoutHours = data
-      .map((el) => {
-        if (el.date === selectedDate) {
-          return el.hours;
-        }
-        return null;
-      })
-      .flat()
-      .filter(Boolean);
-    if (clockType === "hours")
-      return !Object.values(blackoutHours).includes(timeValue);
-  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>
@@ -92,8 +73,10 @@ const DateTimePicker = ({
         onChange={(newDate) => {
           setDateValue(moment(newDate).set({ minutes: 0, seconds: 0 }));
         }}
-        shouldDisableDate={shouldDisableDate}
-        shouldDisableTime={shouldDisableHours}
+        shouldDisableDate={(date) => showOnlyAvailableDates(data, date)}
+        shouldDisableTime={(timeValue, clockType) =>
+          showOnlyAvailableHours(dateValue, data, timeValue, clockType)
+        }
         key={"teta"}
         open={open}
         value={dateValue}

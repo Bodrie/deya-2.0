@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { db } from "../../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { Grid, Snackbar, Typography } from "@mui/material";
+import { DATE_REGEX } from "../../constants/constants";
 
 const Admin = () => {
   const [snackOpen, setSnakOpen] = useState(false);
@@ -9,13 +10,11 @@ const Admin = () => {
     e.preventDefault();
     const date = e.target.date.value;
     const hours = JSON.parse("[" + e.target.hours.value + "]");
-    const regex =
-      /^20[2-3][0-9]-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/g;
-    const isValidDate = regex.test(date);
+    const isValidDate = DATE_REGEX.test(date);
     if (isValidDate) {
-      setDoc(doc(db, "data", date), {
+      updateDoc(doc(db, "data", date), {
         date: date,
-        hours: hours,
+        hours: arrayUnion(...hours),
       }).then(() => {
         e.target.date.value = "";
         e.target.hours.value = "";
