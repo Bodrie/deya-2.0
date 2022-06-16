@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   MenuItem,
@@ -18,10 +19,19 @@ import {
 import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import logo from "../../assets/images/logo/logo.png";
-import { headerPages, headerSettings } from "../../constants/constants";
+import { headerSettings } from "../../constants/constants";
 import { sxMbSpacing } from "../../constants/constants";
+import { getAuth, signOut } from "firebase/auth";
 
-const Header = () => {
+const Header = ({ user }) => {
+  const navigate = useNavigate();
+  const headerPages = [
+    { name: "Рейки", href: "/reiki" },
+    { name: "Тета", href: "/teta" },
+    { name: "За мен", href: "/about" },
+    { name: "Контакти", href: "/contacts" },
+    { name: user ? "Календар" : "Вход", href: user ? "/calendar" : "/login" },
+  ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -36,7 +46,20 @@ const Header = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (event) => {
+    if (event.target.innerHTML === "Logout") {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          navigate('/');
+          console.log(
+            "successful signout, put some pop up idiot, dont forget it..."
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     setAnchorElUser(null);
   };
 
@@ -156,35 +179,37 @@ const Header = () => {
           </Box>
 
           {/* If we add user manegmant in the future */}
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
+          {user && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="user photo" src={user.photoURL} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {headerSettings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
