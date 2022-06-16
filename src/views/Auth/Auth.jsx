@@ -1,16 +1,36 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { provider } from "../../firebase";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
+import { googleProvider, facebookProvider } from "../../firebase";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { Google } from "@mui/icons-material";
+import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const facebookLogin = () => {
+    const auth = getAuth();
+    signInWithPopup(auth, facebookProvider)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = FacebookAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+      });
+  };
+
   const googleLogin = () => {
     const auth = getAuth();
-    signInWithPopup(auth, provider)
+    signInWithPopup(auth, googleProvider)
       .then(() => {
         navigate("/");
       })
@@ -36,9 +56,17 @@ const Auth = () => {
           впишете с вашият Goggle профил
         </Typography>
         <Box mb={sxMbSpacing}>
-          <Button variant="contained" onClick={googleLogin}>
+          <Button
+            variant="contained"
+            onClick={googleLogin}
+            sx={{ mb: { xs: 2, sm: 0, md: 0 } }}
+          >
             Вход с Google
             <Google sx={{ ml: 2 }} />
+          </Button>
+          <Button variant="contained" onClick={facebookLogin}>
+            Вход с Facebook
+            <Facebook sx={{ ml: 2 }} />
           </Button>
         </Box>
         <Typography
