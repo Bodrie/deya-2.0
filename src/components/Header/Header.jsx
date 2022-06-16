@@ -18,15 +18,7 @@ import {
 import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import logo from "../../assets/images/logo/logo.png";
-
-const pages = [
-  { name: "Рейки", href: "/reiki" },
-  { name: "Тета", href: "/teta" },
-  { name: "За мен", href: "/about" },
-  { name: "Контакти", href: "/contacts" },
-  { name: "Календар", href: "/calendar" },
-];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { headerPages, headerSettings } from "../../constants/constants";
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -112,7 +104,7 @@ const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {headerPages.map((page) => (
                 <MenuItem
                   key={page.name}
                   onClick={handleCloseNavMenu}
@@ -148,7 +140,7 @@ const Header = () => {
               justifyContent: "space-evenly",
             }}
           >
-            {pages.map((page) => (
+            {headerPages.map((page) => (
               <LinkStyled to={page.href} key={page.name}>
                 <Button
                   onClick={handleCloseNavMenu}

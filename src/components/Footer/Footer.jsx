@@ -11,6 +11,7 @@ import {
 import { FacebookOutlined } from "@mui/icons-material";
 import LinkStyled from "../Link/Link";
 import logo from "../../assets/images/logo/logo.png";
+import { facebookLink } from "../../constants/constants";
 
 const Footer = () => {
   const theme = useTheme();
@@ -42,7 +43,7 @@ const Footer = () => {
               />
               <LinkStyled
                 as="a"
-                href="https://www.facebook.com/%D0%95%D0%BD%D0%B5%D1%80%D0%B3%D0%B8%D0%B9%D0%BD%D0%B8-%D1%82%D0%B5%D1%80%D0%B0%D0%BF%D0%B8%D0%B8-%D0%94%D0%95%D0%AF-105865118280197"
+                href={facebookLink}
                 target="_blank"
               >
                 <FacebookOutlined />
