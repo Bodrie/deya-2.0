@@ -19,6 +19,7 @@ import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import logo from "../../assets/images/logo/logo.png";
 import { headerPages, headerSettings } from "../../constants/constants";
+import { sxMbSpacing } from "../../constants/constants";
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -42,7 +43,7 @@ const Header = () => {
   const theme = useTheme();
 
   return (
-    <AppBar position="static" sx={{ mb: 2 }}>
+    <AppBar position="static" sx={{ mb: sxMbSpacing }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

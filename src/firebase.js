@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { GoogleAuthProvider } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -44,3 +45,6 @@ export const getCalendarData = async () => {
   });
   return snapshotData;
 };
+
+export const provider = new GoogleAuthProvider();
+

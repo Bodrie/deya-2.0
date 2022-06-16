@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
-import { Home, Calendar, Admin } from "./views";
+import { Home, Calendar, Admin, Auth } from "./views";
 import { Box } from "@mui/material";
 import "./styles/App.css";
 
@@ -14,6 +14,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/login" element={<Auth />} />
         </Routes>
       </Box>
       <Footer />
