@@ -9,7 +9,6 @@ const Admin = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const date = e.target.date.value;
-    console.log(date);
     const hours = JSON.parse("[" + e.target.hours.value + "]");
     const isValidDate = DATE_REGEX.test(date);
     if (isValidDate) {

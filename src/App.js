@@ -18,6 +18,7 @@ function App() {
       }
     });
   }, [auth]);
+  
   return (
     <div className="App">
       <Header user={userData} />

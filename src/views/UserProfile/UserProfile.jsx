@@ -2,6 +2,7 @@ import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAppointmentData } from "../../firebase";
 import moment from "moment";
+import { photoEnlarger } from "../../utils/photoEnlarger";
 
 const UserProfile = ({ user }) => {
   const [data, setData] = useState([]);
@@ -9,7 +10,6 @@ const UserProfile = ({ user }) => {
     getAppointmentData()
       .then((res) => {
         const filtred = res.filter((el) => {
-          console.log(el);
           return el?.email === user?.email;
         });
         setData(...filtred);
@@ -21,7 +21,6 @@ const UserProfile = ({ user }) => {
     setData([]);
   }
 
-  console.log("data=", data, "user.email=", user?.email);
   return (
     <>
       {user && data ? (
@@ -32,7 +31,12 @@ const UserProfile = ({ user }) => {
             </Typography>
           </Grid>
           <Grid item xs={4} sm={3} mb={2}>
-            <img alt="asd" src={user.photoURL} width={80} height={80} />
+            <img
+              alt="asd"
+              src={photoEnlarger(user.photoURL)}
+              width={150}
+              height={150}
+            />
           </Grid>
           <Grid item xs={4}>
             <Typography>{user.displayName}</Typography>
