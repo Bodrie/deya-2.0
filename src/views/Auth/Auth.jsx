@@ -53,7 +53,7 @@ const Auth = () => {
           mb={sxMbSpacing}
         >
           За да използвате услугата за запазване на час е необходимо да се
-          впишете с вашият Goggle профил
+          впишете с вашият Goggle или Facebook профил.
         </Typography>
         <Box mb={sxMbSpacing}>
           <Button

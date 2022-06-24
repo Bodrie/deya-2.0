@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box, useTheme } from "@mui/material";
 import { DateTimePicker } from "../../components";
 import { db, getCalendarData } from "../../firebase";
-import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from "firebase/firestore";
 import moment from "moment";
 
-const Calendar = () => {
+const Calendar = ({ user }) => {
   const theme = useTheme();
   const [date, setDate] = useState(null);
   const [isError, setIsError] = useState(false);
@@ -18,11 +24,37 @@ const Calendar = () => {
       .catch((err) => console.log(err.message));
   }, []);
 
-  const handleAppointmentSave = () => {
+  const handleAppointmentSave = async () => {
     const dateId = moment(date).format("yyyy-MM-DD");
     const hourToRemove = Number(moment(date).format("HH"));
     const docRef = doc(db, "data", dateId);
-    updateDoc(docRef, {
+    const userDocRef = doc(db, "userAppointments", user.email);
+    const appointmentToAdd = {
+      savedDate: dateId,
+      savedHour: hourToRemove,
+    };
+    await updateDoc(
+      userDocRef,
+      {
+        name: user.displayName,
+        email: user.email,
+        appointments: arrayUnion(appointmentToAdd),
+      },
+      { merge: true }
+    ).catch((error) => {
+      if(error.message.includes("No document to update")) {
+        setDoc(
+          userDocRef,
+          {
+            name: user.displayName,
+            email: user.email,
+            appointments: arrayUnion(appointmentToAdd),
+          },
+          { merge: true }
+        );
+      }
+    });
+    await updateDoc(docRef, {
       hours: arrayRemove(hourToRemove),
     })
       .then(setAppointmentSaved(true))

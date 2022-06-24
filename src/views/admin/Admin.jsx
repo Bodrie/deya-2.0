@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { db } from "../../firebase";
-import { doc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc, setDoc } from "firebase/firestore";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
 
@@ -9,17 +9,31 @@ const Admin = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const date = e.target.date.value;
+    console.log(date);
     const hours = JSON.parse("[" + e.target.hours.value + "]");
     const isValidDate = DATE_REGEX.test(date);
     if (isValidDate) {
       updateDoc(doc(db, "data", date), {
         date: date,
         hours: arrayUnion(...hours),
-      }).then(() => {
-        e.target.date.value = "";
-        e.target.hours.value = "";
-        setSnakOpen(true);
-      });
+      })
+        .then(() => {
+          e.target.date.value = "";
+          e.target.hours.value = "";
+          setSnakOpen(true);
+        })
+        .catch((error) => {
+          if (error.message.includes("No document to update")) {
+            setDoc(doc(db, "data", date), {
+              date: date,
+              hours: arrayUnion(...hours),
+            }).then(() => {
+              e.target.date.value = "";
+              e.target.hours.value = "";
+              setSnakOpen(true);
+            });
+          }
+        });
     } else {
       alert("Wrong date / hour format");
     }

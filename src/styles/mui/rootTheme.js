@@ -17,6 +17,13 @@ const rootTheme = createTheme({
     },
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "white"
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {

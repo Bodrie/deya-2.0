@@ -47,11 +47,14 @@ const Header = ({ user }) => {
   };
 
   const handleCloseUserMenu = (event) => {
+    if (event.target.innerHTML === "Profile") {
+      navigate("/profile");
+    }
     if (event.target.innerHTML === "Logout") {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          navigate('/');
+          navigate("/");
           console.log(
             "successful signout, put some pop up idiot, dont forget it..."
           );
@@ -100,14 +103,7 @@ const Header = ({ user }) => {
               justifyContent: "flex-end",
             }}
           >
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+            <IconButton size="large" onClick={handleOpenNavMenu}>
               <MenuIcon sx={{ color: theme.palette.text.secondary }} />
             </IconButton>
             <Menu
@@ -132,27 +128,35 @@ const Header = ({ user }) => {
                 <MenuItem
                   key={page.name}
                   onClick={handleCloseNavMenu}
-                  sx={{ width: "12rem" }}
+                  sx={{ width: "12rem", padding: "0px" }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      margin: "5px 0",
-                      transition: "600ms",
-                      ":hover": {
-                        marginLeft: "15px",
-                        transition: "600ms",
-                      },
-                    }}
+                  <LinkStyled
+                    to={page.href}
+                    sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
                   >
-                    <ArrowForward
-                      sx={{ marginRight: "11px" }}
-                      color="primary"
-                    />
-                    <LinkStyled to={page.href}>
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </LinkStyled>
-                  </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        transition: "600ms",
+                        flexGrow: 1,
+                        ":hover": {
+                          marginLeft: "15px",
+                          transition: "600ms",
+                        },
+                      }}
+                    >
+                      <ArrowForward
+                        sx={{ marginRight: "11px" }}
+                        color="primary"
+                      />
+                      <Typography
+                        textAlign="center"
+                        color={theme.palette.text.primary}
+                      >
+                        {page.name}
+                      </Typography>
+                    </Box>
+                  </LinkStyled>
                 </MenuItem>
               ))}
             </Menu>
@@ -203,8 +207,18 @@ const Header = ({ user }) => {
                 onClose={handleCloseUserMenu}
               >
                 {headerSettings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem
+                    key={setting}
+                    onClick={handleCloseUserMenu}
+                    sx={{ padding: "0px" }}
+                  >
+                    <Typography
+                      textAlign="center"
+                      color={theme.palette.text.primary}
+                      sx={{ padding: "0.5rem 1.2rem" }}
+                    >
+                      {setting}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>

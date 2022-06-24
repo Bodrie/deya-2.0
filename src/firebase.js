@@ -35,10 +35,21 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const collRef = collection(db, "data");
+export const userCollRef = collection(db, "userAppointments");
 
 export const getCalendarData = async () => {
   let snapshotData = [];
   await getDocs(collRef, "data").then((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+      snapshotData.push({ ...doc.data() });
+    });
+  });
+  return snapshotData;
+};
+
+export const getAppointmentData = async () => {
+  let snapshotData = [];
+  await getDocs(userCollRef, "userAppointments").then((snapshot) => {
     snapshot.docs.forEach((doc) => {
       snapshotData.push({ ...doc.data() });
     });
