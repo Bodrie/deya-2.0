@@ -28,7 +28,6 @@ const rootTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "25px",
-          padding: "0.3rem 1.3rem 0.3rem 1.3rem",
           "&:hover": {
             fontWeight: "bold",
             color: "#873F91",
