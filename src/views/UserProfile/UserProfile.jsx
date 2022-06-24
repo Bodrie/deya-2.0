@@ -43,7 +43,7 @@ const UserProfile = ({ user }) => {
           })}
         </Grid>
       ) : (
-        <CircularProgress sx={{ marginTop: "50%" }} />
+        <CircularProgress />
       )}
     </>
   );
