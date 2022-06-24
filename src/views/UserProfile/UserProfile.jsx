@@ -4,29 +4,41 @@ import { getAppointmentData } from "../../firebase";
 import moment from "moment";
 
 const UserProfile = ({ user }) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   useEffect(() => {
     getAppointmentData()
-      .then((res) => setData(...res))
+      .then((res) => {
+        const filtred = res.filter((el) => {
+          console.log(el);
+          return el?.email === user?.email;
+        });
+        setData(...filtred);
+      })
       .catch((err) => console.log(err.message));
-  }, []);
-  console.log(data);
+  }, [user]);
+
+  if (!data) {
+    setData([]);
+  }
+
+  console.log("data=", data, "user.email=", user?.email);
   return (
     <>
       {user && data ? (
-        <Grid container item justifyContent="center">
-          <Grid item xs={10}>
+        <Grid container item justifyContent="center" direction="column">
+          <Grid item xs={10} mb={2}>
             <Typography component={"p"} variant={"h4"}>
               Вашият профил
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={4} sm={3} mb={2}>
+            <img alt="asd" src={user.photoURL} width={80} height={80} />
+          </Grid>
+          <Grid item xs={4}>
             <Typography>{user.displayName}</Typography>
             <Typography>{user.email}</Typography>
           </Grid>
-          <Grid item xs={5}>
-            <img alt="asd" src={user.photoURL} />
-          </Grid>
+
           {data.appointments?.map((el, i) => {
             return (
               <Box
