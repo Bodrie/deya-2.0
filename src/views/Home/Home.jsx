@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Typography, useTheme } from "@mui/material";
 import { CardComponent, CarouselComponent } from "../../components";
+import content from "../../mock/home-cards.json";
 
 const Home = () => {
   const theme = useTheme();
@@ -18,9 +19,7 @@ const Home = () => {
       <Grid item mt={3}>
         <CarouselComponent />
       </Grid>
-      <Grid item container direction="row" mt={3}>
-        <CardComponent />
-      </Grid>
+      <CardComponent content={content} />
     </Grid>
   );
 };
