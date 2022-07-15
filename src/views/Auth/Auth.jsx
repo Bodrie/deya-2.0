@@ -1,46 +1,19 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-} from "firebase/auth";
+import { getAuth, signInWithRedirect } from "firebase/auth";
 import { googleProvider, facebookProvider } from "../../firebase";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
 
-const Auth = () => {
-  const navigate = useNavigate();
+const Auth = ({ user }) => {
   const facebookLogin = () => {
     const auth = getAuth();
-    signInWithPopup(auth, facebookProvider)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = FacebookAuthProvider.credentialFromError(error);
-        console.log(errorCode, errorMessage, email, credential);
-      });
+    signInWithRedirect(auth, facebookProvider);
   };
 
   const googleLogin = () => {
     const auth = getAuth();
-    signInWithPopup(auth, googleProvider)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorCode, errorMessage, email, credential);
-      });
+    signInWithRedirect(auth, googleProvider);
   };
 
   return (
