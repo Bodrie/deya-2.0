@@ -69,7 +69,7 @@ const Header = ({ user }) => {
   const theme = useTheme();
 
   return (
-    <AppBar position="static" sx={{ mb: sxMbSpacing }}>
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

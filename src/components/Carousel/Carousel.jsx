@@ -52,12 +52,15 @@ const CarouselComponent = (props) => {
 const CarouselItem = (props) => {
   const theme = useTheme();
   return (
-    <Paper sx={{ backgroundColor: "black", borderRadius: "13px" }}>
+    <Paper
+      sx={{
+        backgroundColor: "black",
+      }}
+    >
       <Paper
         sx={{
           position: "relative",
           height: "25rem",
-          borderRadius: "13px",
           backgroundImage: `url(${props.item.img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",

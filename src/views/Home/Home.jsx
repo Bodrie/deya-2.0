@@ -6,8 +6,8 @@ import content from "../../mock/home-cards.json";
 const Home = () => {
   const theme = useTheme();
   return (
-    <Grid container direction="column" justifyContent="center" padding={3}>
-      <Grid item>
+    <Grid container direction="column" justifyContent="center">
+      {/* <Grid item>
         <Typography
           variant="h4"
           component="h1"
@@ -15,8 +15,8 @@ const Home = () => {
         >
           "ДЕЯ" - Енергиини терапии
         </Typography>
-      </Grid>
-      <Grid item mt={3}>
+      </Grid> */}
+      <Grid item>
         <CarouselComponent />
       </Grid>
       <CardComponent content={content} />
