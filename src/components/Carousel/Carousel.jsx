@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Typography, Box, useTheme } from "@mui/material";
+import { Paper, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
 import { HorizontalRule } from "@mui/icons-material";
 import coruselImg1 from "../../assets/images/carousel-img/slide-1.jpg";
 import coruselImg2 from "../../assets/images/carousel-img/slide-2.jpg";
@@ -8,6 +8,7 @@ import coruselImg3 from "../../assets/images/carousel-img/slide-3.jpg";
 
 const CarouselComponent = (props) => {
   const theme = useTheme();
+  const smDownMatch = useMediaQuery(theme.breakpoints.down("sm"));
   const items = [
     {
       name: "Рейки",
@@ -29,9 +30,11 @@ const CarouselComponent = (props) => {
 
   return (
     <Carousel
-      interval={50000}
-      navButtonsAlwaysVisible
-      navButtonsProps={{ style: { opacity: 0.6 } }}
+      interval={7000}
+      animation="slide"
+      duration={800}
+      navButtonsAlwaysVisible={smDownMatch ? false : true}
+      navButtonsProps={!smDownMatch && { style: { opacity: 0.6 } }}
       IndicatorIcon={
         <HorizontalRule fontSize="large" sx={{ margin: "0 5px 0 5px" }} />
       }
@@ -55,47 +58,49 @@ const CarouselItem = (props) => {
     <Paper
       sx={{
         backgroundColor: "black",
+        position: "relative",
       }}
     >
       <Paper
         sx={{
-          position: "relative",
           height: "25rem",
           backgroundImage: `url(${props.item.img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.4,
+          opacity: 0.5,
           display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "transparent",
+          position: "absolute",
+          zIndex: 2000,
+          top: 145,
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <Box sx={{}}>
-            <Typography
-              variant="h3"
-              component="p"
-              color={theme.palette.text.secondary}
-            >
-              {props.item.name}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography
-              variant="body1"
-              component="p"
-              color={theme.palette.text.secondary}
-            >
-              {props.item.description}
-            </Typography>
-          </Box>
+        <Box>
+          <Typography
+            variant="h3"
+            component="p"
+            color={theme.palette.text.secondary}
+          >
+            {props.item.name}
+          </Typography>
         </Box>
-      </Paper>
+        <Box>
+          <Typography
+            variant="body1"
+            component="p"
+            color={theme.palette.text.secondary}
+          >
+            {props.item.description}
+          </Typography>
+        </Box>
+      </Box>
     </Paper>
   );
 };
