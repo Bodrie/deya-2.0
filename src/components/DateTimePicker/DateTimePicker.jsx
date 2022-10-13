@@ -11,14 +11,14 @@ import {
 } from "./dateTimePickerUtils";
 
 const DateTimePicker = ({
-  data,
+  calendarData,
   dateValue,
   setDateValue,
   setIsError,
   disabled,
 }) => {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>
@@ -55,7 +55,7 @@ const DateTimePicker = ({
         }}
         renderInput={(params) => (
           <TextField
-            onClick={() => setOpen(!open)}
+            onClick={() => setIsPickerOpen(!isPickerOpen)}
             {...params}
             inputProps={{
               ...params.inputProps,
@@ -73,14 +73,14 @@ const DateTimePicker = ({
         onChange={(newDate) => {
           setDateValue(moment(newDate).set({ minutes: 0, seconds: 0 }));
         }}
-        shouldDisableDate={(date) => showOnlyAvailableDates(data, date)}
+        shouldDisableDate={(date) => showOnlyAvailableDates(calendarData, date)}
         shouldDisableTime={(timeValue, clockType) =>
-          showOnlyAvailableHours(dateValue, data, timeValue, clockType)
+          showOnlyAvailableHours(dateValue, calendarData, timeValue, clockType)
         }
         key={"teta"}
-        open={open}
+        open={isPickerOpen}
         value={dateValue}
-        onAccept={() => setOpen(false)}
+        onAccept={() => setIsPickerOpen(false)}
         onError={(error) => {
           setIsError(error ? true : false);
         }}

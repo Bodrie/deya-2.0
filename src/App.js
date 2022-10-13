@@ -3,7 +3,6 @@ import { refreshDatabase } from "./firebase";
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
 import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
-import { Box } from "@mui/material";
 import "./styles/App.css";
 
 function App() {

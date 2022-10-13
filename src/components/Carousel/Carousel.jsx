@@ -6,7 +6,7 @@ import coruselImg1 from "../../assets/images/carousel-img/slide-1.jpg";
 import coruselImg2 from "../../assets/images/carousel-img/slide-2.jpg";
 import coruselImg3 from "../../assets/images/carousel-img/slide-3.jpg";
 
-const CarouselComponent = (props) => {
+const CarouselComponent = () => {
   const theme = useTheme();
   const smDownMatch = useMediaQuery(theme.breakpoints.down("sm"));
   const items = [

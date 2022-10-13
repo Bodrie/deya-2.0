@@ -4,11 +4,9 @@ import { DateTimePicker } from "../../components";
 import { db, getCalendarData } from "../../firebase";
 import {
   doc,
-  setDoc,
   updateDoc,
   arrayRemove,
   arrayUnion,
-  where,
 } from "firebase/firestore";
 import moment from "moment";
 
@@ -17,11 +15,11 @@ const Calendar = ({ user }) => {
   const [date, setDate] = useState(null);
   const [isError, setIsError] = useState(false);
   const [appointmentSaved, setAppointmentSaved] = useState();
-  const [data, setData] = useState();
+  const [calendarData, setCalendarData] = useState();
 
   useEffect(() => {
     getCalendarData()
-      .then((res) => setData(res))
+      .then((response) => setCalendarData(response))
       .catch((err) => console.log(err.message));
   }, []);
 
@@ -60,7 +58,7 @@ const Calendar = ({ user }) => {
       >
         <Grid item ml={2} mr={2}>
           <DateTimePicker
-            data={data}
+            calendarData={calendarData}
             dateValue={date}
             setDateValue={setDate}
             setIsError={setIsError}

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Button,
@@ -6,11 +7,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import { LinkStyled } from "../../components";
 import { getCalendarData } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
-import { LinkStyled } from "../../components";
 
 const UserProfile = ({ user }) => {
   const theme = useTheme();
