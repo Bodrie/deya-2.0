@@ -8,6 +8,7 @@ import {
   updateDoc,
   arrayRemove,
   arrayUnion,
+  where,
 } from "firebase/firestore";
 import moment from "moment";
 
@@ -28,38 +29,14 @@ const Calendar = ({ user }) => {
     const dateId = moment(date).format("yyyy-MM-DD");
     const hourToRemove = Number(moment(date).format("HH"));
     const docRef = doc(db, "data", dateId);
-    const userDocRef = doc(db, "userAppointments", user.email);
-    const appointmentToAdd = {
-      savedDate: dateId,
-      savedHour: hourToRemove,
-    };
-    await updateDoc(
-      userDocRef,
-      {
-        name: user.displayName,
-        email: user.email,
-        appointments: arrayUnion(appointmentToAdd),
-      },
-      { merge: true }
-    ).catch((error) => {
-      if(error.message.includes("No document to update")) {
-        setDoc(
-          userDocRef,
-          {
-            name: user.displayName,
-            email: user.email,
-            appointments: arrayUnion(appointmentToAdd),
-          },
-          { merge: true }
-        );
-      }
-    });
+    await updateDoc(docRef, { hours: arrayRemove(`${hourToRemove} - free`) });
     await updateDoc(docRef, {
-      hours: arrayRemove(hourToRemove),
+      hours: arrayUnion(`${hourToRemove} - ${user.email}`),
     })
       .then(setAppointmentSaved(true))
       .catch((err) => console.log(err.message));
   };
+
   return (
     <Grid container justifyContent="center">
       <Grid item xs={10}>

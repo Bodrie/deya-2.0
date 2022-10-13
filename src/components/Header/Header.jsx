@@ -17,10 +17,9 @@ import {
   useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
-import { LinkStyled } from "../../components";
+import { LinkStyled, HideOnScroll } from "../../components";
 import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
-import { sxMbSpacing } from "../../constants/constants";
 import { getAuth, signOut } from "firebase/auth";
 
 const Header = ({ user }) => {
@@ -69,164 +68,172 @@ const Header = ({ user }) => {
   const theme = useTheme();
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{
-              flexGrow: 0.7,
-              mr: 2,
-              mb: 1,
-              display: { xs: "none", md: "flex" },
-            }}
-          >
-            <LinkStyled to={"/home"}>
-              <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
-            </LinkStyled>
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
-          >
-            <LinkStyled to={"/home"}>
-              <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
-            </LinkStyled>
-          </Typography>
-          <Box
-            sx={{
-              display: { xs: "flex", md: "none" },
-              justifyContent: "flex-end",
-            }}
-          >
-            <IconButton size="large" onClick={handleOpenNavMenu}>
-              <MenuIcon sx={{ color: theme.palette.text.secondary }} />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+    <HideOnScroll>
+      <AppBar position="sticky" sx={{ zIndex: 2 }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
               sx={{
-                display: { xs: "block", md: "none" },
+                flexGrow: 0.7,
+                mr: 2,
+                mb: 1,
+                display: { xs: "none", md: "flex" },
               }}
             >
-              {headerPages.map((page) => (
-                <MenuItem
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  sx={{ width: "12rem", padding: "0px" }}
-                >
-                  <LinkStyled
-                    to={page.href}
-                    sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        transition: "600ms",
-                        flexGrow: 1,
-                        ":hover": {
-                          marginLeft: "15px",
-                          transition: "600ms",
-                        },
-                      }}
-                    >
-                      <ArrowForward
-                        sx={{ marginRight: "11px" }}
-                        color="primary"
-                      />
-                      <Typography
-                        textAlign="center"
-                        color={theme.palette.text.primary}
-                      >
-                        {page.name}
-                      </Typography>
-                    </Box>
-                  </LinkStyled>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Box
-            sx={{
-              flexGrow: 0.3,
-              display: { xs: "none", md: "flex" },
-              justifyContent: "space-evenly",
-            }}
-          >
-            {headerPages.map((page) => (
-              <LinkStyled to={page.href} key={page.name}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                >
-                  {page.name}
-                </Button>
+              <LinkStyled to={"/home"}>
+                {/* image={logo} */}
+                <CardMedia
+                  sx={{ height: 90, width: 90, backgroundColor: "red" }}
+                />
               </LinkStyled>
-            ))}
-          </Box>
-
-          {/* If we add user manegmant in the future */}
-          {user && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="user photo" src={user.photoURL} />
-                </IconButton>
-              </Tooltip>
+            </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
+            >
+              <LinkStyled to={"/home"}>
+                {/* image={logo} */}
+                <CardMedia
+                  sx={{ height: 90, width: 90, backgroundColor: "red" }}
+                />
+              </LinkStyled>
+            </Typography>
+            <Box
+              sx={{
+                display: { xs: "flex", md: "none" },
+                justifyContent: "flex-end",
+              }}
+            >
+              <IconButton size="large" onClick={handleOpenNavMenu}>
+                <MenuIcon sx={{ color: theme.palette.text.secondary }} />
+              </IconButton>
               <Menu
-                sx={{ mt: "45px" }}
                 id="menu-appbar"
-                anchorEl={anchorElUser}
+                anchorEl={anchorElNav}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "left",
                 }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
               >
-                {headerSettings.map((setting) => (
+                {headerPages.map((page) => (
                   <MenuItem
-                    key={setting}
-                    onClick={handleCloseUserMenu}
-                    sx={{ padding: "0px" }}
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    sx={{ width: "12rem", padding: "0px" }}
                   >
-                    <Typography
-                      textAlign="center"
-                      color={theme.palette.text.primary}
-                      sx={{ padding: "0.5rem 1.2rem" }}
+                    <LinkStyled
+                      to={page.href}
+                      sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
                     >
-                      {setting}
-                    </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          transition: "600ms",
+                          flexGrow: 1,
+                          ":hover": {
+                            marginLeft: "15px",
+                            transition: "600ms",
+                          },
+                        }}
+                      >
+                        <ArrowForward
+                          sx={{ marginRight: "11px" }}
+                          color="primary"
+                        />
+                        <Typography
+                          textAlign="center"
+                          color={theme.palette.text.primary}
+                        >
+                          {page.name}
+                        </Typography>
+                      </Box>
+                    </LinkStyled>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
-          )}
-        </Toolbar>
-      </Container>
-    </AppBar>
+            <Box
+              sx={{
+                flexGrow: 0.3,
+                display: { xs: "none", md: "flex" },
+                justifyContent: "space-evenly",
+              }}
+            >
+              {headerPages.map((page) => (
+                <LinkStyled to={page.href} key={page.name}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                  >
+                    {page.name}
+                  </Button>
+                </LinkStyled>
+              ))}
+            </Box>
+
+            {/* If we add user manegmant in the future */}
+            {user && (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="user photo" src={user.photoURL} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {headerSettings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={handleCloseUserMenu}
+                      sx={{ padding: "0px" }}
+                    >
+                      <Typography
+                        textAlign="center"
+                        color={theme.palette.text.primary}
+                        sx={{ padding: "0.5rem 1.2rem" }}
+                      >
+                        {setting}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </HideOnScroll>
   );
 };
 export default Header;

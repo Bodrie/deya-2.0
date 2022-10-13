@@ -1,7 +1,16 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  where,
+  query,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import moment from "moment";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -37,6 +46,17 @@ export const db = getFirestore(app);
 export const collRef = collection(db, "data");
 export const userCollRef = collection(db, "userAppointments");
 
+export const refreshDatabase = async () => {
+  const pastDays = moment().subtract(1, "days").format("yyyy-MM-DD");
+  const getPastDays = await getDocs(
+    collRef,
+    where("date", "==", `${pastDays}`)
+  );
+  getPastDays.forEach(() => {
+    deleteDoc(doc(db, "data", `${pastDays}`));
+  });
+};
+
 export const getCalendarData = async () => {
   let snapshotData = [];
   await getDocs(collRef, "data").then((snapshot) => {
@@ -59,4 +79,3 @@ export const getAppointmentData = async () => {
 
 export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
-

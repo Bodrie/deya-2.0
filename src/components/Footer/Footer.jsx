@@ -16,11 +16,18 @@ import { facebookLink } from "../../constants/constants";
 const Footer = () => {
   const theme = useTheme();
   return (
-    <AppBar position="sticky">
+    <AppBar
+      position="relative"
+      component={"footer"}
+      sx={{ top: "unset", bottom: 0 }}
+    >
       <Container maxWidth="xl">
         <Grid container justifyContent="center" wrap="nowrap" mt={2} mb={2}>
           <Grid item>
-            <CardMedia image={logo} sx={{ height: "90px", width: "90px" }} />
+            {/* image={logo} */}
+            <CardMedia
+              sx={{ height: "90px", width: "90px", backgroundColor: "red" }}
+            />
           </Grid>
           <Divider
             orientation="vertical"
@@ -32,7 +39,8 @@ const Footer = () => {
           />
           <Grid item alignSelf="center">
             <Grid item container>
-              <Typography>info@deya.bg</Typography>
+              {/* info@deya.bg */}
+              <Typography>test@test.bg</Typography>
               <Divider
                 orientation="vertical"
                 flexItem
@@ -41,20 +49,19 @@ const Footer = () => {
                   margin: "0 1rem 0 1rem",
                 }}
               />
-              <LinkStyled
-                as="a"
-                href={facebookLink}
-                target="_blank"
-              >
+              <LinkStyled as="a" href={facebookLink} target="_blank">
                 <FacebookOutlined />
-                <Typography ml={0.5}>ДЕЯ</Typography>
+                {/* ДЕЯ */}
+                <Typography ml={0.5}>Lor</Typography>
               </LinkStyled>
             </Grid>
             <Grid item>
-              <Typography>Емилия Христова</Typography>
+              {/* Емилия Христова */}
+              <Typography>Lorem Ipsumlorr</Typography>
             </Grid>
             <Grid item>
-              <Typography>+(359) 0878774806</Typography>
+              {/* +(359) 0878774806 */}
+              <Typography>1234567890000</Typography>
             </Grid>
           </Grid>
         </Grid>

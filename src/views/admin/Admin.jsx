@@ -10,11 +10,14 @@ const Admin = () => {
     e.preventDefault();
     const date = e.target.date.value;
     const hours = JSON.parse("[" + e.target.hours.value + "]");
+    const newHours = hours.map((currHour) => {
+      return currHour + " - free";
+    });
     const isValidDate = DATE_REGEX.test(date);
     if (isValidDate) {
       updateDoc(doc(db, "data", date), {
         date: date,
-        hours: arrayUnion(...hours),
+        hours: arrayUnion(...newHours),
       })
         .then(() => {
           e.target.date.value = "";
@@ -25,7 +28,7 @@ const Admin = () => {
           if (error.message.includes("No document to update")) {
             setDoc(doc(db, "data", date), {
               date: date,
-              hours: arrayUnion(...hours),
+              hours: arrayUnion(...newHours),
             }).then(() => {
               e.target.date.value = "";
               e.target.hours.value = "";

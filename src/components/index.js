@@ -4,3 +4,4 @@ export { default as CardComponent } from "./Card/Card";
 export { default as LinkStyled } from "./Link/Link";
 export { default as Footer } from "./Footer/Footer";
 export { default as DateTimePicker } from "./DateTimePicker/DateTimePicker";
+export { default as HideOnScroll } from "./HideOnScroll/HideOnScroll";

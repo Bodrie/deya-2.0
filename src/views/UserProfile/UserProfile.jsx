@@ -7,36 +7,54 @@ import {
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
-import { getAppointmentData } from "../../firebase";
+import { getCalendarData } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
+import { LinkStyled } from "../../components";
 
 const UserProfile = ({ user }) => {
   const theme = useTheme();
-  const [data, setData] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+
+  const handleAppointmentDelete = (appointmentDate, appointmentHour) => {
+    console.log(appointmentDate, appointmentHour, 'deleted');
+  };
+
   useEffect(() => {
-    getAppointmentData()
-      .then((res) => {
-        const filtred = res.filter((el) => {
-          return el?.email === user?.email;
+    const userAppointments = [];
+    getCalendarData()
+      .then((calendarData) => {
+        calendarData.forEach((date) => {
+          date.hours.forEach((hour) => {
+            if (hour.includes(user.email)) {
+              userAppointments.push({
+                date: date.date,
+                hours: Number(hour.slice(0, 2)),
+              });
+            }
+          });
+
+          setAppointments(userAppointments);
         });
-        setData(...filtred);
       })
       .catch((err) => console.log(err.message));
   }, [user]);
 
-  if (!data) {
-    setData([]);
-  }
-
   return (
     <>
-      {user && data ? (
+      {user && appointments.length > 0 ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
             <Typography component={"p"} variant={"h4"}>
               Вашият профил
             </Typography>
+          </Grid>
+          <Grid item>
+            {user.email === process.env.REACT_APP_ADMIN && (
+              <LinkStyled to={"/admin/new"}>
+                <Button variant="contained">Admin</Button>
+              </LinkStyled>
+            )}
           </Grid>
           <Grid
             container
@@ -55,6 +73,7 @@ const UserProfile = ({ user }) => {
                 style={{ borderRadius: "15px" }}
               />
             </Grid>
+
             <Grid item alignSelf="center" p={2}>
               <Typography>{user.displayName}</Typography>
               <Typography>{user.email}</Typography>
@@ -65,14 +84,14 @@ const UserProfile = ({ user }) => {
               Записани часове
             </Typography>
           </Grid>
-          {data.appointments?.map((el, i) => {
+          {appointments?.map((appointment, idx) => {
             return (
               <Grid
                 container
                 item
                 xs={10}
                 justifyContent="space-evenly"
-                key={`${el.savedDate}-${el.savedHour}`}
+                key={`${appointment.date}-${appointment.hours}-${idx}`}
                 sx={{
                   border: `solid 2px ${theme.palette.primary.main}`,
                   borderRadius: "15px",
@@ -80,16 +99,24 @@ const UserProfile = ({ user }) => {
                 mb={2}
               >
                 <Grid item p={2} textAlign="start">
-                  <Typography>Час за нещо {i}</Typography>
+                  <Typography>Час за нещо {idx}</Typography>
                   <Typography>
-                    Дата: {moment(el.savedDate).format("D.M.yyyy")}
+                    Дата: {moment(appointment.date).format("D.M.yyyy")}
                   </Typography>
-                  <Typography>Час: {el.savedHour}:00</Typography>
+                  <Typography>Час: {appointment.hours}:00</Typography>
                 </Grid>
                 <Grid item p={2}>
-                  <Button variant="contained">
+                  <Button
+                    variant="contained"
+                    onClick={() =>
+                      handleAppointmentDelete(
+                        appointment.date,
+                        appointment.hours
+                      )
+                    }
+                  >
                     Откажи час
-                    <Clear color="error" sx={{ml: 1}} />
+                    <Clear color="error" sx={{ ml: 1 }} />
                   </Button>
                 </Grid>
               </Grid>

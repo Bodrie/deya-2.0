@@ -5,6 +5,7 @@ import content from "../../mock/home-cards.json";
 
 const Home = () => {
   const theme = useTheme();
+
   return (
     <Grid container direction="column" justifyContent="center">
       {/* <Grid item>

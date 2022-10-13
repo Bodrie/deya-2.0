@@ -42,7 +42,7 @@ const CarouselComponent = (props) => {
         style: { color: theme.palette.text.secondary },
       }}
       indicatorContainerProps={{
-        style: { position: "absolute", bottom: 10, zIndex: 5000 },
+        style: { position: "absolute", bottom: 10, zIndex: 1 },
       }}
     >
       {items.map((item, i) => (
