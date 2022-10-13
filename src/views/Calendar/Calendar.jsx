@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box, useTheme } from "@mui/material";
 import { DateTimePicker } from "../../components";
-import { db, getCalendarData } from "../../firebase";
-import {
-  doc,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
-} from "firebase/firestore";
+import { getCalendarData, appointmentCreate } from "../../firebase";
 import moment from "moment";
 
 const Calendar = ({ user }) => {
@@ -23,16 +17,13 @@ const Calendar = ({ user }) => {
       .catch((err) => console.log(err.message));
   }, []);
 
-  const handleAppointmentSave = async () => {
-    const dateId = moment(date).format("yyyy-MM-DD");
-    const hourToRemove = Number(moment(date).format("HH"));
-    const docRef = doc(db, "data", dateId);
-    await updateDoc(docRef, { hours: arrayRemove(`${hourToRemove} - free`) });
-    await updateDoc(docRef, {
-      hours: arrayUnion(`${hourToRemove} - ${user.email}`),
-    })
-      .then(setAppointmentSaved(true))
-      .catch((err) => console.log(err.message));
+  const handleAppointmentCreate = async () => {
+    const appointmentDate = moment(date).format("yyyy-MM-DD");
+    const appointmentHour = Number(moment(date).format("HH"));
+
+    await appointmentCreate(appointmentDate, appointmentHour, user.email).then(
+      setAppointmentSaved(true)
+    );
   };
 
   return (
@@ -69,7 +60,7 @@ const Calendar = ({ user }) => {
           <Button
             variant="contained"
             disabled={isError || !date || appointmentSaved}
-            onClick={handleAppointmentSave}
+            onClick={handleAppointmentCreate}
           >
             <Typography typography={"body1"}>Запази час</Typography>
           </Button>

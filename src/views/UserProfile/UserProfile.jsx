@@ -8,17 +8,13 @@ import {
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
-import { getCalendarData } from "../../firebase";
+import { getCalendarData, appointmentDelete } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
 
 const UserProfile = ({ user }) => {
   const theme = useTheme();
   const [appointments, setAppointments] = useState([]);
-
-  const handleAppointmentDelete = (appointmentDate, appointmentHour) => {
-    console.log(appointmentDate, appointmentHour, 'deleted');
-  };
 
   useEffect(() => {
     const userAppointments = [];
@@ -38,11 +34,11 @@ const UserProfile = ({ user }) => {
         });
       })
       .catch((err) => console.log(err.message));
-  }, [user]);
+  }, [user, appointments]);
 
   return (
     <>
-      {user && appointments.length > 0 ? (
+      {user && typeof appointments === "object" ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
             <Typography component={"p"} variant={"h4"}>
@@ -81,7 +77,9 @@ const UserProfile = ({ user }) => {
           </Grid>
           <Grid item xs={10} mb={2}>
             <Typography component={"p"} variant={"h4"}>
-              Записани часове
+              {appointments.length > 0
+                ? "Записани часове"
+                : "Все още нямате записани часове"}
             </Typography>
           </Grid>
           {appointments?.map((appointment, idx) => {
@@ -109,9 +107,10 @@ const UserProfile = ({ user }) => {
                   <Button
                     variant="contained"
                     onClick={() =>
-                      handleAppointmentDelete(
+                      appointmentDelete(
                         appointment.date,
-                        appointment.hours
+                        appointment.hours,
+                        user.email
                       )
                     }
                   >

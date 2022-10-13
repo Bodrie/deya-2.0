@@ -1,40 +1,31 @@
 import React, { useState } from "react";
-import { db } from "../../firebase";
-import { doc, arrayUnion, updateDoc, setDoc } from "firebase/firestore";
+import { createOrUpdateAvailableAppointments } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
 
 const Admin = () => {
   const [snackOpen, setSnakOpen] = useState(false);
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
-    const date = e.target.date.value;
-    const hours = JSON.parse("[" + e.target.hours.value + "]");
-    const newHours = hours.map((currHour) => {
+    const appointmentsDate = e.target.date.value;
+    const parsedHours = JSON.parse("[" + e.target.hours.value + "]");
+    const appointmentHours = parsedHours.map((currHour) => {
       return currHour + " - free";
     });
-    const isValidDate = DATE_REGEX.test(date);
+    const isValidDate = DATE_REGEX.test(appointmentsDate);
+
     if (isValidDate) {
-      updateDoc(doc(db, "data", date), {
-        date: date,
-        hours: arrayUnion(...newHours),
-      })
+      await createOrUpdateAvailableAppointments(
+        appointmentsDate,
+        appointmentHours
+      )
         .then(() => {
           e.target.date.value = "";
           e.target.hours.value = "";
           setSnakOpen(true);
         })
         .catch((error) => {
-          if (error.message.includes("No document to update")) {
-            setDoc(doc(db, "data", date), {
-              date: date,
-              hours: arrayUnion(...newHours),
-            }).then(() => {
-              e.target.date.value = "";
-              e.target.hours.value = "";
-              setSnakOpen(true);
-            });
-          }
+          console.log(error);
         });
     } else {
       alert("Wrong date / hour format");

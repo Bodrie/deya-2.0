@@ -6,6 +6,9 @@ import {
   collection,
   where,
   deleteDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
   doc,
 } from "firebase/firestore";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
@@ -74,6 +77,48 @@ export const getAppointmentData = async () => {
     });
   });
   return snapshotData;
+};
+
+export const appointmentCreate = async (
+  appointmentDate,
+  appointmentHour,
+  userEmail
+) => {
+  await updateDoc(doc(db, "data", appointmentDate), {
+    date: appointmentDate,
+    hours: arrayRemove(appointmentHour + " - free"),
+  });
+
+  await updateDoc(doc(db, "data", appointmentDate), {
+    date: appointmentDate,
+    hours: arrayUnion(appointmentHour + " - " + userEmail),
+  });
+};
+
+export const appointmentDelete = async (
+  appointmentDate,
+  appointmentHour,
+  userEmail
+) => {
+  await updateDoc(doc(db, "data", appointmentDate), {
+    date: appointmentDate,
+    hours: arrayRemove(appointmentHour + " - " + userEmail),
+  });
+
+  await updateDoc(doc(db, "data", appointmentDate), {
+    date: appointmentDate,
+    hours: arrayUnion(appointmentHour + " - free"),
+  });
+};
+
+export const createOrUpdateAvailableAppointments = async (
+  appointmentsDate,
+  appointmentHours
+) => {
+  await updateDoc(doc(db, "data", appointmentsDate), {
+    date: appointmentsDate,
+    hours: arrayUnion(...appointmentHours),
+  });
 };
 
 export const googleProvider = new GoogleAuthProvider();

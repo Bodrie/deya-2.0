@@ -3,7 +3,6 @@ import moment from "moment";
 export const showOnlyAvailableDates = (calendarData, date) => {
   const blackoutDates = calendarData.map((date) => {
     const isDateAvailable = date.hours.find((hour) => hour.includes("free"));
-    console.log(isDateAvailable);
     if (isDateAvailable) return date.date;
     return null;
   });
@@ -18,9 +17,9 @@ export const showOnlyAvailableHours = (
 ) => {
   const selectedDate = moment(dateValue).format("yyyy-MM-DD");
   const blackoutHours = calendarData
-    .map((el) => {
-      if (el.date === selectedDate) {
-        const freeHours = el.hours.map((currHour) => {
+    .map((date) => {
+      if (date.date === selectedDate) {
+        const freeHours = date.hours.map((currHour) => {
           if (currHour.includes("free")) {
             return Number(currHour.slice(0, 2));
           }
