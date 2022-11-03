@@ -4,16 +4,19 @@ import { googleProvider, facebookProvider } from "../../firebase";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
+  const navigate = useNavigate();
+
   const facebookLogin = () => {
     const auth = getAuth();
-    signInWithRedirect(auth, facebookProvider);
+    signInWithRedirect(auth, facebookProvider).then(() => navigate("/"));
   };
 
   const googleLogin = () => {
     const auth = getAuth();
-    signInWithRedirect(auth, googleProvider);
+    signInWithRedirect(auth, googleProvider).then(() => navigate("/"));
   };
 
   return (

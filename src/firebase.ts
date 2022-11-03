@@ -65,7 +65,7 @@ export const refreshDatabase = async () => {
   getPastDays.forEach(() => {
     deleteDoc(doc(db, "data", `${pastDays}`)).catch((error: FirestoreError) => {
       throw new Error(`${error.name}: ${error.message}`);
-    });;
+    });
   });
 };
 
@@ -94,14 +94,14 @@ export const appointmentCreate = async ({
     hours: arrayRemove(appointmentHour + " - free"),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
-  });;
+  });
 
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayUnion(appointmentHour + " - " + userEmail),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
-  });;
+  });
 };
 
 export const appointmentDelete = async ({
@@ -121,7 +121,7 @@ export const appointmentDelete = async ({
     hours: arrayUnion(appointmentHour + " - free"),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
-  });;
+  });
 };
 
 export const createOrUpdateAvailableAppointments = async ({

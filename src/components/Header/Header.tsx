@@ -20,6 +20,7 @@ import { LinkStyled, HideOnScroll } from "..";
 import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
 import { getAuth, signOut, User } from "firebase/auth";
+import { FirestoreError } from "firebase/firestore";
 
 interface IHeaderProps {
   userData: User | null;
@@ -66,14 +67,9 @@ const Header = ({ userData }: IHeaderProps) => {
     if (event.target.innerHTML === "Logout") {
       const auth = getAuth();
       signOut(auth)
-        .then(() => {
-          navigate("/");
-          console.log(
-            "successful signout, put some pop up idiot, dont forget it..."
-          );
-        })
-        .catch((error) => {
-          console.log(error);
+        .then(() => navigate("/"))
+        .catch((error: FirestoreError) => {
+          throw new Error(`${error.name}: ${error.message}`);
         });
     }
     setAnchorElUser(null);

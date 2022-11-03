@@ -50,7 +50,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
           <Grid item>
             {email === process.env.REACT_APP_ADMIN && (
               <LinkStyled to={"/admin/new"}>
-                <Button variant="contained">Admin</Button>
+                <Button variant="contained">Admin Panel</Button>
               </LinkStyled>
             )}
           </Grid>
