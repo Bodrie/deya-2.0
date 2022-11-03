@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import {
   getFirestore,
-  getDocs,
   collection,
   where,
   deleteDoc,
@@ -10,9 +9,12 @@ import {
   arrayRemove,
   arrayUnion,
   doc,
+  getDocsFromServer,
+  query,
 } from "firebase/firestore";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import moment from "moment";
+import { IAppointment, IAppointmentCreateOrUpdate } from "./types/types";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -46,13 +48,11 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const collRef = collection(db, "data");
-export const userCollRef = collection(db, "userAppointments");
 
 export const refreshDatabase = async () => {
   const pastDays = moment().subtract(1, "days").format("yyyy-MM-DD");
-  const getPastDays = await getDocs(
-    collRef,
-    where("date", "==", `${pastDays}`)
+  const getPastDays = await getDocsFromServer(
+    query(collRef, where("date", "==", `${pastDays}`))
   );
   getPastDays.forEach(() => {
     deleteDoc(doc(db, "data", `${pastDays}`));
@@ -60,8 +60,8 @@ export const refreshDatabase = async () => {
 };
 
 export const getCalendarData = async () => {
-  let snapshotData = [];
-  await getDocs(collRef, "data").then((snapshot) => {
+  let snapshotData: { [field: string]: any }[] = [];
+  await getDocsFromServer(collRef).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
       snapshotData.push({ ...doc.data() });
     });
@@ -69,21 +69,11 @@ export const getCalendarData = async () => {
   return snapshotData;
 };
 
-export const getAppointmentData = async () => {
-  let snapshotData = [];
-  await getDocs(userCollRef, "userAppointments").then((snapshot) => {
-    snapshot.docs.forEach((doc) => {
-      snapshotData.push({ ...doc.data() });
-    });
-  });
-  return snapshotData;
-};
-
-export const appointmentCreate = async (
+export const appointmentCreate = async ({
   appointmentDate,
   appointmentHour,
-  userEmail
-) => {
+  userEmail,
+}: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(appointmentHour + " - free"),
@@ -95,11 +85,11 @@ export const appointmentCreate = async (
   });
 };
 
-export const appointmentDelete = async (
+export const appointmentDelete = async ({
   appointmentDate,
   appointmentHour,
-  userEmail
-) => {
+  userEmail,
+}: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(appointmentHour + " - " + userEmail),
@@ -111,10 +101,10 @@ export const appointmentDelete = async (
   });
 };
 
-export const createOrUpdateAvailableAppointments = async (
+export const createOrUpdateAvailableAppointments = async ({
   appointmentsDate,
-  appointmentHours
-) => {
+  appointmentHours,
+}: IAppointmentCreateOrUpdate): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentsDate), {
     date: appointmentsDate,
     hours: arrayUnion(...appointmentHours),

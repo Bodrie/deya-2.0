@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
-export const useAuth = () => {
+const useAuth = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<User | null>();
   const auth = getAuth();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -14,7 +14,9 @@ export const useAuth = () => {
         setUserData(null);
       }
     });
-    navigate("/");
   }, [auth]);
+  navigate("/");
   return userData;
 };
+
+export default useAuth;

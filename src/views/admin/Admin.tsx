@@ -2,26 +2,29 @@ import React, { useState } from "react";
 import { createOrUpdateAvailableAppointments } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
+import { IAdminFormElement } from "../../types/types";
 
 const Admin = () => {
   const [snackOpen, setSnakOpen] = useState(false);
-  const handleForm = async (e) => {
+  const handleForm = async (e: React.FormEvent<IAdminFormElement>) => {
     e.preventDefault();
-    const appointmentsDate = e.target.date.value;
-    const parsedHours = JSON.parse("[" + e.target.hours.value + "]");
-    const appointmentHours = parsedHours.map((currHour) => {
+    const appointmentsDate: string = e.currentTarget.elements.date.value;
+    const parsedHours: number[] = JSON.parse(
+      "[" + e.currentTarget.elements.hours.value + "]"
+    );
+    const appointmentHours: string[] = parsedHours.map((currHour: number) => {
       return currHour + " - free";
     });
-    const isValidDate = DATE_REGEX.test(appointmentsDate);
+    const isValidDate: boolean = DATE_REGEX.test(appointmentsDate);
 
     if (isValidDate) {
-      await createOrUpdateAvailableAppointments(
+      await createOrUpdateAvailableAppointments({
         appointmentsDate,
-        appointmentHours
-      )
+        appointmentHours,
+      })
         .then(() => {
-          e.target.date.value = "";
-          e.target.hours.value = "";
+          e.currentTarget.elements.date.value = "";
+          e.currentTarget.elements.hours.value = "";
           setSnakOpen(true);
         })
         .catch((error) => {

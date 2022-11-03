@@ -1,23 +1,30 @@
-import { useAuth } from "./hooks/useAuth";
-import { refreshDatabase } from "./firebase";
+import React from "react";
+import { useAuth, useRefreshDB } from "./hooks";
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
 import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
 import "./styles/App.css";
+import { User } from "firebase/auth";
 
 function App() {
-  refreshDatabase();
+  useRefreshDB();
   const userData = useAuth();
 
   return (
     <div className="App">
-      <Header user={userData} />
+      <Header {...(userData as User)} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/calendar" element={<Calendar user={userData} />} />
-        <Route path="/profile" element={<UserProfile user={userData} />} />
-        <Route path="/login" element={<Auth user={userData} />} />
+        <Route
+          path="/calendar"
+          element={<Calendar {...(userData as User)} />}
+        />
+        <Route
+          path="/profile"
+          element={<UserProfile {...(userData as User)} />}
+        />
+        <Route path="/login" element={<Auth {...(userData as User)} />} />
         <Route path="/admin/new" element={<Admin />} />
       </Routes>
       <Footer />

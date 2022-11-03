@@ -17,35 +17,43 @@ import {
   useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
-import { LinkStyled, HideOnScroll } from "../../components";
-import logo from "../../assets/images/logo/logo.png";
+import { LinkStyled, HideOnScroll } from "..";
+// import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, User } from "firebase/auth";
 
-const Header = ({ user }) => {
+const Header = ({ photoURL, uid }: User) => {
   const navigate = useNavigate();
   const headerPages = [
     { name: "Рейки", href: "/reiki" },
     { name: "Тета", href: "/teta" },
     { name: "За мен", href: "/about" },
     { name: "Контакти", href: "/contacts" },
-    { name: user ? "Календар" : "Вход", href: user ? "/calendar" : "/login" },
+    { name: uid ? "Календар" : "Вход", href: uid ? "/calendar" : "/login" },
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    setAnchorElNav(
+      event.currentTarget as unknown as React.SetStateAction<null>
+    );
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenUserMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    setAnchorElUser(
+      event.currentTarget as unknown as React.SetStateAction<null>
+    );
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event) => {
+  const handleCloseUserMenu = (event: any) => {
     if (event.target.innerHTML === "Profile") {
       navigate("/profile");
     }
@@ -109,7 +117,7 @@ const Header = ({ user }) => {
                 justifyContent: "flex-end",
               }}
             >
-              <IconButton size="large" onClick={handleOpenNavMenu}>
+              <IconButton size="large" onClick={(e) => handleOpenNavMenu(e)}>
                 <MenuIcon sx={{ color: theme.palette.text.secondary }} />
               </IconButton>
               <Menu
@@ -189,11 +197,11 @@ const Header = ({ user }) => {
             </Box>
 
             {/* If we add user manegmant in the future */}
-            {user && (
+            {uid && photoURL && (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="user photo" src={user.photoURL} />
+                    <Avatar alt="user photo" src={photoURL} />
                   </IconButton>
                 </Tooltip>
                 <Menu

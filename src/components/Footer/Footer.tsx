@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FacebookOutlined } from "@mui/icons-material";
 import LinkStyled from "../Link/Link";
-import logo from "../../assets/images/logo/logo.png";
+// import logo from "../../assets/images/logo/logo.png";
 import { facebookLink } from "../../constants/constants";
 
 const Footer = () => {
@@ -49,7 +49,7 @@ const Footer = () => {
                   margin: "0 1rem 0 1rem",
                 }}
               />
-              <LinkStyled as="a" href={facebookLink} target="_blank">
+              <LinkStyled as="a" to={facebookLink} target="_blank">
                 <FacebookOutlined />
                 {/* ДЕЯ */}
                 <Typography ml={0.5}>Lor</Typography>
