@@ -21,15 +21,6 @@ export interface IAppointmentCreateOrUpdate {
   appointmentHours: string[];
 }
 
-export interface FormElements extends HTMLFormControlsCollection {
-  date: HTMLInputElement;
-  hours: HTMLInputElement;
-}
-
-export interface IAdminFormElement extends HTMLFormElement {
-  readonly elements: FormElements;
-}
-
 export interface IDateTimePicker {
   calendarData: ICalendar[];
   dateValue: Moment | null;

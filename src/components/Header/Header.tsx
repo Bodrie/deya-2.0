@@ -21,14 +21,21 @@ import { LinkStyled, HideOnScroll } from "..";
 import { headerSettings } from "../../constants/constants";
 import { getAuth, signOut, User } from "firebase/auth";
 
-const Header = ({ photoURL, uid }: User) => {
+interface IHeaderProps {
+  userData: User | null;
+}
+
+const Header = ({ userData }: IHeaderProps) => {
   const navigate = useNavigate();
   const headerPages = [
     { name: "Рейки", href: "/reiki" },
     { name: "Тета", href: "/teta" },
     { name: "За мен", href: "/about" },
     { name: "Контакти", href: "/contacts" },
-    { name: uid ? "Календар" : "Вход", href: uid ? "/calendar" : "/login" },
+    {
+      name: userData?.uid ? "Календар" : "Вход",
+      href: userData?.uid ? "/calendar" : "/login",
+    },
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -196,11 +203,11 @@ const Header = ({ photoURL, uid }: User) => {
             </Box>
 
             {/* If we add user manegmant in the future */}
-            {uid && photoURL && (
+            {userData?.photoURL && (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="user photo" src={photoURL} />
+                    <Avatar alt="user photo" src={userData.photoURL} />
                   </IconButton>
                 </Tooltip>
                 <Menu

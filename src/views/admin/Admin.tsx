@@ -2,16 +2,14 @@ import React, { useState } from "react";
 import { createOrUpdateAvailableAppointments } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
-import { IAdminFormElement } from "../../types/types";
 
 const Admin = () => {
   const [snackOpen, setSnakOpen] = useState(false);
-  const handleForm = async (e: React.FormEvent<IAdminFormElement>) => {
+  const handleForm = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    const appointmentsDate: string = e.currentTarget.elements.date.value;
-    const parsedHours: number[] = JSON.parse(
-      "[" + e.currentTarget.elements.hours.value + "]"
-    );
+    
+    const appointmentsDate: string = e.target.date.value;
+    const parsedHours: number[] = JSON.parse("[" + e.target.hours.value + "]");
     const appointmentHours: string[] = parsedHours.map((currHour: number) => {
       return currHour + " - free";
     });
@@ -22,14 +20,11 @@ const Admin = () => {
         appointmentsDate,
         appointmentHours,
       })
-        .then(() => {
-          e.currentTarget.elements.date.value = "";
-          e.currentTarget.elements.hours.value = "";
-          setSnakOpen(true);
+        .then(() => {          
+          e.target.date.value = "";
+          e.target.hours.value = "";
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .finally(() => setSnakOpen(true));
     } else {
       alert("Wrong date / hour format");
     }

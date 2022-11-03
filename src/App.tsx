@@ -4,15 +4,14 @@ import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
 import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
 import "./styles/App.css";
-import { User } from "firebase/auth";
 
 function App() {
-  // useRefreshDB();
+  useRefreshDB();
   const userData = useAuth();
 
   return (
     <div className="App">
-      <Header {...(userData as User)} />
+      <Header userData={userData} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />

@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const useAuth = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<User | null>();
+  const [userData, setUserData] = useState<User | null>(null);
   const auth = getAuth();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

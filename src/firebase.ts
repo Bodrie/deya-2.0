@@ -11,6 +11,8 @@ import {
   doc,
   getDocsFromServer,
   query,
+  FirestoreError,
+  setDoc,
 } from "firebase/firestore";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import moment from "moment";
@@ -113,6 +115,15 @@ export const createOrUpdateAvailableAppointments = async ({
   await updateDoc(doc(db, "data", appointmentsDate), {
     date: appointmentsDate,
     hours: arrayUnion(...appointmentHours),
+  }).catch((error: FirestoreError) => {
+    if (error.code === "not-found") {
+      setDoc(doc(db, "data", appointmentsDate), {
+        date: appointmentsDate,
+        hours: arrayUnion(...appointmentHours),
+      });
+    } else {
+      throw new Error(`${error.name}: ${error.message}`);
+    }
   });
 };
 

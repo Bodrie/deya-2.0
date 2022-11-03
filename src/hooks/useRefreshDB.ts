@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { refreshDatabase } from "../firebase";
 
 const useRefreshDB = () => {
-  const MINUTE_MS = 60000;
+  const MINUTE_MS = 10000;
   useEffect(() => {
     const interval = setInterval(() => {
       refreshDatabase();
