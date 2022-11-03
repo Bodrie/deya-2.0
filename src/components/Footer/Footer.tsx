@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FacebookOutlined } from "@mui/icons-material";
 import LinkStyled from "../Link/Link";
-// import logo from "../../assets/images/logo/logo.png";
+import logo from "../../assets/images/logo/logo.png";
 import { facebookLink } from "../../constants/constants";
 
 const Footer = () => {
@@ -24,8 +24,8 @@ const Footer = () => {
       <Container maxWidth="xl">
         <Grid container justifyContent="center" wrap="nowrap" mt={2} mb={2}>
           <Grid item>
-            {/* image={logo} */}
             <CardMedia
+              image={logo}
               sx={{ height: "90px", width: "90px", backgroundColor: "red" }}
             />
           </Grid>
@@ -39,8 +39,7 @@ const Footer = () => {
           />
           <Grid item alignSelf="center">
             <Grid item container>
-              {/* info@deya.bg */}
-              <Typography>test@test.bg</Typography>
+              <Typography>info@deya.bg</Typography>
               <Divider
                 orientation="vertical"
                 flexItem
@@ -51,16 +50,14 @@ const Footer = () => {
               />
               <LinkStyled as="a" to={facebookLink} target="_blank">
                 <FacebookOutlined />
-                {/* ДЕЯ */}
-                <Typography ml={0.5}>Lor</Typography>
+
+                <Typography ml={0.5}>ДЕЯ</Typography>
               </LinkStyled>
             </Grid>
             <Grid item>
-              {/* Емилия Христова */}
-              <Typography>Lorem Ipsumlorr</Typography>
+              <Typography>Емилия Христова</Typography>
             </Grid>
             <Grid item>
-              {/* +(359) 0878774806 */}
               <Typography>1234567890000</Typography>
             </Grid>
           </Grid>

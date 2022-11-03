@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <Grid container direction="column" justifyContent="center">
-      {/* <Grid item>
+      <Grid item>
         <Typography
           variant="h4"
           component="h1"
@@ -16,7 +16,7 @@ const Home = () => {
         >
           "ДЕЯ" - Енергиини терапии
         </Typography>
-      </Grid> */}
+      </Grid>
       <Grid item>
         <CarouselComponent />
       </Grid>

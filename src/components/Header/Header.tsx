@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
 import { LinkStyled, HideOnScroll } from "..";
-// import logo from "../../assets/images/logo/logo.png";
+import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
 import { getAuth, signOut, User } from "firebase/auth";
 
@@ -98,8 +98,8 @@ const Header = ({ userData }: IHeaderProps) => {
               }}
             >
               <LinkStyled to={"/home"}>
-                {/* image={logo} */}
                 <CardMedia
+                  image={logo}
                   sx={{ height: 90, width: 90, backgroundColor: "red" }}
                 />
               </LinkStyled>
@@ -111,8 +111,8 @@ const Header = ({ userData }: IHeaderProps) => {
               sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
             >
               <LinkStyled to={"/home"}>
-                {/* image={logo} */}
                 <CardMedia
+                  image={logo}
                   sx={{ height: 90, width: 90, backgroundColor: "red" }}
                 />
               </LinkStyled>
