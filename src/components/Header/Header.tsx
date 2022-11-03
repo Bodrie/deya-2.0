@@ -96,7 +96,7 @@ const Header = ({ userData }: IHeaderProps) => {
               <LinkStyled to={"/home"}>
                 <CardMedia
                   image={logo}
-                  sx={{ height: 90, width: 90, backgroundColor: "red" }}
+                  sx={{ height: 90, width: 90 }}
                 />
               </LinkStyled>
             </Typography>
@@ -109,7 +109,7 @@ const Header = ({ userData }: IHeaderProps) => {
               <LinkStyled to={"/home"}>
                 <CardMedia
                   image={logo}
-                  sx={{ height: 90, width: 90, backgroundColor: "red" }}
+                  sx={{ height: 90, width: 90 }}
                 />
               </LinkStyled>
             </Typography>

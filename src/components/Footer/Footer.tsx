@@ -26,7 +26,7 @@ const Footer = () => {
           <Grid item>
             <CardMedia
               image={logo}
-              sx={{ height: "90px", width: "90px", backgroundColor: "red" }}
+              sx={{ height: "90px", width: "90px" }}
             />
           </Grid>
           <Divider
