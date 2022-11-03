@@ -5,7 +5,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
 
-const Auth = ({ user }) => {
+const Auth = () => {
   const facebookLogin = () => {
     const auth = getAuth();
     signInWithRedirect(auth, facebookProvider);

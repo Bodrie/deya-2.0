@@ -11,18 +11,20 @@ import { LinkStyled } from "../../components";
 import { getCalendarData, appointmentDelete } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
+import { User } from "firebase/auth";
+import { IUserAppointments } from "../../types/types";
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   const theme = useTheme();
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState<IUserAppointments[]>([]);
 
   useEffect(() => {
-    const userAppointments = [];
+    const userAppointments: IUserAppointments[] = [];
     getCalendarData()
       .then((calendarData) => {
         calendarData.forEach((date) => {
-          date.hours.forEach((hour) => {
-            if (hour.includes(user.email)) {
+          date.hours.forEach((hour: string) => {
+            if (hour.includes(email!)) {
               userAppointments.push({
                 date: date.date,
                 hours: Number(hour.slice(0, 2)),
@@ -34,11 +36,11 @@ const UserProfile = ({ user }) => {
         });
       })
       .catch((err) => console.log(err.message));
-  }, [user, appointments]);
+  }, [email, appointments]);
 
   return (
     <>
-      {user && typeof appointments === "object" ? (
+      {email && photoURL && typeof appointments === "object" ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
             <Typography component={"p"} variant={"h4"}>
@@ -46,7 +48,7 @@ const UserProfile = ({ user }) => {
             </Typography>
           </Grid>
           <Grid item>
-            {user.email === process.env.REACT_APP_ADMIN && (
+            {email === process.env.REACT_APP_ADMIN && (
               <LinkStyled to={"/admin/new"}>
                 <Button variant="contained">Admin</Button>
               </LinkStyled>
@@ -63,7 +65,7 @@ const UserProfile = ({ user }) => {
             <Grid item p={2}>
               <img
                 alt="asd"
-                src={photoEnlarger(user.photoURL)}
+                src={photoEnlarger(photoURL)}
                 width={150}
                 height={150}
                 style={{ borderRadius: "15px" }}
@@ -71,8 +73,8 @@ const UserProfile = ({ user }) => {
             </Grid>
 
             <Grid item alignSelf="center" p={2}>
-              <Typography>{user.displayName}</Typography>
-              <Typography>{user.email}</Typography>
+              <Typography>{displayName}</Typography>
+              <Typography>{email}</Typography>
             </Grid>
           </Grid>
           <Grid item xs={10} mb={2}>
@@ -107,11 +109,11 @@ const UserProfile = ({ user }) => {
                   <Button
                     variant="contained"
                     onClick={() =>
-                      appointmentDelete(
-                        appointment.date,
-                        appointment.hours,
-                        user.email
-                      )
+                      appointmentDelete({
+                        appointmentDate: appointment.date,
+                        appointmentHour: appointment.hours,
+                        userEmail: email,
+                      })
                     }
                   >
                     Откажи час

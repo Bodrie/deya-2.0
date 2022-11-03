@@ -2,18 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Grid, Typography, Button, Box, useTheme } from "@mui/material";
 import { DateTimePicker } from "../../components";
 import { getCalendarData, appointmentCreate } from "../../firebase";
-import moment from "moment";
+import moment, { Moment } from "moment";
+import { User } from "firebase/auth";
+import { ICalendar } from "../../types/types";
 
-const Calendar = ({ user }) => {
+const Calendar = ({ email }: User) => {
   const theme = useTheme();
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Moment | null>(null);
   const [isError, setIsError] = useState(false);
-  const [appointmentSaved, setAppointmentSaved] = useState();
-  const [calendarData, setCalendarData] = useState();
+  const [appointmentSaved, setAppointmentSaved] = useState(false);
+  const [calendarData, setCalendarData] = useState<ICalendar[]>([]);
 
   useEffect(() => {
     getCalendarData()
-      .then((response) => setCalendarData(response))
+      .then((response) => {
+        setCalendarData(response);
+      })
       .catch((err) => console.log(err.message));
   }, []);
 
@@ -21,9 +25,11 @@ const Calendar = ({ user }) => {
     const appointmentDate = moment(date).format("yyyy-MM-DD");
     const appointmentHour = Number(moment(date).format("HH"));
 
-    await appointmentCreate(appointmentDate, appointmentHour, user.email).then(
-      setAppointmentSaved(true)
-    );
+    await appointmentCreate({
+      appointmentDate: appointmentDate,
+      appointmentHour: appointmentHour,
+      userEmail: email,
+    }).then(() => setAppointmentSaved(true));
   };
 
   return (

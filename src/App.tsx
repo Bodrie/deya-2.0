@@ -7,7 +7,7 @@ import "./styles/App.css";
 import { User } from "firebase/auth";
 
 function App() {
-  useRefreshDB();
+  // useRefreshDB();
   const userData = useAuth();
 
   return (
@@ -16,16 +16,20 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route
-          path="/calendar"
-          element={<Calendar {...(userData as User)} />}
-        />
-        <Route
-          path="/profile"
-          element={<UserProfile {...(userData as User)} />}
-        />
-        <Route path="/login" element={<Auth {...(userData as User)} />} />
-        <Route path="/admin/new" element={<Admin />} />
+        <Route path="/login" element={<Auth />} />
+        {userData && (
+          <>
+            <Route
+              path="/calendar"
+              element={<Calendar {...userData} />}
+            />
+            <Route
+              path="/profile"
+              element={<UserProfile {...userData} />}
+            />
+            <Route path="/admin/new" element={<Admin />} />
+          </>
+        )}
       </Routes>
       <Footer />
     </div>

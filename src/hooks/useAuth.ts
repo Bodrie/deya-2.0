@@ -14,8 +14,8 @@ const useAuth = () => {
         setUserData(null);
       }
     });
+    navigate("/");
   }, [auth]);
-  navigate("/");
   return userData;
 };
 

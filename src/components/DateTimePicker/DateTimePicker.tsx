@@ -9,6 +9,7 @@ import {
   showOnlyAvailableDates,
   showOnlyAvailableHours,
 } from "./dateTimePickerUtils";
+import { IDateTimePicker } from "../../types/types";
 
 const DateTimePicker = ({
   calendarData,
@@ -16,7 +17,7 @@ const DateTimePicker = ({
   setDateValue,
   setIsError,
   disabled,
-}) => {
+}: IDateTimePicker) => {
   const theme = useTheme();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 

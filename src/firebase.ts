@@ -14,7 +14,11 @@ import {
 } from "firebase/firestore";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import moment from "moment";
-import { IAppointment, IAppointmentCreateOrUpdate } from "./types/types";
+import {
+  IAppointment,
+  IAppointmentCreateOrUpdate,
+  ICalendar,
+} from "./types/types";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -60,10 +64,11 @@ export const refreshDatabase = async () => {
 };
 
 export const getCalendarData = async () => {
-  let snapshotData: { [field: string]: any }[] = [];
+  let snapshotData: ICalendar[] = [];
   await getDocsFromServer(collRef).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
-      snapshotData.push({ ...doc.data() });
+      const calendarData = doc.data();
+      snapshotData.push(calendarData as ICalendar);
     });
   });
   return snapshotData;

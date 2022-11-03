@@ -1,6 +1,10 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
+import { ICalendar } from "../../types/types";
 
-export const showOnlyAvailableDates = (calendarData, date) => {
+export const showOnlyAvailableDates = (
+  calendarData: ICalendar[],
+  date: Moment
+) => {
   const blackoutDates = calendarData.map((date) => {
     const isDateAvailable = date.hours.find((hour) => hour.includes("free"));
     if (isDateAvailable) return date.date;
@@ -10,10 +14,10 @@ export const showOnlyAvailableDates = (calendarData, date) => {
 };
 
 export const showOnlyAvailableHours = (
-  dateValue,
-  calendarData,
-  timeValue,
-  clockType
+  dateValue: Moment | null,
+  calendarData: ICalendar[],
+  timeValue: number,
+  clockType: string
 ) => {
   const selectedDate = moment(dateValue).format("yyyy-MM-DD");
   const blackoutHours = calendarData
@@ -31,6 +35,9 @@ export const showOnlyAvailableHours = (
     })
     .flat()
     .filter(Boolean);
-  if (clockType === "hours")
+  if (clockType === "hours") {
     return !Object.values(blackoutHours).includes(timeValue);
+  } else {
+    return false;
+  }
 };

@@ -1,16 +1,17 @@
 import React from "react";
 import { Grid, CardMedia, Typography, Paper } from "@mui/material";
+import { ICardContent } from "../../types/types";
 
-const CardComponent = ({ content }) => {
+const CardComponent = ({ content }: {content: ICardContent[]}) => {
   return (
     <>
-      {content.map((el, i) => {
+      {content.map((card, index: number) => {
         return (
           <Grid
-            key={el.title}
+            key={card.title}
             item
             container
-            direction={i % 2 === 0 ? "row" : "row-reverse"}
+            direction={index % 2 === 0 ? "row" : "row-reverse"}
             mt={3}
             alignItems="center"
             justifyContent="space-evenly"
@@ -21,7 +22,7 @@ const CardComponent = ({ content }) => {
                 <CardMedia
                   component="img"
                   height="400px"
-                  image={el.img}
+                  image={card.img}
                   alt="card component image"
                   sx={{ borderRadius: "15px" }}
                 />
@@ -34,10 +35,10 @@ const CardComponent = ({ content }) => {
                 component="div"
                 paddingTop="1rem"
               >
-                {el.title}
+                {card.title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {el.content}
+                {card.content}
               </Typography>
             </Grid>
           </Grid>

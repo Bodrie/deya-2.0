@@ -5,11 +5,12 @@ import { HorizontalRule } from "@mui/icons-material";
 import coruselImg1 from "../../assets/images/carousel-img/slide-1.jpg";
 import coruselImg2 from "../../assets/images/carousel-img/slide-2.jpg";
 import coruselImg3 from "../../assets/images/carousel-img/slide-3.jpg";
+import { ICarouselItems } from "../../types/types";
 
 const CarouselComponent = () => {
   const theme = useTheme();
   const smDownMatch = useMediaQuery(theme.breakpoints.down("sm"));
-  const items = [
+  const items: ICarouselItems[] = [
     {
       name: "Рейки",
       description:
@@ -34,7 +35,7 @@ const CarouselComponent = () => {
       animation="slide"
       duration={800}
       navButtonsAlwaysVisible={smDownMatch ? false : true}
-      navButtonsProps={!smDownMatch && { style: { opacity: 0.6 } }}
+      navButtonsProps={!smDownMatch ? { style: { opacity: 0.6 } } : undefined}
       IndicatorIcon={
         <HorizontalRule fontSize="large" sx={{ margin: "0 5px 0 5px" }} />
       }
@@ -46,13 +47,13 @@ const CarouselComponent = () => {
       }}
     >
       {items.map((item, i) => (
-        <CarouselItem key={i} item={item} />
+        <CarouselItem key={i} {...item} />
       ))}
     </Carousel>
   );
 };
 
-const CarouselItem = (props) => {
+const CarouselItem = ({ name, description, img }: ICarouselItems) => {
   const theme = useTheme();
   return (
     <Paper
@@ -64,7 +65,7 @@ const CarouselItem = (props) => {
       <Paper
         sx={{
           height: "25rem",
-          backgroundImage: `url(${props.item.img})`,
+          backgroundImage: `url(${img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.5,
@@ -88,7 +89,7 @@ const CarouselItem = (props) => {
             component="p"
             color={theme.palette.text.secondary}
           >
-            {props.item.name}
+            {name}
           </Typography>
         </Box>
         <Box>
@@ -97,7 +98,7 @@ const CarouselItem = (props) => {
             component="p"
             color={theme.palette.text.secondary}
           >
-            {props.item.description}
+            {description}
           </Typography>
         </Box>
       </Box>
