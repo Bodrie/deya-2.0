@@ -7,7 +7,6 @@ const Admin = () => {
   const [snackOpen, setSnakOpen] = useState(false);
   const handleForm = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    
     const appointmentsDate: string = e.target.date.value;
     const parsedHours: number[] = JSON.parse("[" + e.target.hours.value + "]");
     const appointmentHours: string[] = parsedHours.map((currHour: number) => {

@@ -18,15 +18,11 @@ function App() {
         <Route path="/login" element={<Auth />} />
         {userData && (
           <>
-            <Route
-              path="/calendar"
-              element={<Calendar {...userData} />}
-            />
-            <Route
-              path="/profile"
-              element={<UserProfile {...userData} />}
-            />
-            <Route path="/admin/new" element={<Admin />} />
+            <Route path="/calendar" element={<Calendar {...userData} />} />
+            <Route path="/profile" element={<UserProfile {...userData} />} />
+            {userData.email === process.env.REACT_APP_ADMIN && (
+              <Route path="/admin/new" element={<Admin />} />
+            )}
           </>
         )}
       </Routes>
