@@ -59,20 +59,28 @@ export const refreshDatabase = async () => {
   const pastDays = moment().subtract(1, "days").format("yyyy-MM-DD");
   const getPastDays = await getDocsFromServer(
     query(collRef, where("date", "==", `${pastDays}`))
-  );
+  ).catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });
   getPastDays.forEach(() => {
-    deleteDoc(doc(db, "data", `${pastDays}`));
+    deleteDoc(doc(db, "data", `${pastDays}`)).catch((error: FirestoreError) => {
+      throw new Error(`${error.name}: ${error.message}`);
+    });;
   });
 };
 
 export const getCalendarData = async () => {
   let snapshotData: ICalendar[] = [];
-  await getDocsFromServer(collRef).then((snapshot) => {
-    snapshot.docs.forEach((doc) => {
-      const calendarData = doc.data();
-      snapshotData.push(calendarData as ICalendar);
+  await getDocsFromServer(collRef)
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        const calendarData = doc.data();
+        snapshotData.push(calendarData as ICalendar);
+      });
+    })
+    .catch((error: FirestoreError) => {
+      throw new Error(`${error.name}: ${error.message}`);
     });
-  });
   return snapshotData;
 };
 
@@ -84,12 +92,16 @@ export const appointmentCreate = async ({
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(appointmentHour + " - free"),
-  });
+  }).catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });;
 
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayUnion(appointmentHour + " - " + userEmail),
-  });
+  }).catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });;
 };
 
 export const appointmentDelete = async ({
@@ -100,12 +112,16 @@ export const appointmentDelete = async ({
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(appointmentHour + " - " + userEmail),
+  }).catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
   });
 
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayUnion(appointmentHour + " - free"),
-  });
+  }).catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });;
 };
 
 export const createOrUpdateAvailableAppointments = async ({
