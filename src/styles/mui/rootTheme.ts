@@ -5,14 +5,16 @@ const rootTheme = createTheme({
     fontFamily: "Mulish",
   },
   palette: {
+    // #c782ce
     primary: {
-      main: "#873F91",
+      main: "#b771c1",
       light: "#9B5FA3",
       dark: "#6D3274",
+      contrastText: "#FEC01F",
     },
     text: {
-      primary: "#000000",
-      secondary: "#FEC01F",
+      primary: "#000",
+      secondary: "#000",
       disabled: "#999999",
     },
   },
@@ -20,9 +22,9 @@ const rootTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: "white"
-        }
-      }
+          color: "black",
+        },  
+      },
     },
     MuiButton: {
       styleOverrides: {
@@ -37,6 +39,9 @@ const rootTheme = createTheme({
         outlinedPrimary: {
           color: "#FEC01F",
         },
+        contained: {
+          color: 'white'
+        }
       },
     },
     MuiOutlinedInput: {

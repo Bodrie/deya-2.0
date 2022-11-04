@@ -1,27 +1,34 @@
 import React from "react";
 import { getAuth, signInWithRedirect } from "firebase/auth";
 import { googleProvider, facebookProvider } from "../../firebase";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
 
-const Auth = () => {
+interface AuthProps {
+  setLoading: (newLoadingState: boolean) => void;
+}
+
+const Auth = ({ setLoading }: AuthProps) => {
   const facebookLogin = () => {
+    setLoading(true);
     const auth = getAuth();
     signInWithRedirect(auth, facebookProvider);
   };
   const googleLogin = () => {
+    setLoading(true);
     const auth = getAuth();
     signInWithRedirect(auth, googleProvider);
   };
-  
+
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" margin={"2rem 0"}>
       <Grid item xs={10} sm={8} md={7} lg={6}>
         <Typography
           variant="h6"
-          component={"p"}
-          color="whitesmoke"
+          component="p"
+          fontWeight={600}
+          letterSpacing="0.1rem"
           mb={sxMbSpacing}
         >
           За да използвате услугата за запазване на час е необходимо да се
@@ -42,10 +49,9 @@ const Auth = () => {
           </Button>
         </Box>
         <Typography
-          variant="body1"
-          component={"p"}
-          color="whitesmoke"
-          mb={sxMbSpacing}
+          variant="body2"
+          component="p"
+          fontWeight={600}
         >
           Вашите данни ще бъдат обработвани само и единствено за нуждите и
           целите на осъществяване на контакт между двете лица, лицето

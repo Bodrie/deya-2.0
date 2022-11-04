@@ -40,7 +40,7 @@ const CarouselComponent = () => {
         <HorizontalRule fontSize="large" sx={{ margin: "0 5px 0 5px" }} />
       }
       activeIndicatorIconButtonProps={{
-        style: { color: theme.palette.text.secondary },
+        style: { color: theme.palette.common.white },
       }}
       indicatorContainerProps={{
         style: { position: "absolute", bottom: 10, zIndex: 1 },
@@ -54,7 +54,6 @@ const CarouselComponent = () => {
 };
 
 const CarouselItem = ({ name, description, img }: ICarouselItems) => {
-  const theme = useTheme();
   return (
     <Paper
       sx={{
@@ -68,7 +67,7 @@ const CarouselItem = ({ name, description, img }: ICarouselItems) => {
           backgroundImage: `url(${img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.5,
+          opacity: 0.7,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -87,7 +86,8 @@ const CarouselItem = ({ name, description, img }: ICarouselItems) => {
           <Typography
             variant="h3"
             component="p"
-            color={theme.palette.text.secondary}
+            letterSpacing={"0.1rem"}
+            color="white"
           >
             {name}
           </Typography>
@@ -96,7 +96,8 @@ const CarouselItem = ({ name, description, img }: ICarouselItems) => {
           <Typography
             variant="body1"
             component="p"
-            color={theme.palette.text.secondary}
+            letterSpacing={"0.1rem"}
+            color="white"
           >
             {description}
           </Typography>

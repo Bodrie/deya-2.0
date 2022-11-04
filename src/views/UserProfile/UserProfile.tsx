@@ -43,7 +43,12 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
       {email && photoURL && typeof appointments === "object" ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
-            <Typography component={"p"} variant={"h4"}>
+            <Typography
+              component={"p"}
+              variant={"h4"}
+              fontWeight={600}
+              letterSpacing="0.1rem"
+            >
               Вашият профил
             </Typography>
           </Grid>
@@ -73,12 +78,17 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             </Grid>
 
             <Grid item alignSelf="center" p={2}>
-              <Typography>{displayName}</Typography>
-              <Typography>{email}</Typography>
+              <Typography fontWeight={600}>{displayName}</Typography>
+              <Typography fontWeight={600}>{email}</Typography>
             </Grid>
           </Grid>
           <Grid item xs={10} mb={2}>
-            <Typography component={"p"} variant={"h4"}>
+            <Typography
+              component={"p"}
+              variant={"h4"}
+              fontWeight={600}
+              letterSpacing="0.1rem"
+            >
               {appointments.length > 0
                 ? "Записани часове"
                 : "Все още нямате записани часове"}

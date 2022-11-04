@@ -19,7 +19,7 @@ const Admin = () => {
         appointmentsDate,
         appointmentHours,
       })
-        .then(() => {          
+        .then(() => {
           e.target.date.value = "";
           e.target.hours.value = "";
         })
@@ -30,7 +30,7 @@ const Admin = () => {
   };
   if (snackOpen) setTimeout(() => setSnakOpen(false), 5000);
   return (
-    <Grid container>
+    <Grid container margin={"2rem 0"}>
       <Snackbar
         color="success"
         open={snackOpen}
@@ -47,36 +47,29 @@ const Admin = () => {
         <form action="submit" onSubmit={handleForm}>
           <Grid item>
             <label htmlFor="date">
-              <Typography fontSize={"24px"} color="white">
-                дата
-              </Typography>
+              <Typography fontSize={"24px"}>Дата</Typography>
             </label>
             <input type="text" name="date" required />
           </Grid>
           <Grid item mb={2}>
             <label htmlFor="hours">
-              <Typography fontSize={"24px"} color="white">
-                часове
-              </Typography>
+              <Typography fontSize={"24px"}>Часове</Typography>
             </label>
             <input type="text" name="hours" required />
           </Grid>
           <button>
-            <Typography variant="body2">добави дата и часове</Typography>
+            <Typography variant="body1">Добави дата и часове</Typography>
           </button>
         </form>
       </Grid>
-      <Grid item container pt={2} justifyContent="start" direction="column">
-        <Typography component={"p"} variant="h6">
-          година-месец-дата
+      <Grid item container pt={2} justifyContent="center" direction="column">
+        <Typography variant="body1" fontWeight={600}>
+          ПРИМЕР:
         </Typography>
-        <Typography component={"p"} variant="h6">
-          пример
-        </Typography>
-        <Typography component={"p"} variant="h5" color="white">
+        <Typography variant="body1" fontWeight={600}>
           2022-09-31
         </Typography>
-        <Typography component={"p"} variant="h5" color="white">
+        <Typography variant="body1" fontWeight={600}>
           9, 11, 13, 15, 20
         </Typography>
       </Grid>

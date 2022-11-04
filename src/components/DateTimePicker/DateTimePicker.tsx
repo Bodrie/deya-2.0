@@ -64,6 +64,7 @@ const DateTimePicker = ({
               readOnly: true,
             }}
             style={{
+              backgroundColor: 'white',
               margin: "2rem 0",
               width: "20rem",
               caretColor: "transparent",

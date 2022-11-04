@@ -15,7 +15,7 @@ import {
   CardMedia,
   useTheme,
 } from "@mui/material";
-import { Menu as MenuIcon, ArrowForward } from "@mui/icons-material";
+import { Menu as MenuIcon, ArrowForward, PermIdentity, Logout } from "@mui/icons-material";
 import { LinkStyled, HideOnScroll } from "..";
 import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
@@ -24,9 +24,10 @@ import { FirestoreError } from "firebase/firestore";
 
 interface IHeaderProps {
   userData: User | null;
+  loading: boolean;
 }
 
-const Header = ({ userData }: IHeaderProps) => {
+const Header = ({ userData, loading }: IHeaderProps) => {
   const navigate = useNavigate();
   const headerPages = [
     { name: "Рейки", href: "/reiki" },
@@ -60,11 +61,8 @@ const Header = ({ userData }: IHeaderProps) => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event: any) => {
-    if (event.target.innerHTML === "Profile") {
-      navigate("/profile");
-    }
-    if (event.target.innerHTML === "Logout") {
+  const handleCloseUserMenu = (event: any) => {    
+    if (event.target.innerHTML === "Излез") {
       const auth = getAuth();
       signOut(auth)
         .then(() => navigate("/"))
@@ -94,10 +92,7 @@ const Header = ({ userData }: IHeaderProps) => {
               }}
             >
               <LinkStyled to={"/home"}>
-                <CardMedia
-                  image={logo}
-                  sx={{ height: 90, width: 90 }}
-                />
+                <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
             </Typography>
             <Typography
@@ -107,10 +102,7 @@ const Header = ({ userData }: IHeaderProps) => {
               sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
             >
               <LinkStyled to={"/home"}>
-                <CardMedia
-                  image={logo}
-                  sx={{ height: 90, width: 90 }}
-                />
+                <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
             </Typography>
             <Box
@@ -120,7 +112,7 @@ const Header = ({ userData }: IHeaderProps) => {
               }}
             >
               <IconButton size="large" onClick={(e) => handleOpenNavMenu(e)}>
-                <MenuIcon sx={{ color: theme.palette.text.secondary }} />
+                <MenuIcon sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -201,11 +193,13 @@ const Header = ({ userData }: IHeaderProps) => {
             {/* If we add user manegmant in the future */}
             {userData?.photoURL && (
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="user photo" src={userData.photoURL} />
-                  </IconButton>
-                </Tooltip>
+                {!loading && (
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt="user photo" src={userData.photoURL} />
+                    </IconButton>
+                  </Tooltip>
+                )}
                 <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
@@ -224,17 +218,37 @@ const Header = ({ userData }: IHeaderProps) => {
                 >
                   {headerSettings.map((setting) => (
                     <MenuItem
-                      key={setting}
+                      key={setting.name}
                       onClick={handleCloseUserMenu}
-                      sx={{ padding: "0px" }}
+                      sx={{ width: "12rem", padding: "0px" }}
                     >
-                      <Typography
-                        textAlign="center"
-                        color={theme.palette.text.primary}
-                        sx={{ padding: "0.5rem 1.2rem" }}
+                      <LinkStyled
+                        to={setting.href}
+                        sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
                       >
-                        {setting}
-                      </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            transition: "600ms",
+                            flexGrow: 1,
+                            ":hover": {
+                              marginLeft: "15px",
+                              transition: "600ms",
+                            },
+                          }}
+                        >
+                          <ArrowForward
+                            sx={{ marginRight: "11px" }}
+                            color="primary"
+                          />
+                          <Typography
+                            textAlign="center"
+                            color={theme.palette.text.primary}
+                          >
+                            {setting.name}
+                          </Typography>
+                        </Box>
+                      </LinkStyled>
                     </MenuItem>
                   ))}
                 </Menu>

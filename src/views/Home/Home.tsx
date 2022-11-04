@@ -8,16 +8,7 @@ const Home = () => {
 
   return (
     <Grid container direction="column" justifyContent="center">
-      <Grid item>
-        <Typography
-          variant="h4"
-          component="h1"
-          color={theme.palette.text.secondary}
-        >
-          "ДЕЯ" - Енергиини терапии
-        </Typography>
-      </Grid>
-      <Grid item>
+      <Grid item marginBottom={"1rem"}>
         <CarouselComponent />
       </Grid>
       <CardComponent content={content} />

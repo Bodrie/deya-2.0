@@ -24,41 +24,39 @@ const Footer = () => {
       <Container maxWidth="xl">
         <Grid container justifyContent="center" wrap="nowrap" mt={2} mb={2}>
           <Grid item>
-            <CardMedia
-              image={logo}
-              sx={{ height: "90px", width: "90px" }}
-            />
+            <CardMedia image={logo} sx={{ height: "90px", width: "90px" }} />
           </Grid>
           <Divider
             orientation="vertical"
             flexItem
             sx={{
-              backgroundColor: theme.palette.text.secondary,
+              backgroundColor: theme.palette.primary.contrastText,
               margin: "0 1rem 0 1rem",
             }}
           />
           <Grid item alignSelf="center">
             <Grid item container>
-              <Typography>info@deya.bg</Typography>
+              <Typography color="white">info@deya.bg</Typography>
               <Divider
                 orientation="vertical"
                 flexItem
                 sx={{
-                  backgroundColor: theme.palette.text.secondary,
+                  backgroundColor: theme.palette.primary.contrastText,
                   margin: "0 1rem 0 1rem",
                 }}
               />
               <LinkStyled as="a" to={facebookLink} target="_blank">
-                <FacebookOutlined />
-
-                <Typography ml={0.5}>ДЕЯ</Typography>
+                <FacebookOutlined sx={{ color: "white" }} />
+                <Typography color="white" ml={0.5}>
+                  ДЕЯ
+                </Typography>
               </LinkStyled>
             </Grid>
             <Grid item>
-              <Typography>Емилия Христова</Typography>
+              <Typography color="white">Емилия Христова</Typography>
             </Grid>
             <Grid item>
-              <Typography>1234567890000</Typography>
+              <Typography color="white">1234567890000</Typography>
             </Grid>
           </Grid>
         </Grid>

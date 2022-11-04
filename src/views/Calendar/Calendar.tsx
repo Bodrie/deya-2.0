@@ -33,12 +33,18 @@ const Calendar = ({ email }: User) => {
   };
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" margin={"2rem 0"}>
       <Grid item xs={10}>
-        <Typography component={"h3"} typography={"h5"} mb={2} color="white">
+        <Typography
+          component={"h3"}
+          typography={"h5"}
+          mb={2}
+          letterSpacing="0.1rem"
+          fontWeight={600}
+        >
           Заглавие / запазете час / тест
         </Typography>
-        <Typography component={"p"} typography={"body1"} color="white">
+        <Typography component={"p"} typography={"body1"} fontWeight={600}>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus
           delectus sed necessitatibus, facilis, suscipit unde impedit illum in
           sapiente ab, iste praesentium magnam? Debitis id totam quasi quis quam
@@ -81,10 +87,10 @@ const Calendar = ({ email }: User) => {
                 borderRadius: "15px",
               }}
             >
-              <Typography component={"p"} typography={"body1"} color="white">
+              <Typography component={"p"} typography={"body1"}>
                 Имате запазен час за:
               </Typography>
-              <Typography component={"p"} typography={"body1"} color="white">
+              <Typography component={"p"} typography={"body1"}>
                 {moment(date).locale("bg").format("dddd - D.MM.yyyy - HH:mmч.")}
               </Typography>
             </Box>
