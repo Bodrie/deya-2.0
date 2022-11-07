@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { createOrUpdateAvailableAppointments } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
+import { useRefreshDB } from "../../hooks";
 
 const Admin = () => {
+  useRefreshDB();
   const [snackOpen, setSnakOpen] = useState(false);
   const handleForm = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();

@@ -5,8 +5,10 @@ import { getCalendarData, appointmentCreate } from "../../firebase";
 import moment, { Moment } from "moment";
 import { User } from "firebase/auth";
 import { ICalendar } from "../../types/types";
+import { useRefreshDB } from "../../hooks";
 
 const Calendar = ({ email }: User) => {
+  useRefreshDB();
   const theme = useTheme();
   const [date, setDate] = useState<Moment | null>(null);
   const [isError, setIsError] = useState(false);

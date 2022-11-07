@@ -1,12 +1,12 @@
 import React from "react";
-import { useAuth } from "./hooks";
+import { useAuth, useRefreshDB } from "./hooks";
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
 import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
 import "./styles/App.css";
 
 function App() {
-  // useRefreshDB();
+  useRefreshDB();
   const userData = useAuth();
 
   return (

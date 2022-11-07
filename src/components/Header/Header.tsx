@@ -144,17 +144,20 @@ const Header = ({ userData }: IHeaderProps) => {
                   >
                     <LinkStyled
                       to={page.href}
-                      sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
+                      sx={{
+                        transition: "600ms",
+                        flexGrow: 1,
+                        padding: "0.5rem 1.2rem",
+                        ":hover": {
+                          marginLeft: "15px",
+                          transition: "600ms",
+                        },
+                      }}
                     >
                       <Box
                         sx={{
                           display: "flex",
-                          transition: "600ms",
                           flexGrow: 1,
-                          ":hover": {
-                            marginLeft: "15px",
-                            transition: "600ms",
-                          },
                         }}
                       >
                         <ArrowForward
@@ -226,23 +229,33 @@ const Header = ({ userData }: IHeaderProps) => {
                     >
                       <LinkStyled
                         to={setting.href}
-                        sx={{ flexGrow: 1, padding: "0.5rem 1.2rem" }}
+                        sx={{
+                          transition: "600ms",
+                          flexGrow: 1,
+                          padding: "0.5rem 1.2rem",
+                          ":hover": {
+                            marginLeft: "15px",
+                            transition: "600ms",
+                          },
+                        }}
                       >
                         <Box
                           sx={{
                             display: "flex",
-                            transition: "600ms",
                             flexGrow: 1,
-                            ":hover": {
-                              marginLeft: "15px",
-                              transition: "600ms",
-                            },
                           }}
                         >
-                          <ArrowForward
-                            sx={{ marginRight: "11px" }}
-                            color="primary"
-                          />
+                          {setting.name === "Профил" ? (
+                            <PermIdentity
+                              sx={{ marginRight: "11px" }}
+                              color="primary"
+                            />
+                          ) : (
+                            <Logout
+                              sx={{ marginRight: "11px" }}
+                              color="primary"
+                            />
+                          )}
                           <Typography
                             textAlign="center"
                             color={theme.palette.text.primary}

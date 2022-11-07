@@ -15,5 +15,3 @@ export const sxMbSpacing = {
   md: 8,
   lg: 10,
 };
-
-export const REFRESH_RATE_OF_DB = 10000;
