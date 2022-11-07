@@ -15,7 +15,12 @@ import {
   CardMedia,
   useTheme,
 } from "@mui/material";
-import { Menu as MenuIcon, ArrowForward, PermIdentity, Logout } from "@mui/icons-material";
+import {
+  Menu as MenuIcon,
+  ArrowForward,
+  PermIdentity,
+  Logout,
+} from "@mui/icons-material";
 import { LinkStyled, HideOnScroll } from "..";
 import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
@@ -24,10 +29,9 @@ import { FirestoreError } from "firebase/firestore";
 
 interface IHeaderProps {
   userData: User | null;
-  loading: boolean;
 }
 
-const Header = ({ userData, loading }: IHeaderProps) => {
+const Header = ({ userData }: IHeaderProps) => {
   const navigate = useNavigate();
   const headerPages = [
     { name: "Рейки", href: "/reiki" },
@@ -61,7 +65,7 @@ const Header = ({ userData, loading }: IHeaderProps) => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event: any) => {    
+  const handleCloseUserMenu = (event: any) => {
     if (event.target.innerHTML === "Излез") {
       const auth = getAuth();
       signOut(auth)
@@ -193,13 +197,11 @@ const Header = ({ userData, loading }: IHeaderProps) => {
             {/* If we add user manegmant in the future */}
             {userData?.photoURL && (
               <Box sx={{ flexGrow: 0 }}>
-                {!loading && (
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt="user photo" src={userData.photoURL} />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="user photo" src={userData.photoURL} />
+                  </IconButton>
+                </Tooltip>
                 <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"

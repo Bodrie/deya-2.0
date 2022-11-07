@@ -1,22 +1,16 @@
 import React from "react";
 import { getAuth, signInWithRedirect } from "firebase/auth";
 import { googleProvider, facebookProvider } from "../../firebase";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { Google, Facebook } from "@mui/icons-material";
 import { sxMbSpacing } from "../../constants/constants";
 
-interface AuthProps {
-  setLoading: (newLoadingState: boolean) => void;
-}
-
-const Auth = ({ setLoading }: AuthProps) => {
+const Auth = () => {
   const facebookLogin = () => {
-    setLoading(true);
     const auth = getAuth();
     signInWithRedirect(auth, facebookProvider);
   };
   const googleLogin = () => {
-    setLoading(true);
     const auth = getAuth();
     signInWithRedirect(auth, googleProvider);
   };
@@ -48,11 +42,7 @@ const Auth = ({ setLoading }: AuthProps) => {
             <Facebook sx={{ ml: 2 }} />
           </Button>
         </Box>
-        <Typography
-          variant="body2"
-          component="p"
-          fontWeight={600}
-        >
+        <Typography variant="body2" component="p" fontWeight={600}>
           Вашите данни ще бъдат обработвани само и единствено за нуждите и
           целите на осъществяване на контакт между двете лица, лицето
           предоставящо даните и ползвател на услугата (Вие) е потребителя на

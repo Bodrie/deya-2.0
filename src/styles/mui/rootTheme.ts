@@ -23,7 +23,7 @@ const rootTheme = createTheme({
       styleOverrides: {
         root: {
           color: "black",
-        },  
+        },
       },
     },
     MuiButton: {
@@ -40,8 +40,8 @@ const rootTheme = createTheme({
           color: "#FEC01F",
         },
         contained: {
-          color: 'white'
-        }
+          color: "white",
+        },
       },
     },
     MuiOutlinedInput: {
