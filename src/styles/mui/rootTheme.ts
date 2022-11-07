@@ -47,7 +47,7 @@ const rootTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         input: {
-          color: "white",
+          color: "black",
           textAlign: "center",
           cursor: "pointer",
         },

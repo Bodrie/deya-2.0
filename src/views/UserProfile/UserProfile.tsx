@@ -6,7 +6,7 @@ import {
   CircularProgress,
   useTheme,
 } from "@mui/material";
-import { Clear } from "@mui/icons-material";
+import { AccountCircle, Clear } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import { getCalendarData, appointmentDelete } from "../../firebase";
 import moment from "moment";
@@ -36,11 +36,11 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
         });
       })
       .catch((err) => console.log(err.message));
-  }, [email, appointments]);
+  }, []);
 
   return (
     <>
-      {email && photoURL && typeof appointments === "object" ? (
+      {uid ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
             <Typography
@@ -68,13 +68,13 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             mb={2}
           >
             <Grid item p={2}>
-              <img
+              {photoURL ? <img
                 alt="asd"
                 src={photoEnlarger(photoURL)}
                 width={150}
                 height={150}
                 style={{ borderRadius: "15px" }}
-              />
+              /> : <AccountCircle />}
             </Grid>
 
             <Grid item alignSelf="center" p={2}>

@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { User } from "firebase/auth";
+import { authStateTracker } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<User | null>(null);
-  const auth = getAuth();
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserData(user);
-      } else {
-        setUserData(null);
-      }
-    });
+    const userResponse = authStateTracker();
+    setUserData(userResponse);
     navigate("/");
-  }, [auth]);
+  }, []);
   return userData;
 };
 
