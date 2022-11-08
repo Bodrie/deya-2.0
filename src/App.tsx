@@ -1,13 +1,13 @@
 import React from "react";
-import { useAuth, useRefreshDB } from "./hooks";
+import { useAuth, useEmialVerification } from "./hooks";
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
 import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
 import "./styles/App.css";
 
 function App() {
-  useRefreshDB();
   const userData = useAuth();
+  useEmialVerification(userData)
 
   return (
     <div className="App">

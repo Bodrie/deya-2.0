@@ -20,6 +20,7 @@ import {
   ArrowForward,
   PermIdentity,
   Logout,
+  AccountCircle,
 } from "@mui/icons-material";
 import { LinkStyled, HideOnScroll } from "..";
 import logo from "../../assets/images/logo/logo.png";
@@ -95,7 +96,7 @@ const Header = ({ userData }: IHeaderProps) => {
                 display: { xs: "none", md: "flex" },
               }}
             >
-              <LinkStyled to={"/home"}>
+              <LinkStyled to={"/login"}>
                 <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
             </Typography>
@@ -105,7 +106,7 @@ const Header = ({ userData }: IHeaderProps) => {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mb: 1 }}
             >
-              <LinkStyled to={"/home"}>
+              <LinkStyled to={"/login"}>
                 <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
             </Typography>
@@ -198,11 +199,15 @@ const Header = ({ userData }: IHeaderProps) => {
             </Box>
 
             {/* If we add user manegmant in the future */}
-            {userData?.photoURL && (
+            {userData && (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="user photo" src={userData.photoURL} />
+                    {userData.photoURL ? (
+                      <Avatar alt="user photo" src={userData.photoURL} />
+                    ) : (
+                      <AccountCircle />
+                    )}
                   </IconButton>
                 </Tooltip>
                 <Menu

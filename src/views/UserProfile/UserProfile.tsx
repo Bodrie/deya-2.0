@@ -6,19 +6,21 @@ import {
   CircularProgress,
   useTheme,
 } from "@mui/material";
-import { Clear } from "@mui/icons-material";
+import { AccountCircle, Clear } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
 import { getCalendarData, appointmentDelete } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
 import { User } from "firebase/auth";
 import { IUserAppointments } from "../../types/types";
+import { useRefreshDB } from "../../hooks";
 
 const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
+  useRefreshDB();
   const theme = useTheme();
   const [appointments, setAppointments] = useState<IUserAppointments[]>([]);
 
-  useEffect(() => {
+  const getCurrentUserAppointments = () => {
     const userAppointments: IUserAppointments[] = [];
     getCalendarData()
       .then((calendarData) => {
@@ -31,16 +33,19 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               });
             }
           });
-
-          setAppointments(userAppointments);
         });
       })
+      .then(() => setAppointments(userAppointments))
       .catch((err) => console.log(err.message));
-  }, [email, appointments]);
+  };
+
+  useEffect(() => {
+    getCurrentUserAppointments();
+  }, []);
 
   return (
     <>
-      {email && photoURL && typeof appointments === "object" ? (
+      {uid ? (
         <Grid container item justifyContent="center">
           <Grid item xs={10} mb={2}>
             <Typography
@@ -68,13 +73,17 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             mb={2}
           >
             <Grid item p={2}>
-              <img
-                alt="asd"
-                src={photoEnlarger(photoURL)}
-                width={150}
-                height={150}
-                style={{ borderRadius: "15px" }}
-              />
+              {photoURL ? (
+                <img
+                  alt="asd"
+                  src={photoEnlarger(photoURL)}
+                  width={150}
+                  height={150}
+                  style={{ borderRadius: "15px" }}
+                />
+              ) : (
+                <AccountCircle />
+              )}
             </Grid>
 
             <Grid item alignSelf="center" p={2}>
@@ -118,13 +127,13 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                 <Grid item p={2}>
                   <Button
                     variant="contained"
-                    onClick={() =>
+                    onClick={() => {
                       appointmentDelete({
                         appointmentDate: appointment.date,
                         appointmentHour: appointment.hours,
                         userEmail: email,
-                      })
-                    }
+                      }).then(() => getCurrentUserAppointments());
+                    }}
                   >
                     Откажи час
                     <Clear color="error" sx={{ ml: 1 }} />

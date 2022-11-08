@@ -3,7 +3,7 @@ import { refreshDatabase } from "../firebase";
 
 const useRefreshDB = () => {
   useEffect(() => {
-    refreshDatabase();
+    refreshDatabase();    
   }, []);
 };
 

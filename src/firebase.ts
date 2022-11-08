@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   getFirestore,
   collection,
@@ -14,7 +14,22 @@ import {
   FirestoreError,
   setDoc,
 } from "firebase/firestore";
-import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  FacebookAuthProvider,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  linkWithCredential,
+  EmailAuthProvider,
+  linkWithPopup,
+  getRedirectResult,
+  signInWithPopup,
+  User,
+  onAuthStateChanged,
+  sendEmailVerification,
+} from "firebase/auth";
 import moment from "moment";
 import {
   IAppointment,
@@ -51,9 +66,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const collRef = collection(db, "data");
+const auth = getAuth();
 
 export const refreshDatabase = async () => {
   const pastDays = moment().subtract(1, "days").format("yyyy-MM-DD");
@@ -143,5 +159,33 @@ export const createOrUpdateAvailableAppointments = async ({
   });
 };
 
+export const signUp = (email: string, password: string) => {
+  createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  })
+};
+
+export const signIn = (email: string, password: string) => {
+  signInWithEmailAndPassword(auth, email, password).catch((error) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });
+};
+
+export const signInWithFacebook = () => {
+  signInWithRedirect(auth, facebookProvider);
+};
+export const signInWithGoogle = () => {
+  signInWithRedirect(auth, googleProvider);
+};
+
+logEvent(analytics, "notification_received");
+
 export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
+
+/* 
+Firebase notes:
+https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#error-codes - For auth error handling
+https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#getredirectresult - Get redirect result for acc linking
+https://stackoverflow.com/questions/72286135/firebase-check-if-an-user-is-already-registered-in-database
+*/
