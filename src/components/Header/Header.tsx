@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   AppBar,
   MenuItem,
@@ -14,6 +14,7 @@ import {
   Tooltip,
   CardMedia,
   useTheme,
+  Tabs,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -22,7 +23,7 @@ import {
   Logout,
   AccountCircle,
 } from "@mui/icons-material";
-import { LinkStyled, HideOnScroll } from "..";
+import { LinkStyled, HideOnScroll, TabLinkStyled } from "..";
 import logo from "../../assets/images/logo/logo.png";
 import { headerSettings } from "../../constants/constants";
 import { getAuth, signOut, User } from "firebase/auth";
@@ -35,6 +36,7 @@ interface IHeaderProps {
 const Header = ({ userData }: IHeaderProps) => {
   const navigate = useNavigate();
   const headerPages = [
+    { name: "Начало", href: "/" },
     { name: "Рейки", href: "/reiki" },
     { name: "Тета", href: "/teta" },
     { name: "За мен", href: "/about" },
@@ -46,6 +48,16 @@ const Header = ({ userData }: IHeaderProps) => {
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [activeTab, setActiveTab] = useState<string | number>(0);
+
+  const handleTabChange = (
+    event: React.SyntheticEvent,
+    newTabValue: string | number
+  ) => {
+    console.log(newTabValue);
+
+    setActiveTab(newTabValue);
+  };
 
   const handleOpenNavMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -184,18 +196,15 @@ const Header = ({ userData }: IHeaderProps) => {
                 justifyContent: "space-evenly",
               }}
             >
-              {headerPages.map((page) => (
-                <LinkStyled to={page.href} key={page.name}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                  >
-                    {page.name}
-                  </Button>
-                </LinkStyled>
-              ))}
+              <Tabs
+                TabIndicatorProps={{ style: { backgroundColor: "white" } }}
+                value={activeTab}
+                onChange={handleTabChange}
+              >
+                {headerPages.map((page) => (
+                  <TabLinkStyled label={page.name} href={page.href} />
+                ))}
+              </Tabs>
             </Box>
 
             {/* If we add user manegmant in the future */}
