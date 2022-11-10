@@ -26,6 +26,7 @@ export interface IDateTimePicker {
   dateValue: Moment | null;
   setDateValue: React.Dispatch<React.SetStateAction<moment.Moment | null>>;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
+  isError: boolean;
   disabled: boolean;
 }
 

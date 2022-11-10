@@ -3,7 +3,6 @@ import {
   User,
   onAuthStateChanged,
   getAuth,
-  sendEmailVerification,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +19,10 @@ const useAuth = () => {
         setUserData(null);
       }
     });
+    console.log('hre');
+    
     navigate("/");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   return userData;
