@@ -3,6 +3,7 @@ import React from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signUp } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
+import { useNavigate } from "react-router-dom";
 
 interface RegisterProps {
   active: string;
@@ -10,15 +11,17 @@ interface RegisterProps {
 
 const Register = ({ active }: RegisterProps) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const signUpUser = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const email: string = e.currentTarget.createEmail.value;
     const password: string = e.currentTarget.createPassword.value;
     signUp(email, password);
+    navigate("/");
   };
   return (
     <Slide
-      timeout={{enter: 700, exit: 700}}
+      timeout={{ enter: 700, exit: 700 }}
       easing={{
         enter: theme.transitions.easing.easeOut,
         exit: theme.transitions.easing.easeOut,

@@ -3,7 +3,6 @@ import {
   Grid,
   Typography,
   Button,
-  Box,
   useTheme,
   Divider,
 } from "@mui/material";
@@ -53,7 +52,6 @@ const Calendar = ({ email }: User) => {
     setAppointmentSaved(false);
     setCalendarData([]);
   };
-  console.log(isError);
 
   return (
     <Grid

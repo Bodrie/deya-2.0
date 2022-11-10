@@ -43,6 +43,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
 
   useEffect(() => {
     getCurrentUserAppointments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -103,7 +104,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                   color="disabled"
                   width={150}
                   height={150}
-                  sx={{ borderRadius: "15px", width: 150, height: 150 }}
+                  sx={{ width: 150, height: 150 }}
                 />
               )}
             </Grid>
