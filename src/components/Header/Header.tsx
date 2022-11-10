@@ -91,7 +91,7 @@ const Header = ({ userData }: IHeaderProps) => {
   };
 
   const theme = useTheme();
-
+  const test = window.chrome.webview;
   return (
     <HideOnScroll>
       <AppBar position="sticky" sx={{ zIndex: 2 }}>
@@ -111,6 +111,7 @@ const Header = ({ userData }: IHeaderProps) => {
               <LinkStyled to={"/login"}>
                 <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
+              <div id="where-am-i"></div>
             </Typography>
             <Typography
               variant="h6"
@@ -121,6 +122,8 @@ const Header = ({ userData }: IHeaderProps) => {
               <LinkStyled to={"/login"}>
                 <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
+              {test}
+              <div id="where-am-i"></div>
             </Typography>
             <Box
               sx={{
