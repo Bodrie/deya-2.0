@@ -21,14 +21,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
-  linkWithCredential,
-  EmailAuthProvider,
-  linkWithPopup,
-  getRedirectResult,
-  signInWithPopup,
-  User,
-  onAuthStateChanged,
-  sendEmailVerification,
 } from "firebase/auth";
 import moment from "moment";
 import {

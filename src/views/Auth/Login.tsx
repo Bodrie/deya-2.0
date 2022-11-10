@@ -3,6 +3,7 @@ import React from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signIn } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
+import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   active: string;
@@ -10,11 +11,13 @@ interface LoginProps {
 
 const Login = ({ active }: LoginProps) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const signInUser = (e: React.BaseSyntheticEvent) => {
-    e.preventDefault();   
+    e.preventDefault();
     const email: string = e.currentTarget.email.value;
     const password: string = e.currentTarget.password.value;
     signIn(email, password);
+    navigate("/");
   };
   return (
     <Slide
