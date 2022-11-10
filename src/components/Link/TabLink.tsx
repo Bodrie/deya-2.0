@@ -3,23 +3,19 @@ import { Tab } from "@mui/material";
 import LinkStyled from "./Link";
 
 interface LinkTabProps {
-  label?: string;
-  href: string;
+  label: string;
+  to: string;
+  value: number;
 }
 
 const LinkTab = (props: LinkTabProps) => {
-  console.log(props);
-
   return (
-    <>
-      <LinkStyled to={props.href}>
-        <Tab
-          disableRipple
-          sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
-          {...props}
-        />
-      </LinkStyled>
-    </>
+    <Tab
+      component={LinkStyled}
+      disableRipple
+      sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
+      {...props}
+    />
   );
 };
 

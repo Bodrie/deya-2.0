@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   MenuItem,
@@ -10,7 +10,6 @@ import {
   Menu,
   Container,
   Avatar,
-  Button,
   Tooltip,
   CardMedia,
   useTheme,
@@ -48,14 +47,12 @@ const Header = ({ userData }: IHeaderProps) => {
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [activeTab, setActiveTab] = useState<string | number>(0);
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   const handleTabChange = (
     event: React.SyntheticEvent,
-    newTabValue: string | number
+    newTabValue: number
   ) => {
-    console.log(newTabValue);
-
     setActiveTab(newTabValue);
   };
 
@@ -91,7 +88,6 @@ const Header = ({ userData }: IHeaderProps) => {
   };
 
   const theme = useTheme();
-  const test = window.chrome.webview;
   return (
     <HideOnScroll>
       <AppBar position="sticky" sx={{ zIndex: 2 }}>
@@ -122,7 +118,6 @@ const Header = ({ userData }: IHeaderProps) => {
               <LinkStyled to={"/login"}>
                 <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
               </LinkStyled>
-              {test}
               <div id="where-am-i"></div>
             </Typography>
             <Box
@@ -153,13 +148,19 @@ const Header = ({ userData }: IHeaderProps) => {
                 }}
               >
                 {headerPages.map((page) => (
-                  <MenuItem
-                    key={page.name}
-                    onClick={handleCloseNavMenu}
-                    sx={{ width: "12rem", padding: "0px" }}
+                  <LinkStyled
+                    to={page.href}
+                    sx={{
+                      width: "12rem",
+                      padding: "0px",
+                      ":hover": {
+                        backgroundColor: theme.palette.grey[200],
+                      },
+                    }}
                   >
-                    <LinkStyled
-                      to={page.href}
+                    <MenuItem
+                      key={page.name}
+                      onClick={handleCloseNavMenu}
                       sx={{
                         transition: "600ms",
                         flexGrow: 1,
@@ -167,6 +168,7 @@ const Header = ({ userData }: IHeaderProps) => {
                         ":hover": {
                           marginLeft: "15px",
                           transition: "600ms",
+                          backgroundColor: 'none'
                         },
                       }}
                     >
@@ -187,15 +189,17 @@ const Header = ({ userData }: IHeaderProps) => {
                           {page.name}
                         </Typography>
                       </Box>
-                    </LinkStyled>
-                  </MenuItem>
+                    </MenuItem>
+                  </LinkStyled>
                 ))}
               </Menu>
             </Box>
             <Box
               sx={{
-                flexGrow: 0.3,
-                display: { xs: "none", md: "flex" },
+                display: { md: "flex" },
+                visibility: { xs: "hidden", md: "visible" },
+                width: { xs: "0px", md: "inherit" },
+                height: { xs: "0px", md: "inherit" },
                 justifyContent: "space-evenly",
               }}
             >
@@ -204,8 +208,13 @@ const Header = ({ userData }: IHeaderProps) => {
                 value={activeTab}
                 onChange={handleTabChange}
               >
-                {headerPages.map((page) => (
-                  <TabLinkStyled label={page.name} href={page.href} />
+                {headerPages.map((page, index) => (
+                  <TabLinkStyled
+                    value={index}
+                    to={page.href}
+                    label={page.name}
+                    key={page.href}
+                  />
                 ))}
               </Tabs>
             </Box>
