@@ -2,12 +2,19 @@ import React from "react";
 import { useAuth, useEmialVerification } from "./hooks";
 import { Routes, Route } from "react-router-dom";
 import { Header, Footer } from "./components";
-import { Home, Calendar, Admin, Auth, UserProfile } from "./views";
+import {
+  Home,
+  Calendar,
+  Admin,
+  Auth,
+  UserProfile,
+  Verification,
+} from "./views";
 import "./styles/App.css";
 
 function App() {
-  const userData = useAuth();
-  useEmialVerification(userData)
+  const { userData, isEmailVerified } = useAuth();
+  useEmialVerification(userData);
 
   return (
     <div className="App">
@@ -16,7 +23,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Auth />} />
-        {userData && (
+        {userData && isEmailVerified && (
           <>
             <Route path="/calendar" element={<Calendar {...userData} />} />
             <Route path="/profile" element={<UserProfile {...userData} />} />
@@ -24,6 +31,9 @@ function App() {
               <Route path="/admin/new" element={<Admin />} />
             )}
           </>
+        )}
+        {!isEmailVerified && (
+          <Route path="/verification" element={<Verification />} />
         )}
       </Routes>
       <Footer />

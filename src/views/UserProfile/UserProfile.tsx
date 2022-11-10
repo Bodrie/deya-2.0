@@ -43,7 +43,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
 
   useEffect(() => {
     getCurrentUserAppointments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -150,6 +150,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                 sx={{
                   border: `solid 2px ${theme.palette.primary.main}`,
                   borderRadius: "15px",
+                  transition: "all 1s",
                 }}
                 mb={sxMbSpacing}
               >

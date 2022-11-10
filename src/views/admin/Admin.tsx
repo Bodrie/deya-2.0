@@ -32,7 +32,7 @@ const Admin = () => {
   };
   if (snackOpen) setTimeout(() => setSnakOpen(false), 5000);
   return (
-    <Grid container margin={"2rem 0"}>
+    <Grid container margin={"2rem 0"} flex={1}>
       <Snackbar
         color="success"
         open={snackOpen}
@@ -64,7 +64,13 @@ const Admin = () => {
           </button>
         </form>
       </Grid>
-      <Grid item container pt={2} justifyContent="center" direction="column">
+      <Grid
+        item
+        container
+        pt={2}
+        justifyContent="flex-start"
+        direction="column"
+      >
         <Typography variant="body1" fontWeight={600}>
           ПРИМЕР:
         </Typography>

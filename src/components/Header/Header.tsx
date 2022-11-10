@@ -43,8 +43,8 @@ const Header = ({ userData }: IHeaderProps) => {
     { name: "За мен", href: "/about" },
     { name: "Контакти", href: "/contacts" },
     {
-      name: userData?.uid ? "Календар" : "Вход",
-      href: userData?.uid ? "/calendar" : "/login",
+      name: userData?.emailVerified ? "Календар" : "Вход",
+      href: userData?.emailVerified ? "/calendar" : "/login",
     },
   ];
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -231,7 +231,7 @@ const Header = ({ userData }: IHeaderProps) => {
             </Tabs>
           </Box>
           {/* If we add user manegmant in the future */}
-          {userData && (
+          {userData && userData.emailVerified && (
             <Box
               sx={{
                 display: "flex",

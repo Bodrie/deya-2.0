@@ -17,7 +17,6 @@ const Login = ({ active }: LoginProps) => {
     const email: string = e.currentTarget.email.value;
     const password: string = e.currentTarget.password.value;
     signIn(email, password);
-    navigate("/");
   };
   return (
     <Slide

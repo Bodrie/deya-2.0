@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Typography,
-  Button,
-  useTheme,
-  Divider,
-} from "@mui/material";
+import { Grid, Typography, Button, useTheme, Divider } from "@mui/material";
 import { DateTimePicker } from "../../components";
 import { getCalendarData, appointmentCreate } from "../../firebase";
 import moment, { Moment } from "moment";
@@ -14,7 +8,7 @@ import { ICalendar } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { sxMbSpacing } from "../../constants/constants";
 
-const Calendar = ({ email }: User) => {
+const Calendar = ({ email, emailVerified }: User) => {
   useRefreshDB();
   const theme = useTheme();
   const [date, setDate] = useState<Moment | null>(null);
@@ -57,14 +51,15 @@ const Calendar = ({ email }: User) => {
     <Grid
       container
       item
-      justifyContent="center"
+      alignItems="flex-start"
       xs={10}
       sm={8}
       md={6}
       lg={4}
       margin="2rem auto"
+      flex={1}
     >
-      <Grid item mb={sxMbSpacing}>
+      <Grid item>
         <Typography
           component={"h3"}
           typography={"h5"}
@@ -82,69 +77,69 @@ const Calendar = ({ email }: User) => {
           corrupti?
         </Typography>
       </Grid>
-      <Divider
-        sx={{
-          width: "inherit",
-          marginBottom: sxMbSpacing,
-          backgroundColor: "black",
-        }}
-      />
-      <Grid
-        container
-        item
-        justifyContent="center"
-        alignItems="center"
-        direction="column"
-      >
-        <Grid item container mb={sxMbSpacing}>
-          {appointmentSaved ? (
-            <Grid
-              item
-              width="100%"
-              minHeight={"56px"}
-              sx={{
-                border: `${theme.palette.primary.main} solid 2px`,
-                borderRadius: "15px",
-              }}
-            >
-              <Typography component={"p"} typography={"body1"}>
-                Имате запазен час за:
-              </Typography>
-              <Typography component={"p"} typography={"body1"}>
-                {moment(date).locale("bg").format("dddd - D.MM.yyyy - HH:mmч.")}
-              </Typography>
+      {emailVerified ? (
+        <Grid container item direction="column">
+          <Divider
+            flexItem
+            sx={{
+              marginBottom: sxMbSpacing,
+              backgroundColor: "black",
+            }}
+          />
+          <Grid item container mb={sxMbSpacing}>
+            {appointmentSaved ? (
+              <Grid
+                item
+                width="100%"
+                minHeight={"56px"}
+                sx={{
+                  border: `${theme.palette.primary.main} solid 2px`,
+                  borderRadius: "15px",
+                }}
+              >
+                <Typography component={"p"} typography={"body1"}>
+                  Имате запазен час за:
+                </Typography>
+                <Typography component={"p"} typography={"body1"}>
+                  {moment(date)
+                    .locale("bg")
+                    .format("dddd - D.MM.yyyy - HH:mmч.")}
+                </Typography>
+              </Grid>
+            ) : (
+              <Grid item width="100%">
+                <DateTimePicker
+                  calendarData={calendarData}
+                  dateValue={date}
+                  setDateValue={setDate}
+                  setIsError={setIsError}
+                  isError={isError}
+                  disabled={appointmentSaved}
+                />
+              </Grid>
+            )}
+          </Grid>
+          {!appointmentSaved ? (
+            <Grid item>
+              <Button
+                disabled={isError || !date}
+                variant="contained"
+                onClick={handleAppointmentCreate}
+              >
+                <Typography typography={"body1"}>Запази час</Typography>
+              </Button>
             </Grid>
           ) : (
-            <Grid item width="100%">
-              <DateTimePicker
-                calendarData={calendarData}
-                dateValue={date}
-                setDateValue={setDate}
-                setIsError={setIsError}
-                isError={isError}
-                disabled={appointmentSaved}
-              />
+            <Grid item>
+              <Button variant="contained" onClick={handleAppointmentCreateNew}>
+                <Typography typography={"body1"}>Запази още часове</Typography>
+              </Button>
             </Grid>
           )}
         </Grid>
-        {!appointmentSaved ? (
-          <Grid item>
-            <Button
-              disabled={isError || !date}
-              variant="contained"
-              onClick={handleAppointmentCreate}
-            >
-              <Typography typography={"body1"}>Запази час</Typography>
-            </Button>
-          </Grid>
-        ) : (
-          <Grid item>
-            <Button variant="contained" onClick={handleAppointmentCreateNew}>
-              <Typography typography={"body1"}>Запази още часове</Typography>
-            </Button>
-          </Grid>
-        )}
-      </Grid>
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 };

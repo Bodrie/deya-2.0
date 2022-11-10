@@ -18,7 +18,6 @@ const Register = ({ active }: RegisterProps) => {
     const email: string = e.currentTarget.createEmail.value;
     const password: string = e.currentTarget.createPassword.value;
     signUp(email, password);
-    navigate("/");
   };
   
   return (
