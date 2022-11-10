@@ -46,10 +46,16 @@ const rootTheme = createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        input: {
+        root: {
           color: "black",
           textAlign: "center",
-          cursor: "pointer",
+          cursor: "text",
+          backgroundColor: "white",
+          ":hover": {
+            "& fieldset": {
+              borderColor: "#873F91 !important",
+            },
+          },
         },
         notchedOutline: {
           border: "2px solid #873F91",
