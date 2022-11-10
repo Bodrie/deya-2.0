@@ -12,6 +12,7 @@ interface RegisterProps {
 const Register = ({ active }: RegisterProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
+
   const signUpUser = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const email: string = e.currentTarget.createEmail.value;
@@ -19,9 +20,14 @@ const Register = ({ active }: RegisterProps) => {
     signUp(email, password);
     navigate("/");
   };
+  
   return (
     <Slide
       timeout={{ enter: 700, exit: 700 }}
+  };
+  return (
+    <Slide
+      timeout={{enter: 700, exit: 700}}
       easing={{
         enter: theme.transitions.easing.easeOut,
         exit: theme.transitions.easing.easeOut,
