@@ -10,17 +10,25 @@ import {
   showOnlyAvailableHours,
 } from "./dateTimePickerUtils";
 import { IDateTimePicker } from "../../types/types";
+import { DateTimeValidationError } from "@mui/x-date-pickers/internals/hooks/validation/useDateTimeValidation";
 
 const DateTimePicker = ({
   calendarData,
   dateValue,
   setDateValue,
   setIsError,
+  isError,
   disabled,
 }: IDateTimePicker) => {
   const theme = useTheme();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-
+  const handleDatePickerError = (error: DateTimeValidationError) => {
+    if (error && error !== "shouldDisableTime-hours") {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>
       <DesktopDateTimePicker
@@ -29,22 +37,25 @@ const DateTimePicker = ({
             "& .MuiCalendarPicker-root": {
               "& div[role=cell]": {
                 "& :not(.Mui-disabled).MuiPickersDay-dayWithMargin": {
-                  color: theme.palette.text.secondary,
-                  fontSize: "18px",
+                  color: theme.palette.primary.contrastText,
+                  fontSize: "20px",
+                  fontWeight: 600,
                 },
               },
             },
             "& .MuiClockPicker-root": {
               "& div[role=listbox]": {
                 "& :not(.Mui-disabled)": {
-                  fontSize: "18px",
-                  color: theme.palette.primary.main,
-                  border: `${theme.palette.text.secondary} solid 2px`,
+                  fontSize: "17px",
+                  fontWeight: 600,
+                  color: theme.palette.primary.dark,
+                  border: `${theme.palette.primary.contrastText} solid 2px`,
                   boxSizing: "border-box",
                 },
                 "& .Mui-selected": {
                   fontSize: "18px",
-                  color: theme.palette.text.secondary,
+                  fontWeight: 600,
+                  color: theme.palette.primary.contrastText,
                   border: "none",
                 },
                 "& .Mui-disabled": {
@@ -56,7 +67,9 @@ const DateTimePicker = ({
         }}
         renderInput={(params) => (
           <TextField
-            onClick={() => setIsPickerOpen(!isPickerOpen)}
+            onClick={() => {
+              if (!disabled) setIsPickerOpen(!isPickerOpen);
+            }}
             {...params}
             inputProps={{
               ...params.inputProps,
@@ -65,11 +78,11 @@ const DateTimePicker = ({
             }}
             style={{
               backgroundColor: "white",
-              margin: "2rem 0",
-              width: "20rem",
+              width: "100%",
               caretColor: "transparent",
             }}
             autoComplete="off"
+            error={isError}
           />
         )}
         onChange={(newDate) => {
@@ -79,13 +92,11 @@ const DateTimePicker = ({
         shouldDisableTime={(timeValue, clockType) =>
           showOnlyAvailableHours(dateValue, calendarData, timeValue, clockType)
         }
-        key={"teta"}
+        key={"appointments-calendar"}
         open={isPickerOpen}
         value={dateValue}
         onAccept={() => setIsPickerOpen(false)}
-        onError={(error) => {
-          setIsError(error ? true : false);
-        }}
+        onError={(error) => handleDatePickerError(error)}
         inputFormat={"EEEE - d.M.yyyy - Час: HH:mm"}
         views={["day", "hours"]}
         disableOpenPicker

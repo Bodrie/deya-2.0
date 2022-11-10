@@ -5,6 +5,7 @@ import {
   Typography,
   CircularProgress,
   useTheme,
+  Divider,
 } from "@mui/material";
 import { AccountCircle, Clear } from "@mui/icons-material";
 import { LinkStyled } from "../../components";
@@ -14,6 +15,7 @@ import { photoEnlarger } from "../../utils/photoEnlarger";
 import { User } from "firebase/auth";
 import { IUserAppointments } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
+import { sxMbSpacing } from "../../constants/constants";
 
 const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   useRefreshDB();
@@ -46,8 +48,17 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   return (
     <>
       {uid ? (
-        <Grid container item justifyContent="center">
-          <Grid item xs={10} mb={2}>
+        <Grid
+          container
+          item
+          justifyContent="center"
+          xs={10}
+          sm={8}
+          md={6}
+          lg={4}
+          margin="2rem auto"
+        >
+          <Grid item mb={sxMbSpacing}>
             <Typography
               component={"p"}
               variant={"h4"}
@@ -57,6 +68,13 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               Вашият профил
             </Typography>
           </Grid>
+          <Divider
+            sx={{
+              width: "inherit",
+              marginBottom: sxMbSpacing,
+              backgroundColor: "black",
+            }}
+          />
           <Grid item>
             {email === process.env.REACT_APP_ADMIN && (
               <LinkStyled to={"/admin/new"}>
@@ -67,7 +85,6 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
           <Grid
             container
             item
-            xs={10}
             justifyContent="space-evenly"
             flexWrap="wrap"
             mb={2}
@@ -75,14 +92,19 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             <Grid item p={2}>
               {photoURL ? (
                 <img
-                  alt="asd"
+                  alt="user"
                   src={photoEnlarger(photoURL)}
                   width={150}
                   height={150}
                   style={{ borderRadius: "15px" }}
                 />
               ) : (
-                <AccountCircle />
+                <AccountCircle
+                  color="disabled"
+                  width={150}
+                  height={150}
+                  sx={{ borderRadius: "15px", width: 150, height: 150 }}
+                />
               )}
             </Grid>
 
@@ -91,7 +113,14 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               <Typography fontWeight={600}>{email}</Typography>
             </Grid>
           </Grid>
-          <Grid item xs={10} mb={2}>
+          <Divider
+            sx={{
+              width: "inherit",
+              marginBottom: sxMbSpacing,
+              backgroundColor: "black",
+            }}
+          />
+          <Grid item mb={sxMbSpacing}>
             <Typography
               component={"p"}
               variant={"h4"}
@@ -103,19 +132,25 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                 : "Все още нямате записани часове"}
             </Typography>
           </Grid>
+          <Divider
+            sx={{
+              width: "inherit",
+              marginBottom: sxMbSpacing,
+              backgroundColor: "black",
+            }}
+          />
           {appointments?.map((appointment, idx) => {
             return (
               <Grid
                 container
                 item
-                xs={10}
                 justifyContent="space-evenly"
                 key={`${appointment.date}-${appointment.hours}-${idx}`}
                 sx={{
                   border: `solid 2px ${theme.palette.primary.main}`,
                   borderRadius: "15px",
                 }}
-                mb={2}
+                mb={sxMbSpacing}
               >
                 <Grid item p={2} textAlign="start">
                   <Typography>Час за нещо {idx}</Typography>
