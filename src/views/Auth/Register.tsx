@@ -23,10 +23,6 @@ const Register = ({ active }: RegisterProps) => {
   
   return (
     <Slide
-      timeout={{ enter: 700, exit: 700 }}
-  };
-  return (
-    <Slide
       timeout={{enter: 700, exit: 700}}
       easing={{
         enter: theme.transitions.easing.easeOut,
