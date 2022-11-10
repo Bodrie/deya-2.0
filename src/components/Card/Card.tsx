@@ -15,10 +15,10 @@ const CardComponent = ({ content }: { content: ICardContent[] }) => {
             direction={index % 2 === 0 ? "row" : "row-reverse"}
             alignItems="center"
             justifyContent="space-evenly"
-            padding="1rem"
+            padding={{ xs: "1rem", md: "1rem 0" }}
             marginBottom={isLastCard ? "1rem" : "0rem"}
           >
-            <Grid item sm={6} md={6}>
+            <Grid item sm={6} md={6} lg={6} xl={4}>
               <Paper elevation={8} sx={{ borderRadius: "15px" }}>
                 <CardMedia
                   component="img"
