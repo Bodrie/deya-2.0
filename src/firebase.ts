@@ -21,14 +21,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
-  linkWithCredential,
-  EmailAuthProvider,
-  linkWithPopup,
-  getRedirectResult,
-  signInWithPopup,
-  User,
-  onAuthStateChanged,
-  sendEmailVerification,
 } from "firebase/auth";
 import moment from "moment";
 import {
@@ -36,7 +28,6 @@ import {
   IAppointmentCreateOrUpdate,
   ICalendar,
 } from "./types/types";
-import { Navigate } from "react-router-dom";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

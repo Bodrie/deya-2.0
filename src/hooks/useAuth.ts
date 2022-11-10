@@ -22,6 +22,7 @@ const useAuth = () => {
     console.log('hre');
     
     navigate("/");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   return userData;
