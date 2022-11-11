@@ -51,13 +51,13 @@ const Calendar = ({ email, emailVerified }: User) => {
     <Grid
       container
       item
-      alignItems="flex-start"
+      alignContent="flex-start"
       xs={10}
       sm={8}
       md={6}
       lg={4}
       margin="2rem auto"
-      flex={1}
+      flex={{ xs: 1 }}
     >
       <Grid item>
         <Typography
@@ -70,23 +70,28 @@ const Calendar = ({ email, emailVerified }: User) => {
           Заглавие / запазете час / тест
         </Typography>
         <Divider sx={{ marginBottom: sxMbSpacing, backgroundColor: "black" }} />
-        <Typography component={"p"} typography={"body1"} fontWeight={600}>
+        <Typography
+          component={"p"}
+          typography={"body1"}
+          fontWeight={600}
+          mb={sxMbSpacing}
+        >
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus
           delectus sed necessitatibus, facilis, suscipit unde impedit illum in
           sapiente ab, iste praesentium magnam? Debitis id totam quasi quis quam
           corrupti?
         </Typography>
+        <Divider
+          flexItem
+          sx={{
+            marginBottom: sxMbSpacing,
+            backgroundColor: "black",
+          }}
+        />
       </Grid>
       {emailVerified ? (
         <Grid container item direction="column">
-          <Divider
-            flexItem
-            sx={{
-              marginBottom: sxMbSpacing,
-              backgroundColor: "black",
-            }}
-          />
-          <Grid item container mb={sxMbSpacing}>
+          <Grid container item mb={sxMbSpacing}>
             {appointmentSaved ? (
               <Grid
                 item

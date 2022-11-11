@@ -11,7 +11,7 @@ export const facebookLink =
 
 export const sxMbSpacing = {
   xs: 4,
-  sm: 6,
-  md: 8,
-  lg: 10,
+  sm: 5,
+  md: 5,
+  lg: 5,
 };

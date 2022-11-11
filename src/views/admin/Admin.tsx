@@ -32,7 +32,12 @@ const Admin = () => {
   };
   if (snackOpen) setTimeout(() => setSnakOpen(false), 5000);
   return (
-    <Grid container margin={"2rem 0"} flex={1}>
+    <Grid
+      container
+      margin={"2rem 0"}
+      flex={{ xs: 1 }}
+      alignContent="flex-start"
+    >
       <Snackbar
         color="success"
         open={snackOpen}

@@ -3,7 +3,6 @@ import React from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signUp } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
-import { useNavigate } from "react-router-dom";
 
 interface RegisterProps {
   active: string;
@@ -11,7 +10,6 @@ interface RegisterProps {
 
 const Register = ({ active }: RegisterProps) => {
   const theme = useTheme();
-  const navigate = useNavigate();
 
   const signUpUser = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();

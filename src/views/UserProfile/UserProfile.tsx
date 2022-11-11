@@ -52,12 +52,14 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
         <Grid
           container
           item
+          alignContent="flex-start"
           justifyContent="center"
           xs={10}
           sm={8}
           md={6}
           lg={4}
           margin="2rem auto"
+          flex={{ xs: 1 }}
         >
           <Grid item mb={sxMbSpacing}>
             <Typography
@@ -71,7 +73,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
           </Grid>
           <Divider
             sx={{
-              width: "inherit",
+              width: "100%",
               marginBottom: sxMbSpacing,
               backgroundColor: "black",
             }}
@@ -116,7 +118,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
           </Grid>
           <Divider
             sx={{
-              width: "inherit",
+              width: "100%",
               marginBottom: sxMbSpacing,
               backgroundColor: "black",
             }}
@@ -135,7 +137,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
           </Grid>
           <Divider
             sx={{
-              width: "inherit",
+              width: "100%",
               marginBottom: sxMbSpacing,
               backgroundColor: "black",
             }}

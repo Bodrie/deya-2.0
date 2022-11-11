@@ -15,7 +15,7 @@ const Auth = () => {
     setActiveTab(newTabValue);
   };
   return (
-    <Grid container justifyContent="center" margin={"2rem 0"} flex={1}>
+    <Grid container justifyContent="center" margin={"2rem 0"} flex={{ xs: 1 }}>
       <Grid item xs={10} sm={8} md={7} lg={5}>
         <Typography
           variant="h6"
