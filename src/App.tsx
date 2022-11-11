@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Auth />} />
+        {!userData && <Route path="/login" element={<Auth />} />}
         {userData && isEmailVerified && (
           <>
             <Route path="/calendar" element={<Calendar {...userData} />} />
