@@ -21,7 +21,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
-  User,
   UserCredential,
 } from "firebase/auth";
 import moment from "moment";

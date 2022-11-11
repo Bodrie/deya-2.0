@@ -1,13 +1,4 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Paper,
-  Slide,
-  useTheme,
-  Alert,
-  Snackbar,
-} from "@mui/material";
+import { Box, TextField, Button, Paper, Slide, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signIn } from "../../firebase";

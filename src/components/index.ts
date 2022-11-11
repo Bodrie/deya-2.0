@@ -6,3 +6,4 @@ export { default as TabLinkStyled } from "./Link/TabLink";
 export { default as Footer } from "./Footer/Footer";
 export { default as DateTimePicker } from "./DateTimePicker/DateTimePicker";
 export { default as HideOnScroll } from "./HideOnScroll/HideOnScroll";
+export { default as ErrorBoundaryFallback } from "./ErrorBoundaryFallback/ErrorBoundaryFallback";

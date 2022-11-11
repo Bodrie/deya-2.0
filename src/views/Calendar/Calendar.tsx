@@ -38,7 +38,7 @@ const Calendar = ({ email, emailVerified }: User) => {
       setSaveMoreAppointment(false);
     });
   };
-
+  throw Error();
   const handleAppointmentCreateNew = () => {
     setSaveMoreAppointment(true);
     setDate(null);
