@@ -1,8 +1,9 @@
 import { Box, TextField, Button, Paper, Slide, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signUp } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
+import { ICustomError } from "../../types/types";
 
 interface RegisterProps {
   active: string;
@@ -10,12 +11,20 @@ interface RegisterProps {
 
 const Register = ({ active }: RegisterProps) => {
   const theme = useTheme();
+  const [error, setError] = useState<ICustomError>({
+    error: undefined,
+    errorMsg: undefined,
+  });
 
   const signUpUser = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const email: string = e.currentTarget.createEmail.value;
     const password: string = e.currentTarget.createPassword.value;
-    signUp(email, password);
+    signUp(email, password).then((response) => {
+      if (response.hasOwnProperty("errorMsg")) {
+        setError(response as ICustomError);
+      }
+    });
   };
 
   return (
@@ -50,12 +59,52 @@ const Register = ({ active }: RegisterProps) => {
               variant="outlined"
               label="Имейл"
               type="email"
+              error={error.error === 0}
+              onInputCapture={() =>
+                setError({ error: undefined, errorMsg: undefined })
+              }
+              sx={{ position: "relative" }}
+              helperText={
+                <span
+                  style={{
+                    display: error.error === 0 ? "inherit" : "none",
+                    position: "absolute",
+                    top: 57,
+                    left: 5,
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.07rem",
+                  }}
+                >
+                  {error.errorMsg}
+                </span>
+              }
             />
             <TextField
               id="createPassword"
               variant="outlined"
               label="Парола"
               type="password"
+              error={error.error === 1}
+              onInputCapture={() =>
+                setError({ error: undefined, errorMsg: undefined })
+              }
+              sx={{ position: "relative" }}
+              helperText={
+                <span
+                  style={{
+                    display: error.error === 1 ? "inherit" : "none",
+                    position: "absolute",
+                    top: 57,
+                    left: 5,
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.07rem",
+                  }}
+                >
+                  {error.errorMsg}
+                </span>
+              }
             />
             <Button type="submit" variant="contained">
               Регистряция

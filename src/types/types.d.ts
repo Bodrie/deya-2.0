@@ -41,3 +41,8 @@ export interface ICardContent {
   content: string;
   img: string;
 }
+
+export interface ICustomError {
+  error: number | undefined;
+  errorMsg: string | undefined;
+}

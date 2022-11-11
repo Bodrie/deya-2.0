@@ -1,8 +1,18 @@
-import { Box, TextField, Button, Paper, Slide, useTheme } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Paper,
+  Slide,
+  useTheme,
+  Alert,
+  Snackbar,
+} from "@mui/material";
+import React, { useState } from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signIn } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
+import { ICustomError } from "../../types/types";
 
 interface LoginProps {
   active: string;
@@ -10,12 +20,21 @@ interface LoginProps {
 
 const Login = ({ active }: LoginProps) => {
   const theme = useTheme();
+  const [error, setError] = useState<ICustomError>({
+    error: undefined,
+    errorMsg: undefined,
+  });
   const signInUser = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const email: string = e.currentTarget.email.value;
     const password: string = e.currentTarget.password.value;
-    signIn(email, password);
+    signIn(email, password).then((response) => {
+      if (response.hasOwnProperty("errorMsg")) {
+        setError(response as ICustomError);
+      }
+    });
   };
+
   return (
     <Slide
       appear={false}
@@ -48,12 +67,54 @@ const Login = ({ active }: LoginProps) => {
               variant="outlined"
               label="Имейл"
               type="email"
+              autoComplete="current-email"
+              error={error.error === 0}
+              onInputCapture={() =>
+                setError({ error: undefined, errorMsg: undefined })
+              }
+              sx={{ position: "relative" }}
+              helperText={
+                <span
+                  style={{
+                    display: error.error === 0 ? "inherit" : "none",
+                    position: "absolute",
+                    top: 57,
+                    left: 5,
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.07rem",
+                  }}
+                >
+                  {error.errorMsg}
+                </span>
+              }
             />
             <TextField
               id="password"
               variant="outlined"
               label="Парола"
               type="password"
+              autoComplete="current-password"
+              error={error.error === 1}
+              onInputCapture={() =>
+                setError({ error: undefined, errorMsg: undefined })
+              }
+              sx={{ position: "relative" }}
+              helperText={
+                <span
+                  style={{
+                    display: error.error === 1 ? "inherit" : "none",
+                    position: "absolute",
+                    top: 57,
+                    left: 5,
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.07rem",
+                  }}
+                >
+                  {error.errorMsg}
+                </span>
+              }
             />
             <Button type="submit" variant="contained">
               Вход

@@ -21,13 +21,17 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
+  User,
+  UserCredential,
 } from "firebase/auth";
 import moment from "moment";
 import {
   IAppointment,
   IAppointmentCreateOrUpdate,
   ICalendar,
+  ICustomError,
 } from "./types/types";
+import { errorHandler } from "./utils/errorHandler";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -151,16 +155,28 @@ export const createOrUpdateAvailableAppointments = async ({
   });
 };
 
-export const signUp = (email: string, password: string) => {
-  createUserWithEmailAndPassword(auth, email, password).catch((error) => {
-    throw new Error(`${error.name}: ${error.message}`);
-  })
+export const signUp = (
+  email: string,
+  password: string
+): Promise<UserCredential | ICustomError> => {
+  return createUserWithEmailAndPassword(auth, email, password).catch(
+    (error: FirestoreError) => {
+      const isError = errorHandler(error.code);
+      return isError as ICustomError;
+    }
+  );
 };
 
-export const signIn = (email: string, password: string) => {
-  signInWithEmailAndPassword(auth, email, password).catch((error) => {
-    throw new Error(`${error.name}: ${error.message}`);
-  });
+export const signIn = (
+  email: string,
+  password: string
+): Promise<UserCredential | ICustomError> => {
+  return signInWithEmailAndPassword(auth, email, password).catch(
+    (error: FirestoreError) => {
+      const isError = errorHandler(error.code);
+      return isError as ICustomError;
+    }
+  );
 };
 
 export const signInWithFacebook = () => {
