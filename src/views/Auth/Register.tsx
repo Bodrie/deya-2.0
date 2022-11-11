@@ -19,10 +19,11 @@ const Register = ({ active }: RegisterProps) => {
     const password: string = e.currentTarget.createPassword.value;
     signUp(email, password);
   };
-  
+
   return (
     <Slide
-      timeout={{enter: 700, exit: 700}}
+      appear={false}
+      timeout={{ enter: 700, exit: 700 }}
       easing={{
         enter: theme.transitions.easing.easeOut,
         exit: theme.transitions.easing.easeOut,
@@ -32,38 +33,37 @@ const Register = ({ active }: RegisterProps) => {
       unmountOnExit
       mountOnEnter
     >
-      <Paper elevation={5} sx={{ borderRadius: "15px" }}>
-        <Box
-          mb={sxMbSpacing}
-          sx={{
-            position: "absolute",
-            border: "2px solid #873F91",
-            borderRadius: "15px",
-            padding: "3rem 1rem",
-            backgroundImage: `url(${bgimg})`,
-            width: "fill-available",
-          }}
-        >
-          <form onSubmit={(e) => signUpUser(e)}>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-              <TextField
-                id="createEmail"
-                variant="outlined"
-                label="Имейл"
-                type="email"
-              />
-              <TextField
-                id="createPassword"
-                variant="outlined"
-                label="Парола"
-                type="password"
-              />
-              <Button type="submit" variant="contained">
-                Регистряция
-              </Button>
-            </Box>
-          </form>
-        </Box>
+      <Paper
+        elevation={5}
+        sx={{
+          position: "absolute",
+          border: "2px solid #873F91",
+          borderRadius: "15px",
+          padding: "3rem 1rem",
+          backgroundImage: `url(${bgimg})`,
+          marginBottom: sxMbSpacing,
+          width: "fill-available",
+        }}
+      >
+        <form onSubmit={(e) => signUpUser(e)}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            <TextField
+              id="createEmail"
+              variant="outlined"
+              label="Имейл"
+              type="email"
+            />
+            <TextField
+              id="createPassword"
+              variant="outlined"
+              label="Парола"
+              type="password"
+            />
+            <Button type="submit" variant="contained">
+              Регистряция
+            </Button>
+          </Box>
+        </form>
       </Paper>
     </Slide>
   );

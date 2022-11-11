@@ -20,6 +20,7 @@ const Login = ({ active }: LoginProps) => {
   };
   return (
     <Slide
+      appear={false}
       timeout={{ enter: 700, exit: 700 }}
       direction="right"
       in={active === "login"}

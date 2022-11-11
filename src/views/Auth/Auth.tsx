@@ -15,7 +15,7 @@ const Auth = () => {
     setActiveTab(newTabValue);
   };
   return (
-    <Grid container justifyContent="center" margin={"2rem 0"}>
+    <Grid container justifyContent="center" margin={"2rem 0"} flex={1}>
       <Grid item xs={10} sm={8} md={7} lg={5}>
         <Typography
           variant="h6"
@@ -41,7 +41,8 @@ const Auth = () => {
         <Box
           sx={{
             position: "relative",
-            minHeight: "23rem",
+            minHeight: "21.5rem",
+            overflow: "hidden",
           }}
         >
           <Login active={activeTab} />
