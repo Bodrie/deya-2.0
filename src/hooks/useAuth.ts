@@ -22,6 +22,8 @@ const useAuth = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
+  console.log(userData);
+  
   return { userData, isEmailVerified };
 };
 

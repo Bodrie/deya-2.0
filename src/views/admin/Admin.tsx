@@ -3,6 +3,7 @@ import { createOrUpdateAvailableAppointments } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
 import { useRefreshDB } from "../../hooks";
+import TableOfAppointments from "./TableOfAppointments";
 
 const Admin = () => {
   useRefreshDB();
@@ -86,6 +87,7 @@ const Admin = () => {
           9, 11, 13, 15, 20
         </Typography>
       </Grid>
+      <TableOfAppointments />
     </Grid>
   );
 };

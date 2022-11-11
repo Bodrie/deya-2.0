@@ -8,6 +8,8 @@ export interface IAppointment {
 }
 
 export interface IUserAppointments {
+  id?: number;
+  email?: string;
   date: string;
   hours: number;
   isApproved: boolean;
