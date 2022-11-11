@@ -10,6 +10,8 @@ const useAuth = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      console.log("useAuth", user);
+
       if (user) {
         setUserData(user);
         setIsEmailVerified(user.emailVerified);
