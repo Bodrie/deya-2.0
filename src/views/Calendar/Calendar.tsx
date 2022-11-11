@@ -33,6 +33,7 @@ const Calendar = ({ email, emailVerified }: User) => {
       appointmentDate: appointmentDate,
       appointmentHour: appointmentHour,
       userEmail: email,
+      isApproved: 'unapproved'
     }).then(() => {
       setAppointmentSaved(true);
       setSaveMoreAppointment(false);

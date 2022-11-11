@@ -4,11 +4,13 @@ export interface IAppointment {
   appointmentDate: string;
   appointmentHour: number;
   userEmail: string | null;
+  isApproved: string;
 }
 
 export interface IUserAppointments {
   date: string;
   hours: number;
+  isApproved: boolean;
 }
 
 export interface ICalendar {

@@ -16,6 +16,7 @@ import { User } from "firebase/auth";
 import { IUserAppointments } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { sxMbSpacing } from "../../constants/constants";
+import { manageDbStrings } from "../../utils/manageDbStrings";
 
 const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   useRefreshDB();
@@ -28,10 +29,12 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
       .then((calendarData) => {
         calendarData.forEach((date) => {
           date.hours.forEach((hour: string) => {
-            if (hour.includes(email!)) {
+            const { currentUserEmail, currentApproval } = manageDbStrings(hour);
+            if (currentUserEmail.includes(email!)) {
               userAppointments.push({
                 date: date.date,
                 hours: Number(hour.slice(0, 2)),
+                isApproved: currentApproval === "approved" ? true : false,
               });
             }
           });
@@ -162,6 +165,9 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                     Дата: {moment(appointment.date).format("D.M.yyyy")}
                   </Typography>
                   <Typography>Час: {appointment.hours}:00</Typography>
+                  <Typography>
+                    {appointment.isApproved ? "Потвърден" : "Непотвърден"}
+                  </Typography>
                 </Grid>
                 <Grid item p={2}>
                   <Button
@@ -171,6 +177,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                         appointmentDate: appointment.date,
                         appointmentHour: appointment.hours,
                         userEmail: email,
+                        isApproved: appointment.isApproved ? 'approved' : "unapproved"
                       }).then(() => getCurrentUserAppointments());
                     }}
                   >

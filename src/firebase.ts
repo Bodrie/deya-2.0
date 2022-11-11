@@ -99,6 +99,7 @@ export const appointmentCreate = async ({
   appointmentDate,
   appointmentHour,
   userEmail,
+  isApproved,
 }: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
@@ -109,7 +110,7 @@ export const appointmentCreate = async ({
 
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
-    hours: arrayUnion(appointmentHour + " - " + userEmail),
+    hours: arrayUnion(appointmentHour + " - " + userEmail + " - " + isApproved),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
   });
@@ -119,10 +120,13 @@ export const appointmentDelete = async ({
   appointmentDate,
   appointmentHour,
   userEmail,
+  isApproved,
 }: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
-    hours: arrayRemove(appointmentHour + " - " + userEmail),
+    hours: arrayRemove(
+      appointmentHour + " - " + userEmail + " - " + isApproved
+    ),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
   });
