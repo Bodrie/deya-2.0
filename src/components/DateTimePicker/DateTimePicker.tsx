@@ -81,6 +81,7 @@ const DateTimePicker = ({
               width: "100%",
               caretColor: "transparent",
             }}
+            label="Час за"
             autoComplete="off"
             error={isError}
           />

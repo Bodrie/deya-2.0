@@ -188,8 +188,14 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                         isApproved: appointment.isApproved
                           ? "approved"
                           : "unapproved",
-                        displayName: appointment.displayName,
-                        phone: appointment.phone,
+                        displayName:
+                          appointment.displayName !== "Няма"
+                            ? appointment.displayName
+                            : "null",
+                        phone:
+                          appointment.phone !== "Няма"
+                            ? appointment.phone
+                            : "null",
                       }).then(() => getCurrentUserAppointments());
                     }}
                   >

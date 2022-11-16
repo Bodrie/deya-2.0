@@ -9,14 +9,17 @@ import { IAppointment, IUserAppointments } from "../../types/types";
 import { manageDbStrings } from "../../utils/manageDbStrings";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { Check, Clear } from "@mui/icons-material";
+import moment from "moment";
 
 const TableOfAppointments = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up("md"));
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
   const [appointments, setAppointments] = useState<IUserAppointments[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getCurrentUserAppointments = () => {
+    setLoading(true);
     const userAppointments: IUserAppointments[] = [];
     getCalendarData()
       .then((calendarData) => {
@@ -32,7 +35,7 @@ const TableOfAppointments = () => {
             if (!hour.includes(" - free")) {
               userAppointments.push({
                 id: Number(`${dateIndex}${index}`),
-                date: date.date,
+                date: moment(date.date).format('MM.DD.YYYY'),
                 hours: currentHour,
                 email: currentUserEmail,
                 isApproved: currentApproval === "approved" ? true : false,
@@ -44,13 +47,15 @@ const TableOfAppointments = () => {
         });
       })
       .then(() => setAppointments(userAppointments))
+      .finally(() => setLoading(false))
       .catch((err) => console.log(err.message));
   };
 
   const handleApproveAppointment = (params: GridRenderCellParams) => {
+    setLoading(true);
     const rowData: IUserAppointments = params.row;
     const payload: IAppointment = {
-      appointmentDate: rowData.date,
+      appointmentDate: moment(rowData.date).format("YYYY-MM-DD"),
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "unapproved",
@@ -58,17 +63,20 @@ const TableOfAppointments = () => {
       phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && !rowData.isApproved) {
-      appointmentDelete(payload).then(() => {
-        appointmentCreate({ ...payload, isApproved: "approved" });
-      });
+      appointmentDelete(payload)
+        .then(() => {
+          appointmentCreate({ ...payload, isApproved: "approved" });
+        })
+        .finally(() => setLoading(false));
       rowData.isApproved = true;
     }
   };
 
   const handleUnapproveAppointment = (params: GridRenderCellParams) => {
+    setLoading(true);
     const rowData: IUserAppointments = params.row;
     const payload: IAppointment = {
-      appointmentDate: rowData.date,
+      appointmentDate: moment(rowData.date).format("YYYY-MM-DD"),
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "approved",
@@ -76,9 +84,11 @@ const TableOfAppointments = () => {
       phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && rowData.isApproved) {
-      appointmentDelete(payload).then(() => {
-        appointmentCreate({ ...payload, isApproved: "unapproved" });
-      });
+      appointmentDelete(payload)
+        .then(() => {
+          appointmentCreate({ ...payload, isApproved: "unapproved" });
+        })
+        .finally(() => setLoading(false));
       rowData.isApproved = false;
     }
   };
@@ -165,6 +175,7 @@ const TableOfAppointments = () => {
       }}
     >
       <DataGrid
+        loading={loading}
         rows={appointments}
         columns={columns}
         rowHeight={70}

@@ -1,6 +1,10 @@
 export const DATE_REGEX =
   /^20[2-3][0-9]-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/g;
 
+export const PHONE_REGEX =
+  // eslint-disable-next-line no-useless-escape
+  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g;
+
 export const headerSettings = [
   { name: "Профил", href: "/profile" },
   { name: "Излез", href: "/" },

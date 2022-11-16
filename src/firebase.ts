@@ -22,6 +22,10 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   UserCredential,
+  updateProfile,
+  updatePhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
 } from "firebase/auth";
 import moment from "moment";
 import {
@@ -136,6 +140,15 @@ export const appointmentDelete = async ({
   displayName,
   phone,
 }: IAppointment): Promise<void> => {
+  console.log(
+    appointmentDate,
+    appointmentHour,
+    userEmail,
+    isApproved,
+    displayName,
+    phone
+  );
+
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(
@@ -210,6 +223,23 @@ export const signInWithFacebook = () => {
 export const signInWithGoogle = () => {
   signInWithRedirect(auth, googleProvider);
 };
+
+// export const updateUserPhone = async () => {
+//   if (auth.currentUser) {
+//     const applicationVerifier = new RecaptchaVerifier("recaptcha-container");
+//     const provider = new PhoneAuthProvider(auth);
+//     const verificationId = await provider.verifyPhoneNumber(
+//       "+16505550101",
+//       applicationVerifier
+//     );
+//     // Obtain the verificationCode from the user.
+//     const phoneCredential = PhoneAuthProvider.credential(
+//       verificationId,
+//       verificationCode
+//     );
+//     updatePhoneNumber(auth.currentUser, phoneCredential);
+//   }
+// };
 
 logEvent(analytics, "notification_received");
 
