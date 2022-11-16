@@ -11,12 +11,12 @@ export interface IAppointment {
 
 export interface IUserAppointments {
   id?: number;
-  email?: string;
-  displayName?: string | null;
-  phone?: string | null;
   date: string;
   hours: number;
   isApproved: boolean;
+  email?: string;
+  displayName?: string | null;
+  phone?: string | null;
 }
 
 export interface ICalendar {

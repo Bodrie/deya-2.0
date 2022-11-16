@@ -29,12 +29,20 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
       .then((calendarData) => {
         calendarData.forEach((date) => {
           date.hours.forEach((hour: string) => {
-            const { currentUserEmail, currentApproval } = manageDbStrings(hour);
+            const {
+              currentUserEmail,
+              currentApproval,
+              currentDisplayName,
+              currentHour,
+              currentPhoneNumber,
+            } = manageDbStrings(hour);
             if (currentUserEmail.includes(email!)) {
               userAppointments.push({
+                hours: currentHour,
                 date: date.date,
-                hours: Number(hour.slice(0, 2)),
                 isApproved: currentApproval === "approved" ? true : false,
+                displayName: currentDisplayName,
+                phone: currentPhoneNumber,
               });
             }
           });
@@ -177,7 +185,11 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                         appointmentDate: appointment.date,
                         appointmentHour: appointment.hours,
                         userEmail: email,
-                        isApproved: appointment.isApproved ? 'approved' : "unapproved"
+                        isApproved: appointment.isApproved
+                          ? "approved"
+                          : "unapproved",
+                        displayName: appointment.displayName,
+                        phone: appointment.phone,
                       }).then(() => getCurrentUserAppointments());
                     }}
                   >

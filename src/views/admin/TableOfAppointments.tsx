@@ -32,9 +32,9 @@ const TableOfAppointments = () => {
             if (!hour.includes(" - free")) {
               userAppointments.push({
                 id: Number(`${dateIndex}${index}`),
-                email: currentUserEmail,
                 date: date.date,
                 hours: currentHour,
+                email: currentUserEmail,
                 isApproved: currentApproval === "approved" ? true : false,
                 displayName: currentDisplayName,
                 phone: currentPhoneNumber,
@@ -54,6 +54,8 @@ const TableOfAppointments = () => {
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "unapproved",
+      displayName: rowData.displayName,
+      phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && !rowData.isApproved) {
       appointmentDelete(payload).then(() => {
@@ -70,6 +72,8 @@ const TableOfAppointments = () => {
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "approved",
+      displayName: rowData.displayName,
+      phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && rowData.isApproved) {
       appointmentDelete(payload).then(() => {
@@ -93,7 +97,7 @@ const TableOfAppointments = () => {
     { field: "hours", headerName: "Час", width: 50 },
     {
       field: "displayName",
-      headerName: "Човек",
+      headerName: "Имена",
       width: mdUp ? (lgUp ? 230 : 180) : 130,
     },
     {

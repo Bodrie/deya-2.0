@@ -117,11 +117,11 @@ export const appointmentCreate = async ({
         " - " +
         userEmail +
         " - " +
+        isApproved +
+        " - " +
         displayName +
         " - " +
-        phone +
-        " - " +
-        isApproved
+        phone
     ),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
@@ -133,11 +133,21 @@ export const appointmentDelete = async ({
   appointmentHour,
   userEmail,
   isApproved,
+  displayName,
+  phone,
 }: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(
-      appointmentHour + " - " + userEmail + " - " + isApproved
+      appointmentHour +
+        " - " +
+        userEmail +
+        " - " +
+        isApproved +
+        " - " +
+        displayName +
+        " - " +
+        phone
     ),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
