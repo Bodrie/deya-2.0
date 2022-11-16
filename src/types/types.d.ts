@@ -5,11 +5,15 @@ export interface IAppointment {
   appointmentHour: number;
   userEmail: string | null;
   isApproved: string;
+  phone?: string | null;
+  displayName?: string | null;
 }
 
 export interface IUserAppointments {
   id?: number;
   email?: string;
+  displayName?: string | null;
+  phone?: string | null;
   date: string;
   hours: number;
   isApproved: boolean;

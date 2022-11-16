@@ -8,7 +8,7 @@ import { ICalendar } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { sxMbSpacing } from "../../constants/constants";
 
-const Calendar = ({ email, emailVerified }: User) => {
+const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
   useRefreshDB();
   const theme = useTheme();
   const [date, setDate] = useState<Moment | null>(null);
@@ -33,13 +33,15 @@ const Calendar = ({ email, emailVerified }: User) => {
       appointmentDate: appointmentDate,
       appointmentHour: appointmentHour,
       userEmail: email,
-      isApproved: 'unapproved'
+      isApproved: "unapproved",
+      phone: phoneNumber,
+      displayName: displayName,
     }).then(() => {
       setAppointmentSaved(true);
       setSaveMoreAppointment(false);
     });
   };
-  
+
   const handleAppointmentCreateNew = () => {
     setSaveMoreAppointment(true);
     setDate(null);

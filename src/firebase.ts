@@ -100,6 +100,8 @@ export const appointmentCreate = async ({
   appointmentHour,
   userEmail,
   isApproved,
+  displayName,
+  phone,
 }: IAppointment): Promise<void> => {
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
@@ -110,7 +112,17 @@ export const appointmentCreate = async ({
 
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
-    hours: arrayUnion(appointmentHour + " - " + userEmail + " - " + isApproved),
+    hours: arrayUnion(
+      appointmentHour +
+        " - " +
+        userEmail +
+        " - " +
+        displayName +
+        " - " +
+        phone +
+        " - " +
+        isApproved
+    ),
   }).catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
   });

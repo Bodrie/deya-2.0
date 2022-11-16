@@ -1,7 +1,15 @@
 export const manageDbStrings = (hour: string) => {
-  const firstDashIdx = hour.indexOf(" - ");
-  const lastDashIdx = hour.lastIndexOf(" - ");
-  const currentUserEmail = hour.substring(firstDashIdx + 3, lastDashIdx);
-  const currentApproval = hour.substring(lastDashIdx + 3, hour.length);
-  return { currentUserEmail, currentApproval };
+  const splitedData = hour.split(" - ");
+  const currentHour = Number(splitedData[0]);
+  const currentUserEmail = splitedData[1];
+  const currentDisplayName = splitedData[2];
+  const currentPhoneNumber = splitedData[3];
+  const currentApproval = splitedData[4];
+  return {
+    currentHour,
+    currentUserEmail,
+    currentDisplayName,
+    currentPhoneNumber,
+    currentApproval,
+  };
 };
