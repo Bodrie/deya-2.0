@@ -1,14 +1,11 @@
-declare module "*.png";
-declare module "*.svg";
-declare module "*.jpeg";
-declare module "*.jpg";
+import { RecaptchaVerifier } from "firebase/auth";
+declare global {
+  interface Window {
+    recaptchaVerifier: RecaptchaVerifier;
+  }
 
-interface Window {
-    chrome: Chrome;
-  }
-  
-  interface Chrome {
-    webview: WebView2;
-  }
-  
-  interface WebView2 {}
+  module "*.png";
+  module "*.svg";
+  module "*.jpeg";
+  module "*";
+}

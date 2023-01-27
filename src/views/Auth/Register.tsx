@@ -1,9 +1,10 @@
 import { Box, TextField, Button, Paper, Slide, useTheme } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signUp } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
 import { ICustomError } from "../../types/types";
+import LoadingContext from "../../context/LoadingContext";
 
 interface RegisterProps {
   active: string;
@@ -11,17 +12,20 @@ interface RegisterProps {
 
 const Register = ({ active }: RegisterProps) => {
   const theme = useTheme();
+  const { setIsLoading } = useContext(LoadingContext);
   const [error, setError] = useState<ICustomError>({
     error: undefined,
     errorMsg: undefined,
   });
 
   const signUpUser = (e: React.BaseSyntheticEvent) => {
+    setIsLoading(true);
     e.preventDefault();
     const email: string = e.currentTarget.createEmail.value;
     const password: string = e.currentTarget.createPassword.value;
     signUp(email, password).then((response) => {
       if (response.hasOwnProperty("errorMsg")) {
+        setIsLoading(false);
         setError(response as ICustomError);
       }
     });

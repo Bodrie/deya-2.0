@@ -3,7 +3,6 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   getFirestore,
   collection,
-  where,
   deleteDoc,
   updateDoc,
   arrayRemove,
@@ -22,10 +21,10 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   UserCredential,
-  updateProfile,
   updatePhoneNumber,
   RecaptchaVerifier,
   PhoneAuthProvider,
+  User,
 } from "firebase/auth";
 import moment from "moment";
 import {
@@ -35,7 +34,6 @@ import {
   ICustomError,
 } from "./types/types";
 import { errorHandler } from "./utils/errorHandler";
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -69,18 +67,68 @@ const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const collRef = collection(db, "data");
 const auth = getAuth();
+auth.useDeviceLanguage();
+
+export const getUpdatedUser = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user !== null) {
+    const phone = user.phoneNumber;
+    return phone;
+  }
+};
+
+export const updateProfilePhoneNumber = async (phoneNumber: string) => {
+  const appVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible",
+    },
+    auth
+  );
+
+  const provider = new PhoneAuthProvider(auth);
+  const providerRes = await provider
+    .verifyPhoneNumber(phoneNumber, appVerifier)
+    .then((verificationId) => {
+      const verificationCode = window.prompt(
+        "Изпратихме код за потвърждение. Моля въведете го в полето по-долу."
+      );
+
+      const phoneCredential = PhoneAuthProvider.credential(
+        verificationId,
+        verificationCode as string
+      );
+
+      const isUpdatedResponse = updatePhoneNumber(
+        auth.currentUser as User,
+        phoneCredential
+      ).catch((error: FirestoreError) => {
+        return errorHandler(error.code);
+      });
+      return isUpdatedResponse;
+    })
+    .catch((error) => {
+      if (error) appVerifier.clear();
+    });
+
+  return providerRes as ICustomError;
+};
 
 export const refreshDatabase = async () => {
-  const pastDays = moment().subtract(1, "days").format("yyyy-MM-DD");
-  const getPastDays = await getDocsFromServer(
-    query(collRef, where("date", "==", `${pastDays}`))
-  ).catch((error: FirestoreError) => {
-    throw new Error(`${error.name}: ${error.message}`);
-  });
-  getPastDays.forEach(() => {
-    deleteDoc(doc(db, "data", `${pastDays}`)).catch((error: FirestoreError) => {
+  const getPastDays = await getDocsFromServer(query(collRef)).catch(
+    (error: FirestoreError) => {
       throw new Error(`${error.name}: ${error.message}`);
-    });
+    }
+  );
+  getPastDays.forEach((docu) => {
+    const currDateToCheck = moment(docu.id);
+    const isBeforeCurrDate = moment(currDateToCheck).isBefore(moment(), "day");
+    if (isBeforeCurrDate) {
+      deleteDoc(doc(db, "data", docu.id)).catch((error: FirestoreError) => {
+        throw new Error(`${error.name}: ${error.message}`);
+      });
+    }
   });
 };
 
@@ -140,15 +188,6 @@ export const appointmentDelete = async ({
   displayName,
   phone,
 }: IAppointment): Promise<void> => {
-  console.log(
-    appointmentDate,
-    appointmentHour,
-    userEmail,
-    isApproved,
-    displayName,
-    phone
-  );
-
   await updateDoc(doc(db, "data", appointmentDate), {
     date: appointmentDate,
     hours: arrayRemove(
@@ -223,23 +262,6 @@ export const signInWithFacebook = () => {
 export const signInWithGoogle = () => {
   signInWithRedirect(auth, googleProvider);
 };
-
-// export const updateUserPhone = async () => {
-//   if (auth.currentUser) {
-//     const applicationVerifier = new RecaptchaVerifier("recaptcha-container");
-//     const provider = new PhoneAuthProvider(auth);
-//     const verificationId = await provider.verifyPhoneNumber(
-//       "+16505550101",
-//       applicationVerifier
-//     );
-//     // Obtain the verificationCode from the user.
-//     const phoneCredential = PhoneAuthProvider.credential(
-//       verificationId,
-//       verificationCode
-//     );
-//     updatePhoneNumber(auth.currentUser, phoneCredential);
-//   }
-// };
 
 logEvent(analytics, "notification_received");
 

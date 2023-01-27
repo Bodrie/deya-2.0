@@ -22,7 +22,9 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   useRefreshDB();
   const theme = useTheme();
   const [appointments, setAppointments] = useState<IUserAppointments[]>([]);
-
+  const itsMe = process.env.REACT_APP_ADMIN?.toString().includes(
+    email as string
+  );
   const getCurrentUserAppointments = () => {
     const userAppointments: IUserAppointments[] = [];
     getCalendarData()
@@ -90,7 +92,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             }}
           />
           <Grid item>
-            {email === process.env.REACT_APP_ADMIN && (
+            {itsMe && (
               <LinkStyled to={"/admin/new"}>
                 <Button variant="contained">Admin Panel</Button>
               </LinkStyled>

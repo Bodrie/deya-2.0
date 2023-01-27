@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Grid, Tab, Typography, Tabs, Divider } from "@mui/material";
 import { sxMbSpacing } from "../../constants/constants";
 import Login from "./Login";
 import Register from "./Register";
 import Social from "./Social";
+import LoadingContext from "../../context/LoadingContext";
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState<string>("login");
-
+  const { isLoading } = useContext(LoadingContext);
   const handleTabChange = (
     event: React.SyntheticEvent,
     newTabValue: string
@@ -15,7 +16,13 @@ const Auth = () => {
     setActiveTab(newTabValue);
   };
   return (
-    <Grid container justifyContent="center" margin={"2rem 0"} flex={{ xs: 1 }}>
+    <Grid
+      container
+      justifyContent="center"
+      margin={"2rem 0"}
+      flex={{ xs: 1 }}
+      sx={{ filter: isLoading ? "blur(5px)" : "none" }}
+    >
       <Grid item xs={10} sm={8} md={7} lg={5}>
         <Typography
           variant="h6"

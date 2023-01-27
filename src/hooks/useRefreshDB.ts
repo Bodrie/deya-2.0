@@ -3,7 +3,10 @@ import { refreshDatabase } from "../firebase";
 
 const useRefreshDB = () => {
   useEffect(() => {
-    refreshDatabase();    
+    const intervalID = setInterval(() => {
+      refreshDatabase();
+    }, 60000 * 10);
+     return () => clearInterval(intervalID);
   }, []);
 };
 

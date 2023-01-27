@@ -1,9 +1,10 @@
 import { Box, TextField, Button, Paper, Slide, useTheme } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { sxMbSpacing } from "../../constants/constants";
 import { signIn } from "../../firebase";
 import bgimg from "../../assets/images/patternpad.svg";
 import { ICustomError } from "../../types/types";
+import LoadingContext from "../../context/LoadingContext";
 
 interface LoginProps {
   active: string;
@@ -11,19 +12,24 @@ interface LoginProps {
 
 const Login = ({ active }: LoginProps) => {
   const theme = useTheme();
+  const { setIsLoading } = useContext(LoadingContext);
   const [error, setError] = useState<ICustomError>({
     error: undefined,
     errorMsg: undefined,
   });
   const signInUser = (e: React.BaseSyntheticEvent) => {
+    setIsLoading(true);
     e.preventDefault();
     const email: string = e.currentTarget.email.value;
     const password: string = e.currentTarget.password.value;
-    signIn(email, password).then((response) => {
-      if (response.hasOwnProperty("errorMsg")) {
-        setError(response as ICustomError);
-      }
-    });
+    signIn(email, password)
+      .then((response) => {
+        if (response.hasOwnProperty("errorMsg")) {
+          setIsLoading(false);
+          setError(response as ICustomError);
+        }
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (

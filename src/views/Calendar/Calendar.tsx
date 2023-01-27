@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Typography,
@@ -9,18 +9,26 @@ import {
   Slide,
   Box,
   Checkbox,
+  CircularProgress,
 } from "@mui/material";
 import { DateTimePicker } from "../../components";
-import { getCalendarData, appointmentCreate } from "../../firebase";
+import {
+  getCalendarData,
+  appointmentCreate,
+  updateProfilePhoneNumber,
+  getUpdatedUser,
+} from "../../firebase";
 import moment, { Moment } from "moment";
 import { User } from "firebase/auth";
 import { ICalendar } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { PHONE_REGEX, sxMbSpacing } from "../../constants/constants";
+import LoadingContext from "../../context/LoadingContext";
 
 const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
   useRefreshDB();
   const theme = useTheme();
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [date, setDate] = useState<Moment | null>(null);
   const [isError, setIsError] = useState(false);
   const [appointmentSaved, setAppointmentSaved] = useState(false);
@@ -44,25 +52,50 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
     const appointmentHour = Number(moment(date).format("HH"));
     if (!phoneNumber && !showPhonePrompt && !phonePromptConsent) {
       setShowPhonePrompt(true);
-      console.log("ne ne");
     } else {
-      console.log("zapazwame");
-      await appointmentCreate({
-        appointmentDate: appointmentDate,
-        appointmentHour: appointmentHour,
-        userEmail: email,
-        isApproved: "unapproved",
-        phone: phoneNumber,
-        displayName: displayName,
-      }).then(() => {
-        setAppointmentSaved(true);
-        setSaveMoreAppointment(false);
-        setShowPhonePrompt(false);
-      });
+      setIsLoading(true);
+      if (showPhonePrompt && phonePromptValue.length > 5) {
+        const res = await updateProfilePhoneNumber(phonePromptValue);
+
+        if (!res?.error) {
+          const updatedPhoneFromDB = await getUpdatedUser();
+          await appointmentCreate({
+            appointmentDate: appointmentDate,
+            appointmentHour: appointmentHour,
+            userEmail: email,
+            isApproved: "unapproved",
+            phone: updatedPhoneFromDB,
+            displayName: displayName,
+          })
+            .then(() => {
+              setAppointmentSaved(true);
+              setSaveMoreAppointment(false);
+              setShowPhonePrompt(false);
+            })
+            .finally(() => setIsLoading(false));
+        } else {
+          setIsLoading(false);
+          return alert(res.errorMsg);
+        }
+      }
+      if (phoneNumber) {
+        await appointmentCreate({
+          appointmentDate: appointmentDate,
+          appointmentHour: appointmentHour,
+          userEmail: email,
+          isApproved: "unapproved",
+          phone: phoneNumber,
+          displayName: displayName,
+        })
+          .then(() => {
+            setAppointmentSaved(true);
+            setSaveMoreAppointment(false);
+            setShowPhonePrompt(false);
+          })
+          .finally(() => setIsLoading(false));
+      }
     }
   };
-
-  // console.log(phonePromptValue);
 
   const handleAppointmentCreateNew = () => {
     setSaveMoreAppointment(true);
@@ -84,6 +117,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
       margin="2rem auto"
       flex={{ xs: 1 }}
     >
+      <div id="recaptcha-container"></div>
       <Grid item>
         <Typography
           component={"h3"}
@@ -189,7 +223,8 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                         } else {
                           setPhonePromptError(false);
                         }
-                        setPhonePromptValue(event.target.value);
+                        setPhonePromptValue(number);
+                        console.log(number, "Number from Calendar.tsx");
                       }}
                       error={phonePromptError}
                       helperText={

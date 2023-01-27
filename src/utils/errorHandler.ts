@@ -23,6 +23,12 @@ export const errorHandler = (error: string): ICustomError => {
     case "auth/missing-email": {
       return { error: 0, errorMsg: "Полето е задължително" };
     }
+    case "auth/invalid-verification-code": {
+      return { error: 2, errorMsg: "Въведеният код е грешен." };
+    }
+    case "auth/missing-code": {
+      return { error: 2, errorMsg: "Не беше въведен код." };
+    }
     default:
       return { error: undefined, errorMsg: undefined };
   }
