@@ -45,18 +45,23 @@ const Footer = () => {
                   margin: "0 1rem 0 1rem",
                 }}
               />
-              <LinkStyled as="a" to={facebookLink} target="_blank">
+              <a
+                href={facebookLink}
+                target="_blank"
+                rel="noreferrer"
+                style={{ display: "contents" }}
+              >
                 <FacebookOutlined sx={{ color: "white" }} />
                 <Typography color="white" ml={0.5}>
                   ДЕЯ
                 </Typography>
-              </LinkStyled>
+              </a>
             </Grid>
             <Grid item>
               <Typography color="white">Емилия Христова</Typography>
             </Grid>
             <Grid item>
-              <Typography color="white">1234567890000</Typography>
+              <Typography color="white"></Typography>
             </Grid>
           </Grid>
         </Grid>

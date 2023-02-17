@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import LoadingContext from "./context/LoadingContext";
 import { useAuth, useEmialVerification, useRefreshDB } from "./hooks";
@@ -24,31 +24,31 @@ function App() {
   const itsMe = process.env.REACT_APP_ADMIN?.toString().includes(
     userData?.email as string
   );
+  const loaderStyles = {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    display: "flex",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 10,
+  };
+
+  const mainContentStyles = {
+    display: isLoading ? "initial" : "contents",
+    filter: isLoading ? "blur(5px)" : "none",
+  };
 
   return (
     <div className="App">
       {isLoading && (
-        <Box
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            display: "flex",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            zIndex: 10,
-          }}
-        >
+        <Box sx={loaderStyles}>
           <CircularProgress size={100} />
         </Box>
       )}
-      <Box
-        sx={{
-          filter: isLoading ? "blur(5px)" : "none",
-        }}
-      >
+      <Box sx={mainContentStyles}>
         <ErrorBoundary
           FallbackComponent={ErrorBoundaryFallback}
           onReset={() => navigate("/")}

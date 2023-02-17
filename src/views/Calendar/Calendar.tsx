@@ -9,7 +9,6 @@ import {
   Slide,
   Box,
   Checkbox,
-  CircularProgress,
 } from "@mui/material";
 import { DateTimePicker } from "../../components";
 import {
@@ -18,44 +17,55 @@ import {
   updateProfilePhoneNumber,
   getUpdatedUser,
 } from "../../firebase";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import { User } from "firebase/auth";
-import { ICalendar } from "../../types/types";
+import { ICalendarPageState, IPhoneState } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { PHONE_REGEX, sxMbSpacing } from "../../constants/constants";
 import LoadingContext from "../../context/LoadingContext";
+
+const initialPageState: ICalendarPageState = {
+  selectedDate: null,
+  calendarData: [],
+  savedDate: false,
+  saveNewDate: false,
+};
+
+const initialPhoneState: IPhoneState = {
+  prompt: false,
+  consent: false,
+  value: "",
+  error: false,
+};
 
 const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
   useRefreshDB();
   const theme = useTheme();
   const { isLoading, setIsLoading } = useContext(LoadingContext);
-  const [date, setDate] = useState<Moment | null>(null);
   const [isError, setIsError] = useState(false);
-  const [appointmentSaved, setAppointmentSaved] = useState(false);
-  const [saveMoreAppointment, setSaveMoreAppointment] = useState(false);
-  const [calendarData, setCalendarData] = useState<ICalendar[]>([]);
-  const [showPhonePrompt, setShowPhonePrompt] = useState(false);
-  const [phonePromptConsent, setPhonePromptConsent] = useState(false);
-  const [phonePromptValue, setPhonePromptValue] = useState("");
-  const [phonePromptError, setPhonePromptError] = useState(false);
+  const [pageState, setPageState] = useState(initialPageState);
+  const [phoneState, setPhoneState] = useState(initialPhoneState);
+
+  const checkForDisplaingPhonePrompt =
+    !phoneNumber && !phoneState.prompt && !phoneState.consent;
 
   useEffect(() => {
     getCalendarData()
       .then((response) => {
-        setCalendarData(response);
+        setPageState({ ...pageState, calendarData: response });
       })
       .catch((err) => console.log(err.message));
-  }, [saveMoreAppointment]);
+  }, [pageState.saveNewDate]);
 
   const handleAppointmentCreate = async () => {
-    const appointmentDate = moment(date).format("yyyy-MM-DD");
-    const appointmentHour = Number(moment(date).format("HH"));
-    if (!phoneNumber && !showPhonePrompt && !phonePromptConsent) {
-      setShowPhonePrompt(true);
+    const appointmentDate = moment(pageState.selectedDate).format("yyyy-MM-DD");
+    const appointmentHour = Number(moment(pageState.selectedDate).format("HH"));
+    if (checkForDisplaingPhonePrompt) {
+      setPhoneState({ ...phoneState, prompt: true });
     } else {
       setIsLoading(true);
-      if (showPhonePrompt && phonePromptValue.length > 5) {
-        const res = await updateProfilePhoneNumber(phonePromptValue);
+      if (phoneState.prompt && phoneState.value.length > 5) {
+        const res = await updateProfilePhoneNumber(phoneState.value);
 
         if (!res?.error) {
           const updatedPhoneFromDB = await getUpdatedUser();
@@ -68,9 +78,12 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
             displayName: displayName,
           })
             .then(() => {
-              setAppointmentSaved(true);
-              setSaveMoreAppointment(false);
-              setShowPhonePrompt(false);
+              setPageState({
+                ...pageState,
+                savedDate: true,
+                saveNewDate: false,
+              });
+              setPhoneState({ ...phoneState, prompt: false });
             })
             .finally(() => setIsLoading(false));
         } else {
@@ -88,9 +101,12 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
           displayName: displayName,
         })
           .then(() => {
-            setAppointmentSaved(true);
-            setSaveMoreAppointment(false);
-            setShowPhonePrompt(false);
+            setPageState({
+              ...pageState,
+              savedDate: true,
+              saveNewDate: false,
+            });
+            setPhoneState({ ...phoneState, prompt: false });
           })
           .finally(() => setIsLoading(false));
       }
@@ -98,11 +114,18 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
   };
 
   const handleAppointmentCreateNew = () => {
-    setSaveMoreAppointment(true);
-    setDate(null);
+    setPageState({ ...initialPageState, saveNewDate: true });
     setIsError(false);
-    setAppointmentSaved(false);
-    setCalendarData([]);
+  };
+
+  const handlePhoneCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const numberPhone = event.target.value;
+    if (!PHONE_REGEX.test(numberPhone) || numberPhone.length < 10) {
+      setPhoneState({ ...phoneState, error: true });
+    } else {
+      setPhoneState({ ...phoneState, error: false });
+    }
+    setPhoneState({ ...phoneState, value: numberPhone });
   };
 
   return (
@@ -126,7 +149,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
           letterSpacing="0.1rem"
           fontWeight={600}
         >
-          Заглавие / запазете час / тест
+          Портал за запазване на час (РАЗРАБОТКА)
         </Typography>
         <Divider sx={{ marginBottom: sxMbSpacing, backgroundColor: "black" }} />
         <Typography
@@ -135,10 +158,8 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
           fontWeight={600}
           mb={sxMbSpacing}
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus
-          delectus sed necessitatibus, facilis, suscipit unde impedit illum in
-          sapiente ab, iste praesentium magnam? Debitis id totam quasi quis quam
-          corrupti?
+          Само с няколко бързи стъпки можете да запазите час за желаната от вас
+          процедура
         </Typography>
         <Divider
           flexItem
@@ -151,7 +172,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
       {emailVerified ? (
         <Grid container item direction="column">
           <Grid container item mb={sxMbSpacing}>
-            {appointmentSaved ? (
+            {pageState.savedDate ? (
               <Grid
                 item
                 width="100%"
@@ -165,7 +186,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                   Имате запазен час за:
                 </Typography>
                 <Typography component={"p"} typography={"body1"}>
-                  {moment(date)
+                  {moment(pageState.selectedDate)
                     .locale("bg")
                     .format("dddd - D.MM.yyyy - HH:mmч.")}
                 </Typography>
@@ -173,29 +194,30 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
             ) : (
               <Grid item width="100%">
                 <DateTimePicker
-                  calendarData={calendarData}
-                  dateValue={date}
-                  setDateValue={setDate}
+                  pageState={pageState}
+                  calendarData={pageState.calendarData}
+                  dateValue={pageState.selectedDate}
+                  setDateValue={setPageState}
                   setIsError={setIsError}
                   isError={isError}
-                  disabled={appointmentSaved}
+                  disabled={pageState.saveNewDate}
                 />
               </Grid>
             )}
           </Grid>
-          {!appointmentSaved ? (
+          {!pageState.saveNewDate ? (
             <Grid item display="flex" flexDirection="column">
               <Box
                 sx={{
-                  maxHeight: showPhonePrompt ? 500 : 0,
-                  transition: showPhonePrompt
+                  maxHeight: phoneState.prompt ? 500 : 0,
+                  transition: phoneState.prompt
                     ? "max-height 650ms ease-out"
                     : "max-height 700ms ease-out",
-                  overflow: showPhonePrompt ? "unset" : "hidden",
+                  overflow: phoneState.prompt ? "unset" : "hidden",
                 }}
               >
                 <Slide
-                  in={showPhonePrompt}
+                  in={phoneState.prompt}
                   direction="left"
                   appear={false}
                   mountOnEnter
@@ -212,25 +234,15 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                     mb={sxMbSpacing}
                   >
                     <TextField
+                      placeholder="+359 12 345 678"
                       label="Телефон"
-                      value={phonePromptValue}
-                      onInputCapture={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        const number = event.target.value;
-                        if (!PHONE_REGEX.test(number) || number.length < 10) {
-                          setPhonePromptError(true);
-                        } else {
-                          setPhonePromptError(false);
-                        }
-                        setPhonePromptValue(number);
-                        console.log(number, "Number from Calendar.tsx");
-                      }}
-                      error={phonePromptError}
+                      value={phoneState.value}
+                      onInputCapture={handlePhoneCheck}
+                      error={phoneState.error}
                       helperText={
                         <span
                           style={{
-                            display: phonePromptError ? "inherit" : "none",
+                            display: phoneState.error ? "inherit" : "none",
                             position: "absolute",
                             top: 57,
                             left: 5,
@@ -256,12 +268,12 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                     >
                       <Checkbox
                         sx={{ padding: 0 }}
-                        checked={phonePromptConsent}
+                        checked={phoneState.consent}
                         onChange={() => {
-                          setPhonePromptConsent(!phonePromptConsent);
-                          setShowPhonePrompt(false);
-                          setPhonePromptError(false);
-                          setPhonePromptValue("");
+                          setPhoneState({
+                            ...initialPhoneState,
+                            prompt: !phoneState.prompt,
+                          });
                         }}
                       />
                       <Typography>Не желая!</Typography>
@@ -272,9 +284,9 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
               <Button
                 disabled={
                   isError ||
-                  !date ||
-                  phonePromptError ||
-                  (showPhonePrompt && !phonePromptValue.length)
+                  !pageState.selectedDate ||
+                  phoneState.error ||
+                  (phoneState.prompt && !phoneState.value.length)
                 }
                 variant="contained"
                 onClick={handleAppointmentCreate}

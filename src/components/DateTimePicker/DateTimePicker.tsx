@@ -13,6 +13,7 @@ import { IDateTimePicker } from "../../types/types";
 import { DateTimeValidationError } from "@mui/x-date-pickers/internals/hooks/validation/useDateTimeValidation";
 
 const DateTimePicker = ({
+  pageState,
   calendarData,
   dateValue,
   setDateValue,
@@ -87,7 +88,10 @@ const DateTimePicker = ({
           />
         )}
         onChange={(newDate) => {
-          setDateValue(moment(newDate).set({ minutes: 0, seconds: 0 }));
+          setDateValue({
+            ...pageState,
+            selectedDate: moment(newDate).set({ minutes: 0, seconds: 0 }),
+          });
         }}
         shouldDisableDate={(date) => showOnlyAvailableDates(calendarData, date)}
         shouldDisableTime={(timeValue, clockType) =>

@@ -1,17 +1,36 @@
 [
   {
-    "title": "Загравие номер едно",
-    "content": " Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis.Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis.",
-    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/slide-1.jpg?alt=media&token=d6ca391e-3c18-4b33-8521-9f3bdee16e1b"
+    "title": "Честваме денят на Йога в студио Дея",
+    "content": "Идеята за празнуване на Международния ден на Йога не само в София, но и в други градове на България, възниква още в процеса на подготовка на първия такъв през 2015г., когато спонтанно се присъединява Пловдивския културен институт и започва да организира синхронно чествне. Този пример бива последван с непринуден ентусиазъм от школите и практиците по йога в редица други градове.",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete6.jpg?alt=media&token=a3763f38-8430-4808-809b-0d3b3c47e29a"
   },
   {
-    "title": "Това е второ заглавие",
-    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis.Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis.",
-    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/slide-2.jpg?alt=media&token=92915797-2ced-42d1-b1eb-907de583bb97"
+    "title": "В студио ДЕЯ може да опитате Боров прашец на фирма НОВА ЕРА",
+    "content": "В Студиото може да закупите личен кристал зареден с енергия, ваучер за любим човек или да получите консултация за работа с кристал!",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete5.jpg?alt=media&token=35a75a1a-6fc7-4107-b665-dc46e7be9e48"
   },
   {
-    "title": "Тук вече е третото заглавие",
-    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, id! Cumque, dolores, sunt ab doloremque praesentium illum in sed et sint iusto earum rem, blanditiis ad ea qui delectus veritatis.",
-    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/slide-3.jpg?alt=media&token=0a097ad2-017a-4b5b-b507-daed6aa17bdd"
+    "title": "Честито на новия рейки лечител Хриси! Успех Хриси, бъди благословена!",
+    "content": "На 23.05.2021 се проведе поредното обучение и инициация в Двуканална система на Микао Усуи",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete1.jpg?alt=media&token=402fa6ee-ee7b-4378-9a2c-0e9674f8e5d0",
+    "styles": "padding: '0.5rem'"
+  },
+  {
+    "title": "Успех на Стефан по пътя на Рейки!",
+    "content": "Със Стефан проведохме обучение в Рейки 1 и Рейки 2 през месец април 2021г, той Стефан е масажист и терапевт, който работи в чужбина.",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete3.jpg?alt=media&token=8b2617fb-cbea-4bdb-99b8-ba59df9f2f33",
+    "styles": "padding: '0.5rem'"
+  },
+  {
+    "title": "Успех на Цвети по пътя на Рейки!",
+    "content": "На 09.05.2021г се проведе обучение и инициация Второ ниво в Двуканална система на Микао Усуи!",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete2.jpg?alt=media&token=69fca850-2625-49cd-b0b0-2964d998a234",
+    "styles": "padding: '0.5rem'"
+  },
+  {
+    "title": "Позитивни и слънчеви!",
+    "content": "Поддържаме приятелска среда и взаимопомощ. Може да получите съвет, приятелски разговор и разбиране в Студио 'ДЕЯ'",
+    "img": "https://firebasestorage.googleapis.com/v0/b/deya-therapy-2.appspot.com/o/featurete4.jpg?alt=media&token=ccd5c4b3-7fad-49b4-964c-9335ec7bdfa6",
+    "styles": "padding: '0.5rem'"
   }
 ]

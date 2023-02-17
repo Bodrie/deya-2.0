@@ -30,9 +30,10 @@ export interface IAppointmentCreateOrUpdate {
 }
 
 export interface IDateTimePicker {
+  pageState: ICalendarPageState;
   calendarData: ICalendar[];
   dateValue: Moment | null;
-  setDateValue: React.Dispatch<React.SetStateAction<moment.Moment | null>>;
+  setDateValue: React.Dispatch<React.SetStateAction<ICalendarPageState>>;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
   isError: boolean;
   disabled: boolean;
@@ -48,9 +49,24 @@ export interface ICardContent {
   title: string;
   content: string;
   img: string;
+  styles?: any;
 }
 
 export interface ICustomError {
   error: number | undefined;
   errorMsg: string | undefined;
+}
+
+export interface IPhoneState {
+  prompt: boolean;
+  consent: boolean;
+  value: string;
+  error: boolean;
+}
+
+export interface ICalendarPageState {
+  selectedDate: Moment | null;
+  calendarData: ICalendar[];
+  savedDate: boolean;
+  saveNewDate: boolean;
 }

@@ -38,10 +38,10 @@ const Header = ({ userData }: IHeaderProps) => {
 
   const headerPages = [
     { name: "Начало", href: "/" },
-    { name: "Рейки", href: "/reiki" },
-    { name: "Тета", href: "/teta" },
-    { name: "За мен", href: "/about" },
-    { name: "Контакти", href: "/contacts" },
+    // { name: "Рейки", href: "/reiki" },
+    // { name: "Тета", href: "/teta" },
+    // { name: "За мен", href: "/about" },
+    // { name: "Контакти", href: "/contacts" },
     {
       name: userData?.emailVerified ? "Календар" : "Вход",
       href: userData?.emailVerified ? "/calendar" : "/login",
