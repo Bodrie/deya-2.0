@@ -13,7 +13,10 @@ const LinkTab = (props: LinkTabProps) => {
     <Tab
       component={LinkStyled}
       disableRipple
-      sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
+      sx={{
+        color: "white",
+        "&.Mui-selected": { color: "white" },
+      }}
       {...props}
     />
   );

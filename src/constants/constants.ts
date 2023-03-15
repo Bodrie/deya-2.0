@@ -1,5 +1,5 @@
 export const DATE_REGEX =
-  /^20[2-3][0-9]-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/g;
+  /^20[2-3][0-9]-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
 
 export const PHONE_REGEX =
   // eslint-disable-next-line no-useless-escape

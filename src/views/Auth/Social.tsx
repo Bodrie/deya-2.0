@@ -25,7 +25,7 @@ const Social = () => {
         Вход с Google
         <Google sx={{ ml: 2 }} />
       </Button>
-      <Button variant="contained" onClick={facebookLogin}>
+      <Button variant="contained" onClick={facebookLogin} disabled>
         Вход с Facebook
         <Facebook sx={{ ml: 2 }} />
       </Button>

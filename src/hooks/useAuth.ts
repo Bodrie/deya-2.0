@@ -25,7 +25,7 @@ const useAuth = () => {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [auth, userData?.displayName, userData?.photoURL]);
 
   return { userData, isEmailVerified };
 };

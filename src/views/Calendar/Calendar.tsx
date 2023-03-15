@@ -64,6 +64,8 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
       setPhoneState({ ...phoneState, prompt: true });
     } else {
       setIsLoading(true);
+      console.log(phoneState);
+
       if (phoneState.prompt && phoneState.value.length > 5) {
         const res = await updateProfilePhoneNumber(phoneState.value);
 
@@ -81,7 +83,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
               setPageState({
                 ...pageState,
                 savedDate: true,
-                saveNewDate: false,
+                saveNewDate: true,
               });
               setPhoneState({ ...phoneState, prompt: false });
             })
@@ -91,7 +93,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
           return alert(res.errorMsg);
         }
       }
-      if (phoneNumber) {
+      if (phoneNumber || phoneState.consent) {
         await appointmentCreate({
           appointmentDate: appointmentDate,
           appointmentHour: appointmentHour,
@@ -104,7 +106,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
             setPageState({
               ...pageState,
               savedDate: true,
-              saveNewDate: false,
+              saveNewDate: true,
             });
             setPhoneState({ ...phoneState, prompt: false });
           })
@@ -114,7 +116,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
   };
 
   const handleAppointmentCreateNew = () => {
-    setPageState({ ...initialPageState, saveNewDate: true });
+    setPageState({ ...initialPageState, saveNewDate: false });
     setIsError(false);
   };
 
@@ -125,7 +127,11 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
     } else {
       setPhoneState({ ...phoneState, error: false });
     }
-    setPhoneState({ ...phoneState, value: numberPhone });
+    if (!numberPhone.includes("+359")) {
+      setPhoneState({ ...phoneState, value: `+359${numberPhone}` });
+    } else {
+      setPhoneState({ ...phoneState, value: numberPhone });
+    }
   };
 
   return (
@@ -200,12 +206,12 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                   setDateValue={setPageState}
                   setIsError={setIsError}
                   isError={isError}
-                  disabled={pageState.saveNewDate}
+                  disabled={false}
                 />
               </Grid>
             )}
           </Grid>
-          {!pageState.saveNewDate ? (
+          {!pageState.savedDate ? (
             <Grid item display="flex" flexDirection="column">
               <Box
                 sx={{
@@ -272,6 +278,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
                         onChange={() => {
                           setPhoneState({
                             ...initialPhoneState,
+                            consent: true,
                             prompt: !phoneState.prompt,
                           });
                         }}

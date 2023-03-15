@@ -17,10 +17,12 @@ import { IUserAppointments } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { sxMbSpacing } from "../../constants/constants";
 import { manageDbStrings } from "../../utils/manageDbStrings";
+import { UserSettingsModal } from "../../components";
 
 const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
   useRefreshDB();
   const theme = useTheme();
+  const [modalState, setModalState] = useState(false);
   const [appointments, setAppointments] = useState<IUserAppointments[]>([]);
   const itsMe = process.env.REACT_APP_ADMIN?.toString().includes(
     email as string
@@ -91,13 +93,6 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               backgroundColor: "black",
             }}
           />
-          <Grid item>
-            {itsMe && (
-              <LinkStyled to={"/admin/new"}>
-                <Button variant="contained">Admin Panel</Button>
-              </LinkStyled>
-            )}
-          </Grid>
           <Grid
             container
             item
@@ -112,7 +107,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                   src={photoEnlarger(photoURL)}
                   width={150}
                   height={150}
-                  style={{ borderRadius: "15px" }}
+                  style={{ objectFit: "cover", borderRadius: "15px" }}
                 />
               ) : (
                 <AccountCircle
@@ -124,10 +119,28 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               )}
             </Grid>
 
-            <Grid item alignSelf="center" p={2}>
-              <Typography fontWeight={600}>{displayName}</Typography>
-              <Typography fontWeight={600}>{email}</Typography>
+            <Grid item alignSelf="center" textAlign="left" p={2}>
+              <Typography fontWeight={600}>
+                Име: {displayName ? displayName : email}
+              </Typography>
+              <Typography fontWeight={600}>Имейл: {email}</Typography>
             </Grid>
+          </Grid>
+          <Grid
+            item
+            mb={sxMbSpacing}
+            display="flex"
+            width="100%"
+            justifyContent={itsMe ? "space-between" : "center"}
+          >
+            {itsMe && (
+              <LinkStyled to={"/admin/new"}>
+                <Button variant="contained">Admin Panel</Button>
+              </LinkStyled>
+            )}
+            <Button variant="contained" onClick={() => setModalState(true)}>
+              Редактирай
+            </Button>
           </Grid>
           <Divider
             sx={{
@@ -208,6 +221,12 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
               </Grid>
             );
           })}
+          <UserSettingsModal
+            open={modalState}
+            displayName={displayName}
+            photoURL={photoURL}
+            setModalState={setModalState}
+          />
         </Grid>
       ) : (
         <CircularProgress />

@@ -11,12 +11,12 @@ const Admin = () => {
   const handleForm = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const appointmentsDate: string = e.target.date.value;
+    const isValidDate: boolean = DATE_REGEX.test(appointmentsDate);
     const parsedHours: number[] = JSON.parse("[" + e.target.hours.value + "]");
     const appointmentHours: string[] = parsedHours.map((currHour: number) => {
       return currHour + " - free";
     });
-    const isValidDate: boolean = DATE_REGEX.test(appointmentsDate);
-
+    
     if (isValidDate) {
       await createOrUpdateAvailableAppointments({
         appointmentsDate,
@@ -28,7 +28,7 @@ const Admin = () => {
         })
         .finally(() => setSnakOpen(true));
     } else {
-      alert("Wrong date / hour format");
+      alert("Грешка! Прегледай формата на датата и часа");
     }
   };
   if (snackOpen) setTimeout(() => setSnakOpen(false), 5000);

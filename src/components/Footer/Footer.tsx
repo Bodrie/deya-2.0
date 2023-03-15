@@ -9,7 +9,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { FacebookOutlined } from "@mui/icons-material";
-import LinkStyled from "../Link/Link";
 import logo from "../../assets/images/logo/logo.png";
 import { facebookLink } from "../../constants/constants";
 

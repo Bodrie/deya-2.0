@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { getDownloadURL, ref, getStorage, uploadBytes } from "firebase/storage";
 import {
   getFirestore,
   collection,
@@ -25,6 +26,7 @@ import {
   RecaptchaVerifier,
   PhoneAuthProvider,
   User,
+  updateProfile,
 } from "firebase/auth";
 import moment from "moment";
 import {
@@ -68,6 +70,23 @@ export const db = getFirestore(app);
 export const collRef = collection(db, "data");
 const auth = getAuth();
 auth.useDeviceLanguage();
+
+export const updateUserProfile = async (
+  displayName: string,
+  photoData: File | string
+) => {
+  if (auth.currentUser) {
+    if (typeof photoData === "string") {
+      updateProfile(auth.currentUser, { displayName, photoURL: photoData });
+    } else {
+      const storage = getStorage();
+      const photoImagesRef = ref(storage, `images/${photoData.name}`);
+      await uploadBytes(photoImagesRef, photoData);
+      const imgUrl = await getDownloadURL(photoImagesRef);
+      updateProfile(auth.currentUser, { displayName, photoURL: imgUrl });
+    }
+  }
+};
 
 export const getUpdatedUser = async () => {
   const auth = getAuth();
@@ -259,6 +278,7 @@ export const signIn = (
 export const signInWithFacebook = () => {
   signInWithRedirect(auth, facebookProvider);
 };
+
 export const signInWithGoogle = () => {
   signInWithRedirect(auth, googleProvider);
 };

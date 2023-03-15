@@ -35,7 +35,7 @@ const TableOfAppointments = () => {
             if (!hour.includes(" - free")) {
               userAppointments.push({
                 id: Number(`${dateIndex}${index}`),
-                date: moment(date.date).format('MM.DD.YYYY'),
+                date: moment(date.date).format("MM.DD.YYYY"),
                 hours: currentHour,
                 email: currentUserEmail,
                 isApproved: currentApproval === "approved" ? true : false,
@@ -52,6 +52,7 @@ const TableOfAppointments = () => {
   };
 
   const handleApproveAppointment = (params: GridRenderCellParams) => {
+    if (params.value === true) return;
     setLoading(true);
     const rowData: IUserAppointments = params.row;
     const payload: IAppointment = {
@@ -59,7 +60,8 @@ const TableOfAppointments = () => {
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "unapproved",
-      displayName: rowData.displayName,
+      displayName:
+        rowData.displayName !== "Няма" ? rowData.displayName : "null",
       phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && !rowData.isApproved) {
@@ -73,6 +75,7 @@ const TableOfAppointments = () => {
   };
 
   const handleUnapproveAppointment = (params: GridRenderCellParams) => {
+    if (params.value === false) return;
     setLoading(true);
     const rowData: IUserAppointments = params.row;
     const payload: IAppointment = {
@@ -80,7 +83,8 @@ const TableOfAppointments = () => {
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
       isApproved: "approved",
-      displayName: rowData.displayName,
+      displayName:
+        rowData.displayName !== "Няма" ? rowData.displayName : "null",
       phone: rowData.phone !== "Няма" ? rowData.phone : "null",
     };
     if (rowData.email && rowData.isApproved) {
