@@ -24,7 +24,6 @@ function App() {
   const itsMe = process.env.REACT_APP_ADMIN?.toString().includes(
     userData?.email as string
   );
-  console.log(userData);
   
   const loaderStyles = {
     justifyContent: "center",

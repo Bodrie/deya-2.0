@@ -99,7 +99,6 @@ const UserSettingsModal = ({
               autoComplete="current-name"
               defaultValue={displayName}
               sx={{ position: "relative" }}
-              onChange={(e) => console.log(e)}
             />
             <Button type="submit" variant="contained" disabled={false}>
               Запази

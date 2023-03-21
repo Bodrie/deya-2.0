@@ -54,7 +54,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
       .then((response) => {
         setPageState({ ...pageState, calendarData: response });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => new Error(err.message));
   }, [pageState.saveNewDate]);
 
   const handleAppointmentCreate = async () => {
@@ -64,7 +64,6 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
       setPhoneState({ ...phoneState, prompt: true });
     } else {
       setIsLoading(true);
-      console.log(phoneState);
 
       if (phoneState.prompt && phoneState.value.length > 5) {
         const res = await updateProfilePhoneNumber(phoneState.value);

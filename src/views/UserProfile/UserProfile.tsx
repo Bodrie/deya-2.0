@@ -53,7 +53,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
         });
       })
       .then(() => setAppointments(userAppointments))
-      .catch((err) => console.log(err.message));
+      .catch((err) => new Error(err.message));
   };
 
   useEffect(() => {

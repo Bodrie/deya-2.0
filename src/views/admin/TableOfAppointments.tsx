@@ -48,7 +48,7 @@ const TableOfAppointments = () => {
       })
       .then(() => setAppointments(userAppointments))
       .finally(() => setLoading(false))
-      .catch((err) => console.log(err.message));
+      .catch((err) => new Error(err.message));
   };
 
   const handleApproveAppointment = (params: GridRenderCellParams) => {

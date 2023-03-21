@@ -28,7 +28,6 @@ const Header = ({ userData }: IHeaderProps) => {
   const takeCurrentPage = headerPages.find(
     (page) => page.href === location.pathname
     );
-    console.log(takeCurrentPage);
 
   const handleOpenUserMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
