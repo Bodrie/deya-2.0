@@ -20,23 +20,17 @@ export const showOnlyAvailableHours = (
   clockType: string
 ) => {
   const selectedDate = moment(dateValue).format("yyyy-MM-DD");
-  const blackoutHours = calendarData
-    .map((date) => {
-      if (date.date === selectedDate) {
-        const freeHours = date.hours.map((currHour) => {
-          if (currHour.includes("free")) {
-            return Number(currHour.slice(0, 2));
-          }
-          return null;
-        });
-        return freeHours;
-      }
-      return null;
-    })
-    .flat()
-    .filter(Boolean);
+
+  const blackoutHours = calendarData.flatMap((date) =>
+    date.date === selectedDate
+      ? date.hours
+          .filter((currHour) => currHour.includes("free"))
+          .map((currHour) => Number(currHour.slice(0, 2)))
+      : []
+  );
+
   if (clockType === "hours") {
-    return !Object.values(blackoutHours).includes(timeValue);
+    return !blackoutHours.includes(timeValue);
   } else {
     return false;
   }

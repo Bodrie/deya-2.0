@@ -3,6 +3,22 @@ import { Grid, CardMedia, Typography, Paper } from "@mui/material";
 import { ICardContent } from "../../types/types";
 
 const CardComponent = ({ content }: { content: ICardContent[] }) => {
+  const styles = (card?: ICardContent) => {
+    return {
+      paper: {
+        borderRadius: "15px",
+        width: "fit-content",
+        padding: card?.styles ? "0.5rem" : "0px",
+      },
+
+      cardMedia: {
+        borderRadius: "15px",
+        objectFit: "contain",
+        height: "auto",
+      },
+    };
+  };
+
   return (
     <>
       {content.map((card, index: number) => {
@@ -19,24 +35,13 @@ const CardComponent = ({ content }: { content: ICardContent[] }) => {
             marginBottom={isLastCard ? "1rem" : "0rem"}
           >
             <Grid item sm={6} md={6} lg={6} xl={4}>
-              <Paper
-                elevation={8}
-                sx={{
-                  borderRadius: "15px",
-                  width: "fit-content",
-                  padding: card.styles ? "0.5rem" : "0px",
-                }}
-              >
+              <Paper elevation={8} sx={styles(card)}>
                 <CardMedia
                   component="img"
                   height="400px"
                   image={card.img}
                   alt="card component image"
-                  sx={{
-                    borderRadius: "15px",
-                    objectFit: "contain",
-                    height: "auto",
-                  }}
+                  sx={styles()}
                 />
               </Paper>
             </Grid>

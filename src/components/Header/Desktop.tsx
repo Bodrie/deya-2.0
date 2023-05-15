@@ -11,6 +11,8 @@ import {
   Typography,
   useTheme,
   Divider,
+  Theme,
+  PopoverOrigin,
 } from "@mui/material";
 import { TabLinkStyled } from "..";
 import { headerSettings } from "../../constants/constants";
@@ -21,9 +23,13 @@ interface DesktopHeaderProps {
   headerPages: Record<string, string>[];
   takeCurrentPage: Record<string, string> | undefined;
   userData: User | null;
-  handleOpenUserMenu: any;
-  handleCloseUserMenu: any;
-  anchorElUser: Element | ((element: Element) => Element) | null | undefined;
+  handleOpenUserMenu: (
+    event: { target: HTMLElement } | React.MouseEvent<HTMLElement, MouseEvent>
+  ) => void;
+  handleCloseUserMenu: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => void;
+  anchorElUser: Element | ((element: Element) => Element) | null;
 }
 
 const Desktop = ({
@@ -43,24 +49,25 @@ const Desktop = ({
     setActiveTab(newTabValue);
   };
   const pageInNavigation = typeof takeCurrentPage !== "undefined";
+  const {
+    container,
+    boxContainer,
+    divider,
+    accIcon,
+    btnIcon,
+    iconSpacing,
+    link,
+    menuItem,
+    menuItemBox,
+    anchorOrigin,
+    tabIndicatorProps,
+  } = customization(theme, pageInNavigation);
 
   return (
     <>
-      <Box
-        sx={{
-          display: { md: "flex" },
-          position: { xs: "absolute", md: "inherit" },
-          visibility: { xs: "hidden", md: "visible" },
-          justifyContent: "space-evenly",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={container}>
         <Tabs
-          TabIndicatorProps={{
-            style: {
-              backgroundColor: pageInNavigation ? "white" : "transparent",
-            },
-          }}
+          TabIndicatorProps={tabIndicatorProps}
           value={activeTab}
           onChange={handleTabChange}
         >
@@ -76,39 +83,18 @@ const Desktop = ({
 
         {userData && userData.emailVerified && (
           <>
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{
-                backgroundColor: theme.palette.primary.contrastText,
-                margin: "0 1rem 0 1rem",
-              }}
-            />
+            <Divider orientation="vertical" flexItem sx={divider} />
             <Typography color={"white"}>
               Здравей,{" "}
               {userData.displayName ? userData.displayName : userData.email}!
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
+            <Box sx={boxContainer}>
               <Tooltip title="Open settings">
-                <IconButton
-                  onClick={handleOpenUserMenu}
-                  sx={{ p: 0, marginLeft: "1rem" }}
-                >
+                <IconButton onClick={handleOpenUserMenu} sx={btnIcon}>
                   {userData.photoURL ? (
                     <Avatar alt="user photo" src={userData.photoURL} />
                   ) : (
-                    <AccountCircle
-                      sx={{
-                        color: "white",
-                        width: "50px",
-                        height: "50px",
-                      }}
-                    />
+                    <AccountCircle sx={accIcon} />
                   )}
                 </IconButton>
               </Tooltip>
@@ -116,15 +102,9 @@ const Desktop = ({
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                anchorOrigin={anchorOrigin}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={anchorOrigin}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
@@ -132,43 +112,15 @@ const Desktop = ({
                   <LinkStyled
                     to={setting.href}
                     key={setting.href}
-                    sx={{
-                      width: "12rem",
-                      padding: "0px",
-                      ":hover": {
-                        backgroundColor: theme.palette.grey[200],
-                      },
-                    }}
+                    sx={link}
                     onClick={handleCloseUserMenu}
                   >
-                    <MenuItem
-                      sx={{
-                        transition: "600ms",
-                        flexGrow: 1,
-                        padding: "0.5rem 1.2rem",
-                        ":hover": {
-                          marginLeft: "15px",
-                          transition: "600ms",
-                          backgroundColor: "unset",
-                        },
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexGrow: 1,
-                        }}
-                      >
+                    <MenuItem sx={menuItem}>
+                      <Box sx={menuItemBox}>
                         {setting.name === "Профил" ? (
-                          <PermIdentity
-                            sx={{ marginRight: "11px" }}
-                            color="primary"
-                          />
+                          <PermIdentity sx={iconSpacing} color="primary" />
                         ) : (
-                          <Logout
-                            sx={{ marginRight: "11px" }}
-                            color="primary"
-                          />
+                          <Logout sx={iconSpacing} color="primary" />
                         )}
                         <Typography
                           textAlign="center"
@@ -187,6 +139,78 @@ const Desktop = ({
       </Box>
     </>
   );
+};
+
+const customization = (theme: Theme, pageInNavigation: boolean) => {
+  return {
+    anchorOrigin: {
+      vertical: "top",
+      horizontal: "right",
+    } as PopoverOrigin,
+
+    transformOrigin: {
+      vertical: "top",
+      horizontal: "right",
+    },
+
+    tabIndicatorProps: {
+      style: {
+        backgroundColor: pageInNavigation ? "white" : "transparent",
+      },
+    },
+
+    container: {
+      display: { md: "flex" },
+      position: { xs: "absolute", md: "inherit" },
+      visibility: { xs: "hidden", md: "visible" },
+      justifyContent: "space-evenly",
+      alignItems: "center",
+    },
+
+    boxContainer: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+
+    link: {
+      width: "12rem",
+      padding: "0px",
+      ":hover": {
+        backgroundColor: theme.palette.grey[200],
+      },
+    },
+
+    menuItem: {
+      transition: "600ms",
+      flexGrow: 1,
+      padding: "0.5rem 1.2rem",
+      ":hover": {
+        marginLeft: "15px",
+        transition: "600ms",
+        backgroundColor: "unset",
+      },
+    },
+
+    menuItemBox: {
+      display: "flex",
+      flexGrow: 1,
+    },
+
+    divider: {
+      backgroundColor: theme.palette.primary.contrastText,
+      margin: "0 1rem 0 1rem",
+    },
+
+    accIcon: {
+      color: "white",
+      width: "50px",
+      height: "50px",
+    },
+
+    btnIcon: { p: 0, marginLeft: "1rem" },
+
+    iconSpacing: { marginRight: "11px" },
+  };
 };
 
 export default Desktop;

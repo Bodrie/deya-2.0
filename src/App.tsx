@@ -24,32 +24,34 @@ function App() {
   const itsMe = process.env.REACT_APP_ADMIN?.toString().includes(
     userData?.email as string
   );
-  
-  const loaderStyles = {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    display: "flex",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: 10,
-  };
 
-  const mainContentStyles = {
-    display: isLoading ? "initial" : "contents",
-    filter: isLoading ? "blur(5px)" : "none",
+  const styles = {
+    loaderStyles: {
+      justifyContent: "center",
+      alignItems: "center",
+      position: "absolute",
+      display: "flex",
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      zIndex: 10,
+    },
+
+    mainContentStyles: {
+      display: isLoading ? "initial" : "contents",
+      filter: isLoading ? "blur(5px)" : "none",
+    },
   };
 
   return (
     <div className="App">
       {isLoading && (
-        <Box sx={loaderStyles}>
+        <Box sx={styles.loaderStyles}>
           <CircularProgress size={100} />
         </Box>
       )}
-      <Box sx={mainContentStyles}>
+      <Box sx={styles.mainContentStyles}>
         <ErrorBoundary
           FallbackComponent={ErrorBoundaryFallback}
           onReset={() => navigate("/")}

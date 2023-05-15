@@ -1,11 +1,11 @@
 import { createTheme } from "@mui/material";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 
 const rootTheme = createTheme({
   typography: {
     fontFamily: "Mulish",
   },
   palette: {
-    // #c782ce
     primary: {
       main: "#b771c1",
       light: "#9B5FA3",
@@ -19,6 +19,41 @@ const rootTheme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          "& .MuiCalendarPicker-root": {
+            "& div[role=cell]": {
+              "& :not(.Mui-disabled).MuiPickersDay-dayWithMargin": {
+                color: "#FEC01F",
+                fontSize: "20px",
+                fontWeight: 600,
+              },
+            },
+          },
+          "& .MuiClockPicker-root": {
+            "& div[role=listbox]": {
+              "& :not(.Mui-disabled)": {
+                fontSize: "17px",
+                fontWeight: 600,
+                color: "#6D3274",
+                border: "#FEC01F solid 2px",
+                boxSizing: "border-box",
+              },
+              "& .Mui-selected": {
+                fontSize: "18px",
+                fontWeight: 600,
+                color: "#FEC01F",
+                border: "none",
+              },
+              "& .Mui-disabled": {
+                color: "lightgray",
+              },
+            },
+          },
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         root: {

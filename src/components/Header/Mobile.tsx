@@ -16,6 +16,8 @@ import {
   Tooltip,
   Avatar,
   useTheme,
+  Theme,
+  PopoverOrigin,
 } from "@mui/material";
 import { headerSettings } from "../../constants/constants";
 import LinkStyled from "../Link/Link";
@@ -25,8 +27,12 @@ interface MobileHeaderProps {
   headerPages: Record<string, string>[];
   takeCurrentPage: Record<string, string> | undefined;
   userData: User | null;
-  handleOpenUserMenu: any;
-  handleCloseUserMenu: any;
+  handleOpenUserMenu: (
+    event: { target: HTMLElement } | React.MouseEvent<HTMLElement, MouseEvent>
+  ) => void;
+  handleCloseUserMenu: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => void;
   anchorElUser: Element | ((element: Element) => Element) | null | undefined;
 }
 
@@ -39,35 +45,36 @@ const Mobile = ({
   anchorElUser,
 }: MobileHeaderProps) => {
   const theme = useTheme();
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState<HTMLElement | null>(null);
 
   const handleOpenNavMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: { target: HTMLElement } | React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
-    setAnchorElNav(
-      event.currentTarget as unknown as React.SetStateAction<null>
-    );
+    setAnchorElNav(event.target as HTMLElement);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+  const {
+    hiddenStyle,
+    container,
+    originBottomLeft,
+    originTopRight,
+    link,
+    menuItem,
+    menuBox,
+    spacing,
+    accIcon,
+  } = customization(theme);
+
   return (
     <>
-      <Typography
-        fontSize={"1.4rem"}
-        color="white"
-        display={{ xs: "block", md: "none" }}
-      >
+      <Typography fontSize="1.4rem" color="white" display={hiddenStyle}>
         {takeCurrentPage?.name}
       </Typography>
-      <Box
-        sx={{
-          display: { xs: "flex", md: "none" },
-          justifyContent: "flex-end",
-        }}
-      >
+      <Box sx={container}>
         <IconButton
           disableFocusRipple
           size="large"
@@ -79,53 +86,23 @@ const Mobile = ({
         <Menu
           id="menu-appbar"
           anchorEl={anchorElNav}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
+          anchorOrigin={originBottomLeft}
           keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
+          transformOrigin={originBottomLeft}
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
-          sx={{
-            display: { xs: "block", md: "none" },
-          }}
+          sx={hiddenStyle}
         >
           {headerPages.map((page) => (
             <LinkStyled
               to={page.href}
-              sx={{
-                width: "12rem",
-                padding: "0px",
-                ":hover": {
-                  backgroundColor: theme.palette.grey[200],
-                },
-              }}
+              sx={link}
               key={page.name}
               onClick={handleCloseNavMenu}
             >
-              <MenuItem
-                sx={{
-                  transition: "600ms",
-                  flexGrow: 1,
-                  padding: "0.5rem 1.2rem",
-                  ":hover": {
-                    marginLeft: "15px",
-                    transition: "600ms",
-                    backgroundColor: "unset",
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexGrow: 1,
-                  }}
-                >
-                  <ArrowForward sx={{ marginRight: "11px" }} color="primary" />
+              <MenuItem sx={menuItem}>
+                <Box sx={menuBox}>
+                  <ArrowForward sx={spacing} color="primary" />
                   <Typography
                     textAlign="center"
                     color={theme.palette.text.primary}
@@ -149,13 +126,7 @@ const Mobile = ({
                 {userData.photoURL ? (
                   <Avatar alt="user photo" src={userData.photoURL} />
                 ) : (
-                  <AccountCircle
-                    sx={{
-                      color: "white",
-                      width: "25px",
-                      height: "25px",
-                    }}
-                  />
+                  <AccountCircle sx={accIcon} />
                 )}
               </IconButton>
             </Tooltip>
@@ -163,15 +134,9 @@ const Mobile = ({
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+              anchorOrigin={originTopRight}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+              transformOrigin={originTopRight}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
@@ -179,40 +144,15 @@ const Mobile = ({
                 <LinkStyled
                   to={setting.href}
                   key={setting.href}
-                  sx={{
-                    width: "12rem",
-                    padding: "0px",
-                    ":hover": {
-                      backgroundColor: theme.palette.grey[200],
-                    },
-                  }}
+                  sx={link}
                   onClick={handleCloseUserMenu}
                 >
-                  <MenuItem
-                    sx={{
-                      transition: "600ms",
-                      flexGrow: 1,
-                      padding: "0.5rem 1.2rem",
-                      ":hover": {
-                        marginLeft: "15px",
-                        transition: "600ms",
-                        backgroundColor: "unset",
-                      },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexGrow: 1,
-                      }}
-                    >
+                  <MenuItem sx={menuItem}>
+                    <Box sx={menuBox}>
                       {setting.name === "Профил" ? (
-                        <PermIdentity
-                          sx={{ marginRight: "11px" }}
-                          color="primary"
-                        />
+                        <PermIdentity sx={spacing} color="primary" />
                       ) : (
-                        <Logout sx={{ marginRight: "11px" }} color="primary" />
+                        <Logout sx={spacing} color="primary" />
                       )}
                       <Typography
                         textAlign="center"
@@ -230,6 +170,61 @@ const Mobile = ({
       </Box>
     </>
   );
+};
+
+const customization = (theme: Theme) => {
+  return {
+    originBottomLeft: {
+      vertical: "bottom",
+      horizontal: "left",
+    } as PopoverOrigin,
+
+    originTopRight: {
+      vertical: "top",
+      horizontal: "right",
+    } as PopoverOrigin,
+
+    hiddenStyle: { xs: "block", md: "none" },
+
+    container: {
+      display: { xs: "flex", md: "none" },
+      justifyContent: "flex-end",
+    },
+
+    link: {
+      width: "12rem",
+      padding: "0px",
+      ":hover": {
+        backgroundColor: theme.palette.grey[200],
+      },
+    },
+
+    menuItem: {
+      transition: "600ms",
+      flexGrow: 1,
+      padding: "0.5rem 1.2rem",
+      ":hover": {
+        marginLeft: "15px",
+        transition: "600ms",
+        backgroundColor: "unset",
+      },
+    },
+
+    menuBox: {
+      display: "flex",
+      flexGrow: 1,
+    },
+
+    spacing: {
+      marginRight: "11px",
+    },
+
+    accIcon: {
+      color: "white",
+      width: "25px",
+      height: "25px",
+    },
+  };
 };
 
 export default Mobile;

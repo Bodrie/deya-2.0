@@ -15,7 +15,7 @@ interface IHeaderProps {
 const Header = ({ userData }: IHeaderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
   const headerPages = [
     { name: "Начало", href: "/" },
@@ -24,21 +24,22 @@ const Header = ({ userData }: IHeaderProps) => {
       href: userData?.emailVerified ? "/calendar" : "/login",
     },
   ];
-  
+
   const takeCurrentPage = headerPages.find(
     (page) => page.href === location.pathname
-    );
+  );
 
   const handleOpenUserMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: { target: HTMLElement } | React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
-    setAnchorElUser(
-      event.currentTarget as unknown as React.SetStateAction<null>
-    );
+    setAnchorElUser(event.target as HTMLElement);
   };
 
-  const handleCloseUserMenu = (event: any) => {
-    if (event.target.textContent === "Излез") {
+  const handleCloseUserMenu = (
+    event: { target: HTMLElement } | React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    const target = event.target as HTMLElement;
+    if (target.textContent === "Излез") {
       const auth = getAuth();
       signOut(auth)
         .then(() => navigate("/"))
@@ -50,11 +51,11 @@ const Header = ({ userData }: IHeaderProps) => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ zIndex: 2 }}>
+    <AppBar position="sticky" sx={styles.appBar}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+        <Toolbar disableGutters sx={styles.toolBar}>
           <LinkStyled to={"/"}>
-            <CardMedia image={logo} sx={{ height: 90, width: 90 }} />
+            <CardMedia image={logo} sx={styles.cardMedia} />
           </LinkStyled>
           <Desktop
             headerPages={headerPages}
@@ -76,5 +77,11 @@ const Header = ({ userData }: IHeaderProps) => {
       </Container>
     </AppBar>
   );
+};
+
+const styles = {
+  appBar: { zIndex: 2 },
+  toolBar: { justifyContent: "space-between" },
+  cardMedia: { height: 90, width: 90 },
 };
 export default Header;

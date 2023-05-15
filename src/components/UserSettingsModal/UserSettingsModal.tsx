@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import LoadingContext from "../../context/LoadingContext";
-import { Box, Button, Modal, Paper, TextField, useTheme } from "@mui/material";
+import { Box, Button, Modal, Paper, TextField } from "@mui/material";
 import { sxMbSpacing } from "../../constants/constants";
 import bgimg from "../../assets/images/patternpad.svg";
 import { AccountCircle, Close } from "@mui/icons-material";
@@ -41,51 +41,30 @@ const UserSettingsModal = ({
   };
 
   return (
-    <Modal
-      open={open}
-      sx={{ maxWidth: { xs: "350px", md: "500px" }, margin: "6rem auto" }}
-    >
-      <Paper
-        elevation={5}
-        sx={{
-          position: "absolute",
-          border: "2px solid #873F91",
-          borderRadius: "15px",
-          padding: "3rem 1rem",
-          backgroundImage: `url(${bgimg})`,
-          marginBottom: sxMbSpacing,
-          width: "fill-available",
-        }}
-      >
+    <Modal open={open} sx={styles.modal}>
+      <Paper elevation={5} sx={styles.paper}>
         <Close
           color="error"
           fontSize="medium"
           onClick={() => setModalState(false)}
-          sx={{
-            position: "absolute",
-            top: "10px",
-            left: { xs: "312px", md: "460px" },
-            "&:hover": { transform: "scale(1.2)" },
-            transition: "all 200ms",
-            cursor: "pointer",
-          }}
+          sx={styles.closeIcon}
         />
         <form onSubmit={updateUserProfileHandler}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <Box sx={styles.boxContainer}>
             {photoURL ? (
               <img
                 alt="user"
                 src={photoEnlarger(photoURL)}
                 width={150}
                 height={150}
-                style={{ objectFit: "cover", borderRadius: "15px" }}
+                style={styles.img}
               />
             ) : (
               <AccountCircle
                 color="disabled"
                 width={150}
                 height={150}
-                sx={{ width: 150, height: 150 }}
+                sx={styles.accIcon}
               />
             )}
 
@@ -98,7 +77,7 @@ const UserSettingsModal = ({
               type="text"
               autoComplete="current-name"
               defaultValue={displayName}
-              sx={{ position: "relative" }}
+              sx={styles.textField}
             />
             <Button type="submit" variant="contained" disabled={false}>
               Запази
@@ -108,6 +87,40 @@ const UserSettingsModal = ({
       </Paper>
     </Modal>
   );
+};
+
+const styles = {
+  modal: {
+    maxWidth: { xs: "350px", md: "500px" },
+    margin: "6rem auto",
+  },
+
+  paper: {
+    position: "absolute",
+    border: "2px solid #873F91",
+    borderRadius: "15px",
+    padding: "3rem 1rem",
+    backgroundImage: `url(${bgimg})`,
+    marginBottom: sxMbSpacing,
+    width: "fill-available",
+  },
+
+  closeIcon: {
+    position: "absolute",
+    top: "10px",
+    left: { xs: "312px", md: "460px" },
+    "&:hover": { transform: "scale(1.2)" },
+    transition: "all 200ms",
+    cursor: "pointer",
+  },
+
+  accIcon: { width: 150, height: 150 },
+
+  boxContainer: { display: "flex", flexDirection: "column", gap: "2rem" },
+
+  img: { "object-fit": "cover", borderRadius: "15px" },
+
+  textField: { position: "relative" },
 };
 
 export default UserSettingsModal;
