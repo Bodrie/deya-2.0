@@ -22,12 +22,12 @@ const Footer = () => {
       <Container maxWidth="xl">
         <Grid container justifyContent="center" wrap="nowrap" mt={2} mb={2}>
           <Grid item>
-            <CardMedia image={logo} sx={cardMedia} />
+            {/* <CardMedia image={logo} sx={cardMedia} /> */}
           </Grid>
           <Divider orientation="vertical" flexItem sx={divider} />
           <Grid item alignSelf="center">
             <Grid item container>
-              <Typography color="white">info@deya.bg</Typography>
+              <Typography color="white"></Typography>
               <Divider orientation="vertical" flexItem sx={divider} />
               <a
                 href={facebookLink}
@@ -37,12 +37,12 @@ const Footer = () => {
               >
                 <FacebookOutlined sx={fbIcon} />
                 <Typography color="white" ml={0.5}>
-                  ДЕЯ
+                  
                 </Typography>
               </a>
             </Grid>
             <Grid item>
-              <Typography color="white">Емилия Христова</Typography>
+              <Typography color="white"></Typography>
             </Grid>
             <Grid item>
               <Typography color="white"></Typography>

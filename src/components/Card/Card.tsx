@@ -39,7 +39,7 @@ const CardComponent = ({ content }: { content: ICardContent[] }) => {
                 <CardMedia
                   component="img"
                   height="400px"
-                  image={card.img}
+                  // image={card.img}
                   alt="card component image"
                   sx={styles()}
                 />

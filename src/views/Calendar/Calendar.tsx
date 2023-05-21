@@ -74,7 +74,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
             appointmentDate: appointmentDate,
             appointmentHour: appointmentHour,
             userEmail: email,
-            isApproved: "unapproved",
+            isApproved: false,
             phone: updatedPhoneFromDB,
             displayName: displayName,
           })
@@ -97,7 +97,7 @@ const Calendar = ({ email, emailVerified, displayName, phoneNumber }: User) => {
           appointmentDate: appointmentDate,
           appointmentHour: appointmentHour,
           userEmail: email,
-          isApproved: "unapproved",
+          isApproved: false,
           phone: phoneNumber,
           displayName: displayName,
         })

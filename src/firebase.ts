@@ -13,6 +13,7 @@ import {
   query,
   FirestoreError,
   setDoc,
+  writeBatch,
 } from "firebase/firestore";
 import {
   signInWithEmailAndPassword,
@@ -32,8 +33,10 @@ import moment from "moment";
 import {
   IAppointment,
   IAppointmentCreateOrUpdate,
+  IAppointmentUpdate,
   ICalendar,
   ICustomError,
+  IUserAppointments,
 } from "./types/types";
 import { errorHandler } from "./utils/errorHandler";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -135,19 +138,38 @@ export const updateProfilePhoneNumber = async (phoneNumber: string) => {
 };
 
 export const refreshDatabase = async () => {
-  const getPastDays = await getDocsFromServer(query(collRef)).catch(
+  const batch = writeBatch(db);
+  const getAllDocuments = await getDocsFromServer(query(collRef)).catch(
     (error: FirestoreError) => {
       throw new Error(`${error.name}: ${error.message}`);
     }
   );
-  getPastDays.forEach((docu) => {
-    const currDateToCheck = moment(docu.id);
-    const isBeforeCurrDate = moment(currDateToCheck).isBefore(moment(), "day");
-    if (isBeforeCurrDate) {
-      deleteDoc(doc(db, "data", docu.id)).catch((error: FirestoreError) => {
-        throw new Error(`${error.name}: ${error.message}`);
+
+  getAllDocuments.forEach((docu) => {
+    const { date, hours } = docu.data();
+    const isToday = moment(date).isSame(moment(), "day");
+    const isYesterday = moment(date).isBefore(moment(), "day");
+
+    if (isToday) {
+      hours?.forEach((hour: string) => {
+        const currentAppointment = `${date} ${hour.split(" - ")[0]}`;
+        const isExpired = moment(currentAppointment).isBefore(moment());
+        if (isExpired) {
+          batch.update(doc(db, "data", date), {
+            date: date,
+            hours: arrayRemove(hour),
+          });
+        }
       });
     }
+
+    if (isYesterday) {
+      batch.delete(doc(db, "data", date));
+    }
+  });
+
+  await batch.commit().catch((error: FirestoreError) => {
+    throw new Error(`${error.name}: ${error.message}`);
   });
 };
 
@@ -174,27 +196,59 @@ export const appointmentCreate = async ({
   displayName,
   phone,
 }: IAppointment): Promise<void> => {
-  await updateDoc(doc(db, "data", appointmentDate), {
-    date: appointmentDate,
-    hours: arrayRemove(appointmentHour + " - free"),
-  }).catch((error: FirestoreError) => {
-    throw new Error(`${error.name}: ${error.message}`);
+  const batch = writeBatch(db);
+
+  batch.update(doc(db, "data", appointmentDate), {
+    available_hours: arrayRemove(appointmentHour),
   });
 
-  await updateDoc(doc(db, "data", appointmentDate), {
-    date: appointmentDate,
-    hours: arrayUnion(
-      appointmentHour +
-        " - " +
-        userEmail +
-        " - " +
-        isApproved +
-        " - " +
-        displayName +
-        " - " +
-        phone
-    ),
-  }).catch((error: FirestoreError) => {
+  batch.update(doc(db, "data", appointmentDate), {
+    appointments: arrayUnion({
+      appointment_hour: appointmentHour,
+      user_email: userEmail,
+      is_approved: isApproved,
+      display_name: displayName,
+      phone: phone,
+    }),
+  });
+
+  await batch.commit().catch((error) => {
+    throw new Error(`${error.name}: ${error.message}`);
+  });
+};
+
+export const appointmentUpdate = async ({
+  appointmentDate,
+  appointmentHour,
+  userEmail,
+  isApproved,
+  oldDisplayName,
+  newDisplayName,
+  phone,
+}: IAppointmentUpdate): Promise<void> => {
+  const batch = writeBatch(db);
+
+  batch.update(doc(db, "data", appointmentDate), {
+    appointments: arrayRemove({
+      appointment_hour: appointmentHour,
+      user_email: userEmail,
+      is_approved: isApproved,
+      display_name: oldDisplayName,
+      phone: phone ?? null,
+    }),
+  });
+
+  batch.update(doc(db, "data", appointmentDate), {
+    appointments: arrayUnion({
+      appointment_hour: appointmentHour,
+      user_email: userEmail,
+      is_approved: isApproved,
+      display_name: newDisplayName,
+      phone: phone ?? null,
+    }),
+  });
+
+  await batch.commit().catch((error) => {
     throw new Error(`${error.name}: ${error.message}`);
   });
 };
@@ -207,44 +261,51 @@ export const appointmentDelete = async ({
   displayName,
   phone,
 }: IAppointment): Promise<void> => {
-  await updateDoc(doc(db, "data", appointmentDate), {
-    date: appointmentDate,
-    hours: arrayRemove(
-      appointmentHour +
-        " - " +
-        userEmail +
-        " - " +
-        isApproved +
-        " - " +
-        displayName +
-        " - " +
-        phone
-    ),
-  }).catch((error: FirestoreError) => {
-    throw new Error(`${error.name}: ${error.message}`);
+  const batch = writeBatch(db);
+
+  batch.update(doc(db, "data", appointmentDate), {
+    appointments: arrayRemove({
+      appointment_hour: appointmentHour,
+      user_email: userEmail,
+      is_approved: isApproved,
+      display_name: displayName,
+      phone: phone,
+    }),
   });
 
-  await updateDoc(doc(db, "data", appointmentDate), {
-    date: appointmentDate,
-    hours: arrayUnion(appointmentHour + " - free"),
-  }).catch((error: FirestoreError) => {
+  batch.update(doc(db, "data", appointmentDate), {
+    available_hours: arrayUnion(appointmentHour),
+  });
+
+  batch.commit().catch((error: FirestoreError) => {
     throw new Error(`${error.name}: ${error.message}`);
   });
 };
 
-export const createOrUpdateAvailableAppointments = async ({
+export const addAppointments = async ({
   appointmentsDate,
   appointmentHours,
 }: IAppointmentCreateOrUpdate): Promise<void> => {
-  await updateDoc(doc(db, "data", appointmentsDate), {
-    date: appointmentsDate,
-    hours: arrayUnion(...appointmentHours),
-  }).catch((error: FirestoreError) => {
+  const batch = writeBatch(db);
+
+  const documents = doc(db, 'data', appointmentsDate)
+  console.log(documents);
+  
+  // TO DO: Check for already ocupied appointments!!! //
+  batch.update(doc(db, "data", appointmentsDate), {
+    available_hours: arrayUnion(...appointmentHours), //
+  });
+  // TO DO: Check for already ocupied appointments!!! //
+
+  batch.commit().catch((error: FirestoreError) => {
     if (error.code === "not-found") {
-      setDoc(doc(db, "data", appointmentsDate), {
+      const batch = writeBatch(db);
+      batch.set(doc(db, "data", appointmentsDate), {
         date: appointmentsDate,
-        hours: arrayUnion(...appointmentHours),
+        available_hours: appointmentHours,
+        appointments: [],
       });
+      batch.commit();
     } else {
       throw new Error(`${error.name}: ${error.message}`);
     }

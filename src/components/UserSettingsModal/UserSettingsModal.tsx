@@ -5,13 +5,15 @@ import { sxMbSpacing } from "../../constants/constants";
 import bgimg from "../../assets/images/patternpad.svg";
 import { AccountCircle, Close } from "@mui/icons-material";
 import { photoEnlarger } from "../../utils/photoEnlarger";
-import { updateUserProfile } from "../../firebase";
+import { appointmentUpdate, updateUserProfile } from "../../firebase";
+import { IUserAppointments } from "../../types/types";
 
 interface UserSettingsModalProps {
   open: boolean;
   setModalState: (state: boolean) => void;
   displayName: string | null;
   photoURL: string | null;
+  appointmetnsToUpdate: IUserAppointments[];
 }
 
 const UserSettingsModal = ({
@@ -19,6 +21,7 @@ const UserSettingsModal = ({
   displayName,
   photoURL,
   setModalState,
+  appointmetnsToUpdate,
 }: UserSettingsModalProps) => {
   const { setIsLoading } = useContext(LoadingContext);
 
@@ -36,8 +39,21 @@ const UserSettingsModal = ({
       setIsLoading(false);
     }
     updateUserProfile(name, photo)
-      .then(() => setIsLoading(false))
-      .finally();
+      .then(() => {
+        appointmetnsToUpdate.map((appointment: IUserAppointments) => {
+          console.log(typeof appointment);
+          
+          return appointmentUpdate({
+            appointmentDate: appointment.date,
+            appointmentHour: appointment.hours,
+            isApproved: appointment.isApproved,
+            userEmail: appointment.email as string,
+            newDisplayName: name,
+            oldDisplayName: appointment.displayName
+          });
+        });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (

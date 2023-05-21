@@ -4,9 +4,19 @@ export interface IAppointment {
   appointmentDate: string;
   appointmentHour: number;
   userEmail: string | null;
-  isApproved: string;
+  isApproved: boolean;
   phone?: string | null;
   displayName?: string | null;
+}
+
+export interface IAppointmentUpdate {
+  appointmentDate: string;
+  appointmentHour: number;
+  userEmail: string | null;
+  isApproved: boolean;
+  phone?: string | null;
+  oldDisplayName?: string | null;
+  newDisplayName?: string | null;
 }
 
 export interface IUserAppointments {
@@ -21,12 +31,21 @@ export interface IUserAppointments {
 
 export interface ICalendar {
   date: string;
-  hours: string[];
+  available_hours: number[];
+  appointments: NEWIAppointment[];
+}
+
+export interface NEWIAppointment {
+  appointment_hour: number;
+  display_name: string;
+  is_approved: boolean;
+  phone: string;
+  user_email: string;
 }
 
 export interface IAppointmentCreateOrUpdate {
   appointmentsDate: string;
-  appointmentHours: string[];
+  appointmentHours: number[];
 }
 
 export interface IDateTimePicker {

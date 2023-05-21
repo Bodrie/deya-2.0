@@ -55,7 +55,7 @@ const Header = ({ userData }: IHeaderProps) => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={styles.toolBar}>
           <LinkStyled to={"/"}>
-            <CardMedia image={logo} sx={styles.cardMedia} />
+            {/* <CardMedia image={logo} sx={styles.cardMedia} /> */}
           </LinkStyled>
           <Desktop
             headerPages={headerPages}

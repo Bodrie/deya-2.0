@@ -27,6 +27,7 @@ const DateTimePicker = ({
     if (error && error !== "shouldDisableTime-hours") return setIsError(true);
     return setIsError(false);
   };
+  // console.log(calendarData);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={bgLocale}>

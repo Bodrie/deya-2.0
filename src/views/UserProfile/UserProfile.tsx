@@ -13,10 +13,9 @@ import { getCalendarData, appointmentDelete } from "../../firebase";
 import moment from "moment";
 import { photoEnlarger } from "../../utils/photoEnlarger";
 import { User } from "firebase/auth";
-import { IUserAppointments } from "../../types/types";
+import { IUserAppointments, NEWIAppointment } from "../../types/types";
 import { useRefreshDB } from "../../hooks";
 import { sxMbSpacing } from "../../constants/constants";
-import { manageDbStrings } from "../../utils/manageDbStrings";
 import { UserSettingsModal } from "../../components";
 
 const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
@@ -32,24 +31,28 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
     getCalendarData()
       .then((calendarData) => {
         calendarData.forEach((date) => {
-          date.hours.forEach((hour: string) => {
-            const {
-              currentUserEmail,
-              currentApproval,
-              currentDisplayName,
-              currentHour,
-              currentPhoneNumber,
-            } = manageDbStrings(hour);
-            if (currentUserEmail.includes(email!)) {
-              userAppointments.push({
-                hours: currentHour,
-                date: date.date,
-                isApproved: currentApproval === "approved" ? true : false,
-                displayName: currentDisplayName,
-                phone: currentPhoneNumber,
-              });
+          date.appointments.forEach(
+            ({
+              appointment_hour,
+              display_name,
+              is_approved,
+              phone,
+              user_email,
+            }: NEWIAppointment) => {
+              console.log(user_email, phone, 'from server');
+              
+              if (user_email === email) {
+                userAppointments.push({
+                  hours: appointment_hour,
+                  date: date.date,
+                  isApproved: is_approved,
+                  displayName: display_name ?? "Няма",
+                  phone: phone,
+                  email: user_email,
+                });
+              }
             }
-          });
+          );
         });
       })
       .then(() => setAppointments(userAppointments))
@@ -60,6 +63,9 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
     getCurrentUserAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // console.log(appointments);
+  
 
   return (
     <>
@@ -200,17 +206,9 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
                         appointmentDate: appointment.date,
                         appointmentHour: appointment.hours,
                         userEmail: email,
-                        isApproved: appointment.isApproved
-                          ? "approved"
-                          : "unapproved",
-                        displayName:
-                          appointment.displayName !== "Няма"
-                            ? appointment.displayName
-                            : "null",
-                        phone:
-                          appointment.phone !== "Няма"
-                            ? appointment.phone
-                            : "null",
+                        isApproved: appointment.isApproved,
+                        displayName: appointment.displayName,
+                        phone: appointment.phone,
                       }).then(() => getCurrentUserAppointments());
                     }}
                   >
@@ -226,6 +224,7 @@ const UserProfile = ({ email, displayName, photoURL, uid }: User) => {
             displayName={displayName}
             photoURL={photoURL}
             setModalState={setModalState}
+            appointmetnsToUpdate={appointments}
           />
         </Grid>
       ) : (

@@ -12,20 +12,20 @@ const CarouselComponent = () => {
   const smDownMatch = useMediaQuery(theme.breakpoints.down("sm"));
   const items: ICarouselItems[] = [
     {
-      name: "Рейки",
+      name: "",
       description:
-        "Двуканална Система на Микао Усуи | Рейки сеанс | Рейки Обучение и Инициация",
-      img: coruselImg1,
+        "",
+      img: "coruselImg1",
     },
     {
-      name: "Тета лечение",
-      description: "Тета сесия",
-      img: coruselImg2,
+      name: "",
+      description: "",
+      img: "coruselImg2",
     },
     {
-      name: "Масажи",
-      description: "Масажи с вулканични камани",
-      img: coruselImg3,
+      name: "",
+      description: "",
+      img: "",
     },
   ];
 

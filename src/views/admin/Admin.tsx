@@ -1,24 +1,41 @@
 import React, { useState } from "react";
-import { createOrUpdateAvailableAppointments } from "../../firebase";
+import { addAppointments, getCalendarData } from "../../firebase";
 import { Grid, Snackbar, Typography } from "@mui/material";
 import { DATE_REGEX } from "../../constants/constants";
 import { useRefreshDB } from "../../hooks";
 import TableOfAppointments from "./TableOfAppointments";
+// import { ICalendar } from "../../types/types";
 
 const Admin = () => {
   useRefreshDB();
   const [snackOpen, setSnakOpen] = useState(false);
+  // const [calendarData, setCalendarData] = useState<ICalendar[]>([]);
+  // const [valid, setValid] = useState(true);
+
+  // getCalendarData().then((calendarDataRes) => {
+  //   setCalendarData(calendarDataRes);
+  // });
+
   const handleForm = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
+    // const copyOfCalendar = calendarData;
     const appointmentsDate: string = e.target.date.value;
     const isValidDate: boolean = DATE_REGEX.test(appointmentsDate);
-    const parsedHours: number[] = JSON.parse("[" + e.target.hours.value + "]");
-    const appointmentHours: string[] = parsedHours.map((currHour: number) => {
-      return currHour + " - free";
-    });
-    
+    const appointmentHours: number[] = JSON.parse(
+      "[" + e.target.hours.value + "]"
+    );
+
+    // copyOfCalendar
+    //   .filter((doc) => doc.date === appointmentsDate)[0]
+    //   .appointments.forEach((el) => {
+    //     if (appointmentHours.includes(el.appointment_hour)) setValid(false);
+    //     alert(
+    //       `Припокриване на запазен час! \n${el.appointment_hour}:00\nИмейл: ${el.user_email}\nПотребител: ${el.display_name}`
+    //     );
+    //   });
+
     if (isValidDate) {
-      await createOrUpdateAvailableAppointments({
+      await addAppointments({
         appointmentsDate,
         appointmentHours,
       })
@@ -26,7 +43,10 @@ const Admin = () => {
           e.target.date.value = "";
           e.target.hours.value = "";
         })
-        .finally(() => setSnakOpen(true));
+        .finally(() => {
+          setSnakOpen(true);
+          // setValid(true);
+        });
     } else {
       alert("Грешка! Прегледай формата на датата и часа");
     }

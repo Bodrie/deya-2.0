@@ -6,7 +6,6 @@ import {
   getCalendarData,
 } from "../../firebase";
 import { IAppointment, IUserAppointments } from "../../types/types";
-import { manageDbStrings } from "../../utils/manageDbStrings";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { Check, Clear } from "@mui/icons-material";
 import moment from "moment";
@@ -24,26 +23,28 @@ const TableOfAppointments = () => {
     getCalendarData()
       .then((calendarData) => {
         calendarData.forEach((date, dateIndex: number) => {
-          date.hours.forEach((hour: string, index: number) => {
-            const {
-              currentHour,
-              currentUserEmail,
-              currentDisplayName,
-              currentPhoneNumber,
-              currentApproval,
-            } = manageDbStrings(hour);
-            if (!hour.includes(" - free")) {
+          date.appointments.forEach(
+            (
+              {
+                appointment_hour,
+                display_name,
+                is_approved,
+                phone,
+                user_email,
+              },
+              appointmentIndex: number
+            ) => {
               userAppointments.push({
-                id: Number(`${dateIndex}${index}`),
+                id: Number(`${dateIndex}${appointmentIndex}`),
                 date: moment(date.date).format("MM.DD.YYYY"),
-                hours: currentHour,
-                email: currentUserEmail,
-                isApproved: currentApproval === "approved" ? true : false,
-                displayName: currentDisplayName,
-                phone: currentPhoneNumber,
+                hours: appointment_hour,
+                email: user_email,
+                isApproved: is_approved,
+                displayName: display_name,
+                phone: phone,
               });
             }
-          });
+          );
         });
       })
       .then(() => setAppointments(userAppointments))
@@ -59,17 +60,16 @@ const TableOfAppointments = () => {
       appointmentDate: moment(rowData.date).format("YYYY-MM-DD"),
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
-      isApproved: "unapproved",
-      displayName:
-        rowData.displayName !== "Няма" ? rowData.displayName : "null",
-      phone: rowData.phone !== "Няма" ? rowData.phone : "null",
+      isApproved: false,
+      displayName: rowData.displayName,
+      phone: rowData.phone,
     };
     if (rowData.email && !rowData.isApproved) {
-      appointmentDelete(payload)
-        .then(() => {
-          appointmentCreate({ ...payload, isApproved: "approved" });
-        })
-        .finally(() => setLoading(false));
+      appointmentDelete(payload).then(() => {
+        appointmentCreate({ ...payload, isApproved: true }).finally(() =>
+          setLoading(false)
+        );
+      });
       rowData.isApproved = true;
     }
   };
@@ -82,17 +82,16 @@ const TableOfAppointments = () => {
       appointmentDate: moment(rowData.date).format("YYYY-MM-DD"),
       appointmentHour: rowData.hours,
       userEmail: rowData.email as string,
-      isApproved: "approved",
-      displayName:
-        rowData.displayName !== "Няма" ? rowData.displayName : "null",
-      phone: rowData.phone !== "Няма" ? rowData.phone : "null",
+      isApproved: true,
+      displayName: rowData.displayName,
+      phone: rowData.phone,
     };
     if (rowData.email && rowData.isApproved) {
-      appointmentDelete(payload)
-        .then(() => {
-          appointmentCreate({ ...payload, isApproved: "unapproved" });
-        })
-        .finally(() => setLoading(false));
+      appointmentDelete(payload).then(() => {
+        appointmentCreate({ ...payload, isApproved: false }).finally(() =>
+          setLoading(false)
+        );
+      });
       rowData.isApproved = false;
     }
   };
@@ -113,11 +112,17 @@ const TableOfAppointments = () => {
       field: "displayName",
       headerName: "Имена",
       width: mdUp ? (lgUp ? 230 : 180) : 130,
+      valueFormatter: (params) => {
+        if (!params.value) return "Няма";
+      },
     },
     {
       field: "phone",
       headerName: "Телефон",
       width: mdUp ? (lgUp ? 230 : 180) : 130,
+      valueFormatter: (params) => {
+        if (!params.value) return "Няма";
+      },
     },
     {
       field: "email",

@@ -5,19 +5,19 @@ const rootTheme = createTheme({
   typography: {
     fontFamily: "Mulish",
   },
-  palette: {
-    primary: {
-      main: "#b771c1",
-      light: "#9B5FA3",
-      dark: "#6D3274",
-      contrastText: "#FEC01F",
-    },
-    text: {
-      primary: "#000",
-      secondary: "#000",
-      disabled: "#999999",
-    },
-  },
+  // palette: {
+  //   primary: {
+  //     main: "#b771c1",
+  //     light: "#9B5FA3",
+  //     dark: "#6D3274",
+  //     contrastText: "#FEC01F",
+  //   },
+  //   text: {
+  //     primary: "#000",
+  //     secondary: "#000",
+  //     disabled: "#999999",
+  //   },
+  // },
   components: {
     MuiPaper: {
       styleOverrides: {
