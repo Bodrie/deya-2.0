@@ -1,0 +1,72 @@
+.mark {
+  display: block;
+  flex: none;
+  background: var(--logo-fill-light);
+  mask: var(--mask) center / contain no-repeat;
+}
+
+.mark[data-tone="dark"] {
+  background: var(--logo-fill-dark);
+}
+
+.emblem {
+  aspect-ratio: 2156 / 1404;
+}
+
+.stacked {
+  aspect-ratio: 2156 / 1831;
+}
+
+/*
+ * Default size with zero specificity, so a consumer's class always wins.
+ * (CSS chunks can load in any order in production.)
+ */
+:where(.emblem, .stacked) {
+  width: 100%;
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lockupEmblem {
+  aspect-ratio: 2156 / 1404;
+  width: 4.1rem;
+}
+
+.lockupText {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: start;
+}
+
+.wordmark {
+  aspect-ratio: 801 / 323;
+  height: 1.4rem;
+}
+
+.descriptor {
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.lockup[data-tone="dark"] .descriptor {
+  color: var(--on-plum-soft);
+}
+
+@media (max-width: 47.99rem) {
+  .lockupEmblem {
+    width: 3.3rem;
+  }
+
+  .wordmark {
+    height: 1.15rem;
+  }
+}

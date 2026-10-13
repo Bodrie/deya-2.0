@@ -1,0 +1,108 @@
+.section {
+  padding-block: var(--section-pad);
+  background: var(--mist);
+}
+
+.article {
+  max-width: calc(40rem + var(--gutter) * 2);
+}
+
+.head {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+  margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+.title {
+  font-size: var(--text-3xl);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.paragraph {
+  font-size: var(--text-lg);
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+/* Drop cap on the opening paragraph */
+.paragraph:first-child::first-letter {
+  float: left;
+  margin: 0.08em 0.12em 0 0;
+  font-family: var(--font-display);
+  font-size: 4.4em;
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 0.82;
+  color: var(--gold-ink);
+}
+
+.pull {
+  margin-block: var(--space-6);
+  padding-block: var(--space-6);
+  border-block: 1px solid var(--line-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-style: italic;
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--gold-ink);
+}
+
+.body > .pull:last-child {
+  margin-bottom: 0;
+  border-bottom: 0;
+  font-size: var(--text-3xl);
+  color: var(--ink);
+}
+
+.signature {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  margin-top: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  text-align: center;
+}
+
+.signature::before {
+  content: "";
+  width: 3rem;
+  height: 1px;
+  margin-bottom: var(--space-4);
+  background: var(--gold);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-style: italic;
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+}
+
+/* Roles never split mid-role; dots sit between them. */
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0;
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+.roles li {
+  white-space: nowrap;
+}
+
+.roles li:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.6em;
+  color: var(--gold);
+}

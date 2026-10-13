@@ -1,0 +1,121 @@
+.section {
+  padding-block: var(--section-pad);
+  background: var(--mist);
+}
+
+.grid {
+  display: grid;
+  gap: clamp(3rem, 2rem + 4vw, 5.5rem);
+  align-items: center;
+}
+
+.media {
+  min-width: 0;
+  margin: 0;
+}
+
+.picture {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm)
+    var(--radius-sm);
+  background: var(--pearl);
+}
+
+.picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-7);
+  min-width: 0;
+}
+
+.practices {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.listTitle {
+  font-family: var(--font-body);
+  -webkit-text-stroke-width: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.list {
+  display: grid;
+  border-top: 1px solid var(--line-strong);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 0.9rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  padding-block: 0.95rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.practice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* Centred on the first line of the practice name. */
+.leaf {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: calc((var(--text-xl) * 1.25 - 0.9rem) / 2);
+  color: var(--gold);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.badge {
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--gold-soft);
+  border-radius: 999px;
+  background: var(--pearl-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gold-ink);
+}
+
+.closing {
+  max-width: 34rem;
+  color: var(--ink-soft);
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  /* Photo on the left on wide screens; text comes first on phones. */
+  .media {
+    order: -1;
+  }
+}

@@ -1,0 +1,76 @@
+.section {
+  padding-block: 0 var(--section-pad);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+  padding-top: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+  border-top: 1px solid var(--line);
+}
+
+/* An oversized Bulgarian opening quote mark („), these being Emilia's own
+   words. It sits low, on the baseline of the first line, as „ should. */
+.mark {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 3.5rem + 5vw, 8rem);
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 0.4;
+  color: var(--gold);
+  user-select: none;
+}
+
+.body {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 54rem;
+}
+
+.text {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.text em {
+  color: var(--gold-ink);
+}
+
+.signature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+}
+
+.name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.role {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .grid {
+    align-items: baseline;
+  }
+
+  .mark {
+    line-height: 1;
+    text-align: right;
+  }
+}

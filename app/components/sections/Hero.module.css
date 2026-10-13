@@ -1,0 +1,120 @@
+.hero {
+  position: relative;
+  overflow: clip;
+  padding-block: clamp(2rem, 0.5rem + 5vw, 5rem) clamp(3.5rem, 2rem + 4vw, 6rem);
+}
+
+.grid {
+  display: grid;
+  gap: clamp(3rem, 2rem + 4vw, 5rem);
+  align-items: center;
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-4xl);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+}
+
+.title em {
+  color: var(--gold-ink);
+}
+
+.lead {
+  max-width: 33rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.media {
+  justify-self: center;
+  width: min(100%, 27rem);
+  margin: 0;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.caption svg {
+  flex: none;
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--gold-ink);
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  }
+
+  .media {
+    justify-self: end;
+  }
+}
+
+/* Page-load sequence: copy rises line by line, the photo settles in. */
+@media (prefers-reduced-motion: no-preference) {
+  .copy > * {
+    animation: rise 1s var(--ease-out) both;
+  }
+
+  .copy > :nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .copy > :nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .copy > :nth-child(4) {
+    animation-delay: 260ms;
+  }
+
+  .copy > :nth-child(5) {
+    animation-delay: 340ms;
+  }
+
+  .media {
+    animation: settle 1.6s var(--ease-out) 120ms both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.1rem);
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .actions > * {
+    flex: 1 1 100%;
+  }
+}

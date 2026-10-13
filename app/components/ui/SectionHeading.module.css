@@ -1,0 +1,36 @@
+.heading {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+  max-width: 44rem;
+}
+
+.heading[data-align="center"] {
+  justify-items: center;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.title {
+  font-size: var(--text-3xl);
+}
+
+.title em {
+  color: var(--gold-ink);
+}
+
+.heading[data-tone="dark"] .title {
+  color: var(--on-plum);
+}
+
+.heading[data-tone="dark"] .title em {
+  color: var(--gold-bright);
+}
+
+.lead {
+  max-width: var(--measure);
+}
+
+.heading[data-tone="dark"] .lead {
+  color: var(--on-plum-soft);
+}

@@ -1,0 +1,44 @@
+.page {
+  padding-block: clamp(4rem, 2rem + 8vw, 9rem);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: center;
+  max-width: 44rem;
+  text-align: center;
+}
+
+.emblem {
+  width: 6rem;
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: var(--text-3xl);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.detail {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--mist);
+  font-size: var(--text-xs);
+  text-align: start;
+}
+
+@media (max-width: 39.99rem) {
+  .actions > * {
+    flex: 1 1 100%;
+  }
+}

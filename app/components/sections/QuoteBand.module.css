@@ -1,0 +1,86 @@
+.band {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: clamp(5rem, 3rem + 7vw, 9rem);
+  background: var(--plum);
+  color: var(--on-plum);
+}
+
+/* Warm light rising behind the emblem, like the candles in the studio. */
+.band::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  z-index: -1;
+  width: min(60rem, 140vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--glow-on-plum);
+  transform: translateX(-50%);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-6);
+  justify-items: center;
+  text-align: center;
+}
+
+.emblem {
+  width: 5.5rem;
+}
+
+.figure {
+  display: grid;
+  gap: var(--space-6);
+  justify-items: center;
+  max-width: 50rem;
+  margin: 0;
+}
+
+.quote {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* The opening clause of the quote, in the same voice. */
+.lead {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-style: italic;
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  color: var(--on-plum-soft);
+}
+
+.text {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-style: italic;
+  font-weight: var(--weight-display);
+  -webkit-text-stroke-width: var(--display-stroke);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.caption {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gold-bright);
+}
+
+.caption::before,
+.caption::after {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}

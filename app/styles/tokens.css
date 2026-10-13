@@ -1,0 +1,132 @@
+/*
+ * Design tokens.
+ *
+ * Direction: daylight through linen, with candle-gold accents. A pearl ground
+ * with a faint lilac bias (a nod to the earlier purple brand), aubergine ink,
+ * and the gold of the ДЕЯ logo. Deep plum is reserved for a few quiet
+ * moments (quote, call to action, footer) where the gold logo glows the way it
+ * was originally drawn.
+ */
+:root {
+  /* Colour */
+  --pearl: #f7f4f6;
+  --pearl-light: #fcfafb;
+  --mist: #efe9ee;
+  --ink: #2a2130;
+  --ink-soft: #5e5165;
+  --line: #e4dae2;
+  --line-strong: #cfc0cc;
+
+  --gold: #b4842f; /* decorative only: lines, icons, ornaments */
+  --gold-ink: #8a5f1d; /* gold for text on light grounds */
+  --gold-soft: #e7d3ab;
+  --gold-glow: #f3dca8;
+
+  --plum: #241a2a;
+  --plum-raised: #30243a;
+  --plum-line: #3d3045;
+  --on-plum: #f4edf2;
+  --on-plum-soft: #c3b4c8;
+  --gold-bright: #edbe63;
+
+  --mauve-soft: #e6dcea;
+
+  --logo-fill-light: linear-gradient(
+    168deg,
+    #c99b47 0%,
+    #a8762a 58%,
+    #97681f 100%
+  );
+  --logo-fill-dark: linear-gradient(
+    172deg,
+    #f8dc85 0%,
+    #eeb64b 55%,
+    #e59c36 100%
+  );
+
+  /* Candle light on plum: a small gold core over lifted plum, so the
+     warm light never muddies into brown. */
+  --glow-on-plum: radial-gradient(
+    closest-side,
+    rgb(237 190 99 / 0.13),
+    rgb(84 60 96 / 0.5) 42%,
+    rgb(84 60 96 / 0)
+  );
+
+  /* Type */
+  --font-display:
+    "Noto Serif Display Variable", "Noto Serif Display", Georgia,
+    "Times New Roman", serif;
+  --font-body:
+    "Manrope Variable", "Manrope", "Segoe UI", system-ui, -apple-system,
+    sans-serif;
+
+  --weight-display: 320;
+  --display-stroke: 0px; /* hairline outline for display text, see below */
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: clamp(1rem, 0.975rem + 0.12vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.24rem + 0.6vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.5rem + 1.1vw, 2.5rem);
+  --text-3xl: clamp(2.125rem, 1.65rem + 2.2vw, 3.5rem);
+  --text-4xl: clamp(2.75rem, 1.85rem + 4.1vw, 5.5rem);
+
+  --leading-tight: 1.06;
+  --leading-snug: 1.25;
+  --leading-body: 1.7;
+
+  --tracking-label: 0.18em;
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  --section-pad: clamp(4.5rem, 2.6rem + 7vw, 8.5rem);
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 3rem);
+  --container: 75rem;
+  --measure: 38rem;
+
+  /* Shape & depth */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.75rem;
+  --radius-arch: 999px 999px 0 0;
+  --shadow-soft:
+    0 1px 2px rgb(42 33 48 / 0.04), 0 18px 40px -22px rgb(42 33 48 / 0.28);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 900ms;
+
+  --header-h: 4.75rem;
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --header-h: 4rem;
+  }
+}
+
+/*
+ * Noto Serif Display keeps its hairlines at 1% of the em at every weight:
+ * under half a pixel at heading sizes on standard-density screens, where
+ * they break up and letters look cut. A hairline outline keeps them whole.
+ * High-density screens draw them cleanly, so they get none.
+ */
+@media (max-resolution: 1.99dppx) {
+  :root {
+    --display-stroke: 0.4px;
+  }
+}
