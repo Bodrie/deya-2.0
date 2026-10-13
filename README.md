@@ -1,6 +1,8 @@
 # ДЕЯ – Енергийни терапии
 
-Presentational website for **Емилия Стефанова** – energy therapist, theta healing therapist, Reiki teacher and therapist, and massage therapist – and her studio in Pleven.
+Presentational website for the ДЕЯ energy therapy studio in Pleven, Bulgaria: energy and theta healing sessions (online and in the studio), Reiki training and massage.
+
+**Live site: [deya-bg.com](https://deya-bg.com)**
 
 Three pages, all in Bulgarian:
 
@@ -8,7 +10,7 @@ Three pages, all in Bulgarian:
 | --------- | ------ | ------------------------------------------------------------------------- |
 | `/`       | Начало | Hero, the four offerings, about teaser, quote, approach, contacts + map   |
 | `/uslugi` | Услуги | Sessions (online / in the studio), theta healing, Reiki training, massage |
-| `/za-men` | За мен | Bio and Emilia's essay "Ние сме само свидетели"                           |
+| `/za-men` | За мен | Bio and the essay "И има светлина, и има път"                             |
 
 ## Stack
 
@@ -76,7 +78,7 @@ All text lives in `app/content/`. Components only lay it out, so text changes ne
 
 ### Photos
 
-Put the original in `app/assets/images/` and register it in `app/assets/images/index.ts` with alt text in Bulgarian. The import query sets the generated widths and formats. Keep widths at or below the original's width. The current photos are about 720 px wide, so higher-resolution photos of the studio (and a portrait of Emilia) would noticeably lift the site.
+Put the original in `app/assets/images/` and register it in `app/assets/images/index.ts` with alt text in Bulgarian. The import query sets the generated widths and formats. Keep widths at or below the original's width. The current photos are about 720 px wide, so higher-resolution photos of the studio (and a portrait of the therapist) would noticeably lift the site.
 
 ### Logo and icons
 
@@ -98,15 +100,12 @@ Tokens live in `app/styles/tokens.css`.
 - `lang="bg"`, a skip link, a single `h1` per page, labelled landmarks, visible focus states and a keyboard-accessible mobile menu (native `<dialog>`). The pages pass an automated axe audit with no violations.
 - The Google Map is click-to-load, so no third-party requests or cookies happen until the visitor asks for the map.
 
+## Domain
+
+The site's address is **https://deya-bg.com**, set as `site.url` in `app/content/site.ts`. Canonical URLs, Open Graph tags, the JSON-LD data, `sitemap.xml` and `robots.txt` are all built from it. Firebase's own addresses (`deya-therapy-2.web.app` and `deya-therapy-2.firebaseapp.com`) serve the same files, and their canonical tags point search engines to deya-bg.com.
+
 ## Deployment (Firebase Hosting)
 
-The Firebase project is set in `.firebaserc` (`deya-therapy-2`). Hosting serves `build/client`.
-
-```bash
-npx firebase-tools login     # once
-npm run deploy
-```
+The site is static, so it uses Firebase Hosting only: no Firebase SDK, API keys or `.env` file. The project is set in `.firebaserc` (`deya-therapy-2`), and Hosting serves `build/client`.
 
 `firebase.json` serves clean URLs without trailing slashes (`/uslugi`). It caches hashed assets for a year and adds basic security headers. Unknown URLs return a real `404` status with the site's "page not found" view.
-
-**Custom domain:** if the site moves to its own domain, update `site.url` in `app/content/site.ts` so canonical URLs, social previews and the sitemap point to it.

@@ -16,7 +16,7 @@ export const site = {
   since: 2015,
 
   /** Public address of the deployed site. Used for canonical URLs, Open Graph and the sitemap. */
-  url: "https://deya-therapy-2.web.app",
+  url: "https://deya-bg.com",
   locale: "bg_BG",
 
   phone: {
