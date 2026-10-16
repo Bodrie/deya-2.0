@@ -1,3 +1,4 @@
+import { photos } from "~/assets/images";
 import { CtaBand } from "~/components/sections/CtaBand";
 import { Essay } from "~/components/sections/Essay";
 import { PageIntro } from "~/components/sections/PageIntro";
@@ -24,7 +25,15 @@ export default function About() {
       <PageIntro
         eyebrow="За мен"
         title={site.person}
-        aside={<ArchFrame className={styles.arch} />}
+        aside={
+          <ArchFrame
+            photo={photos.portrait}
+            priority
+            sizes="(min-width: 30rem) 26rem, 84vw"
+            focus="50% 40%"
+            className={styles.arch}
+          />
+        }
       >
         <LeafList
           items={[...site.roles]}

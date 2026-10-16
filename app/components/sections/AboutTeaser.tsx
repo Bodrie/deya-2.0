@@ -38,9 +38,8 @@ export function AboutTeaser() {
 
         <Reveal className={styles.media} delay={120}>
           <Picture
-            photo={photos.lounge}
-            sizes="(min-width: 64rem) 34rem, 92vw"
-            focus="62% 50%"
+            photo={photos.garden}
+            sizes="(min-width: 32rem) 28rem, 92vw"
             className={styles.picture}
           />
         </Reveal>

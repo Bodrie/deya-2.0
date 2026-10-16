@@ -43,12 +43,13 @@
 }
 
 .media {
-  min-width: 0;
+  justify-self: center;
+  width: min(100%, 28rem);
 }
 
 .picture {
   display: block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm)
     var(--radius-sm);
